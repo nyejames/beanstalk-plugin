@@ -5,23 +5,14 @@
 		"Once accepted there, we are happy to receive an update request."
 	],
 	"version": "0.1",
-	"name": "BS",
-	"scopeName": "source.beanstalk",
+	"name": "Beanstalk",
+	"scopeName": "source.bs",
 	"patterns": [
 		{
-			"name": "comment.line.double-dash.beanstalk",
-			"match": "--.*$"
-		},
-		{
-			"name": "comment.block.double-dash.beanstalk",
-			"begin": "^--\\s*$",
-			"end": "^--\\s*$",
-			"patterns": [
-			  {
-				"match": ".+",
-				"name": "comment.block.content.beanstalk"
-			  }
-			]
+			"include": "#comments"
 		}
-	]
+	],
+	"repository": {
+
+	}
 }

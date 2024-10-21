@@ -1,13 +1,5 @@
--- test
+
 
 asdfasd := 1 + 2
 
--- hbhbhbhb
-
-Block comment
-
---
-
-function test()
-    return 1
-end
+-- comment
