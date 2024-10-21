@@ -1,0 +1,27 @@
+{
+	"information_for_contributors": [
+		"This file has been converted from [INSERT REPO HERE]",
+		"If you want to provide a fix or improvement, please create a pull request against the original repository.",
+		"Once accepted there, we are happy to receive an update request."
+	],
+	"version": "0.1",
+	"name": "BS",
+	"scopeName": "source.beanstalk",
+	"patterns": [
+		{
+			"name": "comment.line.double-dash.beanstalk",
+			"match": "--.*$"
+		},
+		{
+			"name": "comment.block.double-dash.beanstalk",
+			"begin": "^--\\s*$",
+			"end": "^--\\s*$",
+			"patterns": [
+			  {
+				"match": ".+",
+				"name": "comment.block.content.beanstalk"
+			  }
+			]
+		}
+	]
+}
