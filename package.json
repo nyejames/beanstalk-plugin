@@ -1,5 +1,5 @@
 {
-  "name": "beanstalk",
+  "name": "beanstalk-plugin",
   "displayName": "Beanstalk",
   "description": "Language support and syntax highlighting for Beanstalk",
   "version": "0.0.1",
@@ -14,12 +14,19 @@
       "id": "bs",
       "aliases": ["Beanstalk", "bs"],
       "extensions": ["bs"],
-      "configuration": "./language-configuration.json"
+      "configuration": "./language-configuration.json",
+      "icon": {
+        "light": "./icons/bs-logo.png",
+        "dark": "./icons/bs-logo.png"
+      }
     }],
     "grammars": [{
       "language": "bs",
       "scopeName": "source.bs",
-      "path": "./syntaxes/bs.tmLanguage.json"
+      "path": "./syntaxes/bs.tmLanguage.json",
+      "embeddedLanguages": {
+        "meta.embedded.block.markdown": "markdown"
+      }
     }]
   }
 }

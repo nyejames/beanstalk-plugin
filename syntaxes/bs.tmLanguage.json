@@ -10,9 +10,70 @@
 	"patterns": [
 		{
 			"include": "#comments"
+		},
+		{
+			"include": "#types"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#numbers"
+		},
+		{
+			"include": "#scenehead"
 		}
 	],
 	"repository": {
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.line.double-slash.bs",
+					"match": "--[^\n]*"
+				}
+			]
+		},
+		"scenehead": {
+			"begin": "^\\s*\\[",
+			"end": "\\:\\s*$",
+			"patterns": [
+				{
+					"name": "keyword.control.scene.bs",
+					"match": "\\\\."
+				}
+			]
+		},
 
+		"types": {
+			"patterns": [
+				{
+					"name": "storage.type.bs",
+					"match": "\\b(?:Bool|Int|Float|String|Idx|Scene)\\b"
+				}
+			]
+		},
+		"strings": {
+			"patterns": [
+				{
+					"name": "string.quoted.double.bs",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [
+						{
+							"name": "constant.character.escape.bs",
+							"match": "\\\\."
+						}
+					]
+				}
+			]
+		},
+		"numbers": {
+			"patterns": [
+				{
+					"name": "constant.numeric.bs",
+					"match": "\\b(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?\\b"
+				}
+			]
+		}
 	}
 }

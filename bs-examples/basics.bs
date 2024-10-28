@@ -1,0 +1,223 @@
+[Navbar]
+
+[header center: [title 1: BASIC BEANSTALK SYNTAX]]
+[main:
+
+# Language Design Goals
+The Beanstalk is designed to be:
+
+### Simple
+
+Minimal keywords and symbols to reduce cognitive load and syntax noise. One way to do things where possible. Beanstalk trades expressiveness for readibility and simplicity.
+
+### Concise
+
+As little boilerplate as possible. Safe type inferance and batteries included core language features to reduce the amount of code you need to write for simple tasks.
+
+### Strongly typed
+
+A small but powerful type system that is designed to be easy to use, understand and find errors in before runtime.
+
+### Seemless syntax for declaritive programming
+
+Scenes provide a very clean and concide way to describe the structure of a webpage or UI (or any other declaritive structure in the future).
+Having a declaritive syntax inside the language itself makes it easy to reason about desgining UI and visual components.
+
+### Procedural
+
+The programming part of the language is designed to be procedural, with a focus on functions and data manipulation. It should be easy to reason about control flow and avoid complex state management.
+
+### Fast compile times
+
+Being a compiled language, Beanstalk should have very fast compile times. The compiler is written in Rust and is designed to be fast and efficient. With built in hot reloading you should see changes to your code and UI designes almost instantly for fast iteration.
+
+# Style Guide
+The style guide is:
+- snake_case for variables and collections
+- camelCase for functions
+- PascalCase for types and Scenes
+- SCREAMING_SNAKE_CASE for Choices
+
+4 spaces are recommended for indentation. 
+
+# Comments
+Comments use a double minus sign '--'. 
+
+If you put a newline immediately after a comment mark, the comment will become multi line and must be closed with - again. 
+Comments are read by the compiler and can be nested.
+
+[code: 
+    -- normal comment
+
+    --
+    Multiline comment
+
+    Woo
+    --
+]
+
+# Variables
+Colon means initialise, equals means assign. The type of a variable goes after the colon, but can be omitted if the type is inferred.
+
+The @ symbol before a name is used to export variables and methods/functions outside of a module or object.
+
+## Assignment
+Types will be inferred if not specified, and implicit conversions will be used to convert the value to the inferred type.
+
+### Compile time immutable variable
+[code: comptime_immutable_var : int : 69]
+
+### Runtime Variable
+[code: mutable_var : int = 0]
+
+## Static Assignment
+[code:
+    -- UTF-16 string
+    my_brain := "Dumb"
+
+    -- 32 bit float
+    float := 69.420
+
+    -- 
+        Implicit string conversion (string type must be specified in the type definition for this to work)
+        
+        Any expression you assign to this string variable will be converted to a string
+    --
+    cool_string := 14 + 42 + " is a cool number " + '😂' -- "56 is a cool number 😂"
+]
+
+Variables must be given a value or a type when they are declared. There is no such thing as 'null' in Beanstalk, the closest equivalent is an Error type or an empty tuple.
+
+If an error occurs during assignment of a variable, it's type becomes an Error type and must be handled. Unhandled assignment errors at runtime will default the variable to it's zero value.
+
+All copies of collections are explicit and must use the 'copy' keyword in place of a type.
+
+[code:
+    -- Deep copy of a collection
+    thing : copy = a_collection 
+
+    -- Reference to a_collection
+    thing := a_collection
+]
+
+If you are creating a non-collection variable and need it to be formatted over multiple lines, 
+you must wrap the value in parenthesis.
+
+Parenthesis are used to group expressions together.
+
+[code:
+    some_int := (
+        4 + 5 + 6 + 7 + 8 + 9 + 10
+    )
+]
+
+# Data Types
+All data type keywords contain methods from the standard library for common manipulation of types. 
+The zero value is the value a variable will be assigned if it is not assigned a value when being initialized.
+
+## Numerical Types
+There is an intention to support all of these number types in the future. **Currently only 64 bit floats are supported.**
+
+[table 3: 
+    [: Type] [: Description] [: Zero Value]
+
+    [: Float ] [: 64 bit floating point number on 64 bit systems, 32 bit on 32 bit systems ] [: 0.0]
+
+    [: Int ] [:  64 bit signed integer on 64 bit systems, 32 bit on 32 bit systems ] [: 0]
+
+    [: Idx ] [: pointer sized unsigned integer ] [: 0]
+
+    [: Unit] [: *NOT YET SUPPORTED* Special numeric unit syntax for appending numerical types. The underlaying primative will be the same, but automatic conversions will be applied to the result. ] [: error]
+]
+
+## String based Types
+Beanstalk uses UTF-16 strings by default to keep all string manipulations inside JS. 
+The speed penalty of passing strings in and out of Wasm is currently not worth the extra complexity, 
+so all string expressions will compile to JS rather than Wasm.
+
+Eventually this will be entirely manipulated in Wasm, allowing for different string types and faster string operations. For now, JS is fast enough.
+
+[table 3: 
+    [: Type] [: Description] [: Zero Value]
+
+    [: String ] [: UTF-16 (For JS compatibility)] [: ""]
+
+    [: Error] [: Contains a special type of debug string detailing the error] [: "ERROR"]
+
+    [: Path] [: *NOT YET SUPPORTED* Path to a file, must be specified as the type of the string. Will handle OS specific paths. ] [: ""]
+]
+
+## Collection Types
+[table 3:
+    [: Type ] [: Description] [: Zero Value]
+
+    [: Tuple ] [: Any number of immutable items seperated by commas. See [link "../collections": Collections] for more information.] [: ()]
+
+    [: Collection ] [: A blend between arrays and structs. See [link "../collections": Collections] for more information.] [: {}]
+    
+    [: Choice ] [: Rust style enums. To be implemented. ] [: error]
+
+    [: Type ] [: For generics and datatype related operations] [: error]
+]
+
+## Scene Types
+[table 3:
+    [: Type ] [: Description] [: Zero Value]
+
+    [: Scene ] [: The templating syntax of Beanstalk. See [link "./scenes": Scenes for more info!]] [: "`[]`" -  an empty scene]
+
+    [: Style] [: Represents a CSS style that can be used in scenes. Styles can accept arguments of other primatives, including other styles. Ultimately, they become strings of information about how to style a scene (or what tag the scene has in the HTML. See [link: "./styles": Styles] for more info)] [: ""]
+]
+
+# Strings
+String is the keyword for string types in Beanstalk. Double quotes are automatically strings. 
+
+[code: "Double quotes for a UTF-16 string literal"]
+
+Backticks are used for RAW strings. To escape a backtick it must be preceded with a backslash \.
+
+[code: "string literal with \{curly braces} in it that are escaped"]
+
+[code: `9 "is" {5 + 4}` -- 9 "is" {5 + 4}]
+
+# Logical Operators
+The 'is' keyword is used to check equality. Not ==. The "and / or" keywords are used for logical and / or and 'not' is used to invert a truthy value to falsy or vice versa.
+
+[table 3:
+    [: Operator] [: Description]          [: Precedence]
+    [: `^`]        [: Exponents]            [: 8]
+    [: `//`]       [: Roots]                [: 8]
+    [: `*`]        [: Multiplication]       [: 7]
+    [: `/`]        [: Division]             [: 7]
+    [: %]          [: Modulo (truncated)]   [: 7]
+    [: %%]         [: Remainder (floored)]  [: 7]
+    [: +]          [: Sum]                  [: 6]
+    [: `-`]        [: Subtraction]          [: 6]
+]
+
+# Numeric Units
+[red: In development]
+
+Values can be appended with special unit types. These can represent a real world unit and will inform how operations with other units will work. 
+
+The first unit in the operation will be used if no unit type is specified in the type parameter. 
+You don't need to have a space between a literal value and the unit type, but variables must have a space between the value and the unit type.
+
+If you are mixing unit types in an operation, the first unit type will be used for the result.
+
+[code:
+    -- Specifies the base type as a float
+    m : Unit : float
+    cm : Unit : m * 0.01
+    mm : Unit : cm * 0.1
+
+    width := 5m * 230cm
+    -- result is 5.23
+
+    height := (3m * 2m)cm
+    -- result is 500
+]
+
+]
+
+[Footer]
