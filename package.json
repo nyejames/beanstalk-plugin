@@ -2,7 +2,9 @@
   "name": "beanstalk-plugin",
   "displayName": "Beanstalk",
   "description": "Language support and syntax highlighting for Beanstalk",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "publisher": "H3licopter",
+  "license": "Apache-2.0",
   "icon": "./icon.png",
   "engines": {
     "vscode": "^1.94.0"
@@ -13,7 +15,7 @@
   "contributes": {
     "languages": [{
       "id": "bs",
-      "aliases": ["Beanstalk", "bs"],
+      "aliases": ["Beanstalk", "bs", "beanstalk", "BS"],
       "extensions": ["bs"],
       "configuration": "./language-configuration.json",
       "icon": {
@@ -24,10 +26,7 @@
     "grammars": [{
       "language": "bs",
       "scopeName": "source.bs",
-      "path": "./syntaxes/bs.tmLanguage.json",
-      "embeddedLanguages": {
-        "meta.embedded.block.markdown": "markdown"
-      }
+      "path": "./syntaxes/bs.tmLanguage.json"
     }]
   },
   "repository": {

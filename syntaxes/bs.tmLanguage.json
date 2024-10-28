@@ -26,6 +26,15 @@
         },
         {
             "include": "#control-statement"
+        },
+        {
+            "include": "#punctuation"
+        },
+        {
+            "include": "#choices"
+        },
+        {
+            "include": "#variables"
         }
     ],
     "repository": {
@@ -50,7 +59,7 @@
                     "end": "\\]",
                     "patterns": [
 						{
-							"name": "entity.name.tag.scene.head.bs",
+							"name": "keyword.declaration.tag.bs",
 							"end": ":",
 							"patterns": [
 								{
@@ -59,7 +68,7 @@
 									"end": "(?=\\[|\\])",
 									"patterns": [
 										{
-											"name": "meta.embedded.block.markdown",
+											"name": "meta.paragraph.markdown",
 											"begin": "(?<=:)",
 											"end": "(?=\\[|\\])",
 											"patterns": [
@@ -67,6 +76,9 @@
 													"name": "punctuation.definition.heading.markdown",
 													"match": "^\\s*#+\\s.*"
 												},
+                                                {
+                                                    "include": "#numbers"
+                                                },
 												{
 													"name": "punctuation.definition.bold.markdown",
 													"match": "\\*\\*[^\\*]+\\*\\*"
@@ -99,7 +111,19 @@
 								},
 								{
 									"include": "#control-statement"
-								}
+								},
+                                {
+                                    "include": "#punctuation"
+                                },
+                                {
+                                    "include": "#choices"
+                                },
+                                {
+                                    "include": "#variables"
+                                },
+                                {
+                                    "include": "#scene-tags"
+                                }
 							]
 						}
                     ]
@@ -145,6 +169,20 @@
                 }
             ]
         },
+        "choices": {
+            "patterns": [
+                {
+                    "comment": "ALL CAPS constants",
+                    "name": "constant.other.caps.bs",
+                    "match": "\\b[A-Z]{2}[A-Z0-9_]*\\b"
+                },
+                {
+                    "comment": "booleans",
+                    "name": "constant.language.bool.bs",
+                    "match": "\\b(true|false)\\b"
+                }
+            ]
+        },
         "numbers": {
             "patterns": [
                 {
@@ -158,6 +196,57 @@
                 {
                     "name": "keyword.control.bs",
                     "match": "\\b(?:if|else|for|return|end|continue)\\b"
+                }
+            ]
+        },
+        "punctuation": {
+			"patterns": [
+				{
+					"comment": "comma",
+					"name": "punctuation.comma.bs",
+					"match": ","
+				},
+				{
+					"comment": "curly braces",
+					"name": "punctuation.brackets.curly.bs",
+					"match": "[{}]"
+				},
+				{
+					"comment": "parentheses, round brackets",
+					"name": "punctuation.brackets.round.bs",
+					"match": "[()]"
+				},
+				{
+					"comment": "semicolon",
+					"name": "punctuation.semi.bs",
+					"match": ";"
+				},
+				{
+					"comment": "square brackets",
+					"name": "punctuation.brackets.square.bs",
+					"match": "[\\[\\]]"
+				},
+				{
+					"comment": "angle brackets",
+					"name": "punctuation.brackets.angle.bs",
+					"match": "(?<!=)[<>]"
+				}
+			]
+		},
+        "variables": {
+			"patterns": [
+				{
+					"comment": "variables",
+					"name": "variable.other.bs",
+					"match": "\\b(?<!(?<!\\.)\\.)(?:r#)?[a-z0-9_]+\\b"
+				}
+			]
+		},
+        "scene-tags" : {
+            "patterns": [
+                {
+                    "name": "variable.language.tag.bs",
+                    "match": "\\b(?<!(?<!\\.)\\.)(?:r#)?[a-z0-9_]+\\b"
                 }
             ]
         }
