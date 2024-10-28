@@ -1,79 +1,165 @@
 {
-	"information_for_contributors": [
-		"This file has been converted from [INSERT REPO HERE]",
-		"If you want to provide a fix or improvement, please create a pull request against the original repository.",
-		"Once accepted there, we are happy to receive an update request."
-	],
-	"version": "0.1",
-	"name": "Beanstalk",
-	"scopeName": "source.bs",
-	"patterns": [
-		{
-			"include": "#comments"
-		},
-		{
-			"include": "#types"
-		},
-		{
-			"include": "#strings"
-		},
-		{
-			"include": "#numbers"
-		},
-		{
-			"include": "#scenehead"
-		}
-	],
-	"repository": {
-		"comments": {
-			"patterns": [
-				{
-					"name": "comment.line.double-slash.bs",
-					"match": "--[^\n]*"
-				}
-			]
-		},
-		"scenehead": {
-			"begin": "^\\s*\\[",
-			"end": "\\:\\s*$",
-			"patterns": [
-				{
-					"name": "keyword.control.scene.bs",
-					"match": "\\\\."
-				}
-			]
-		},
-
-		"types": {
-			"patterns": [
-				{
-					"name": "storage.type.bs",
-					"match": "\\b(?:Bool|Int|Float|String|Idx|Scene)\\b"
-				}
-			]
-		},
-		"strings": {
-			"patterns": [
-				{
-					"name": "string.quoted.double.bs",
-					"begin": "\"",
-					"end": "\"",
-					"patterns": [
+    "version": "0.1",
+    "name": "Beanstalk",
+    "scopeName": "source.bs",
+    "patterns": [
+        {
+            "include": "#comments"
+        },
+        {
+            "include": "#scenes"
+        },
+        {
+            "include": "#types"
+        },
+        {
+            "include": "#strings"
+        },
+        {
+            "include": "#assignment"
+        },
+        {
+            "include": "#operator"
+        },
+        {
+            "include": "#numbers"
+        },
+        {
+            "include": "#control-statement"
+        }
+    ],
+    "repository": {
+        "comments": {
+            "patterns": [
+                {
+                    "name": "comment.line.double-slash.bs",
+                    "match": "--(?!-)[^\n]*"
+                },
+                {
+                    "name": "comment.block.bs",
+                    "begin": "---+",
+                    "end": "---+"
+                }
+            ]
+        },
+        "scenes": {
+            "patterns": [
+                {
+                    "name": "entity.name.tag.scene.bs",
+                    "begin": "\\[",
+                    "end": "\\]",
+                    "patterns": [
 						{
-							"name": "constant.character.escape.bs",
-							"match": "\\\\."
+							"name": "entity.name.tag.scene.head.bs",
+							"end": ":",
+							"patterns": [
+								{
+									"name": "entity.name.tag.scene.body.bs",
+									"begin": ":",
+									"end": "(?=\\[|\\])",
+									"patterns": [
+										{
+											"name": "meta.embedded.block.markdown",
+											"begin": "(?<=:)",
+											"end": "(?=\\[|\\])",
+											"patterns": [
+												{
+													"name": "punctuation.definition.heading.markdown",
+													"match": "^\\s*#+\\s.*"
+												},
+												{
+													"name": "punctuation.definition.bold.markdown",
+													"match": "\\*\\*[^\\*]+\\*\\*"
+												},
+												{
+													"name": "punctuation.definition.italic.markdown",
+													"match": "\\*[^\\*]+\\*"
+												}
+											]
+										}
+									]
+								},
+								{
+									"include": "#comments"
+								},
+								{
+									"include": "#types"
+								},
+								{
+									"include": "#strings"
+								},
+								{
+									"include": "#assignment"
+								},
+								{
+									"include": "#operator"
+								},
+								{
+									"include": "#numbers"
+								},
+								{
+									"include": "#control-statement"
+								}
+							]
 						}
-					]
-				}
-			]
-		},
-		"numbers": {
-			"patterns": [
-				{
-					"name": "constant.numeric.bs",
-					"match": "\\b(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?\\b"
-				}
-			]
-		}
-	}
+                    ]
+                }
+            ]
+        },
+        "types": {
+            "patterns": [
+                {
+                    "name": "storage.type.bs",
+                    "match": "\\b(?:bool|int|float|string|idx|scene|choice)\\b"
+                }
+            ]
+        },
+        "strings": {
+            "patterns": [
+                {
+                    "name": "string.quoted.double.bs",
+                    "begin": "\"",
+                    "end": "\"",
+                    "patterns": [
+                        {
+                            "name": "constant.character.escape.bs",
+                            "match": "\\\\."
+                        }
+                    ]
+                }
+            ]
+        },
+        "assignment": {
+            "patterns": [
+                {
+                    "name": "keyword.operator.assignment",
+                    "match": "=|:"
+                }
+            ]
+        },
+        "operator": {
+            "patterns": [
+                {
+                    "name": "keyword.operator.bs",
+                    "match": "\\b(?:and|or|not|is|<=|>=|<|>|\\+|\\-|\\*|\\/|\\%|\\^)\\b"
+                }
+            ]
+        },
+        "numbers": {
+            "patterns": [
+                {
+                    "name": "constant.numeric.bs",
+                    "match": "\\b(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?\\b"
+                }
+            ]
+        },
+        "control-statement": {
+            "patterns": [
+                {
+                    "name": "keyword.control.bs",
+                    "match": "\\b(?:if|else|for|return|end|continue)\\b"
+                }
+            ]
+        }
+    }
 }

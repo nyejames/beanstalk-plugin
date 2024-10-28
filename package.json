@@ -28,5 +28,9 @@
         "meta.embedded.block.markdown": "markdown"
       }
     }]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/H3licopter/beanstalk-plugin"
   }
 }
