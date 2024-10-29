@@ -35,6 +35,9 @@
         },
         {
             "include": "#variables"
+        },
+        {
+            "include": "#lib-functions"
         }
     ],
     "repository": {
@@ -58,60 +61,67 @@
                     "begin": "\\[",
                     "end": "\\]",
                     "patterns": [
-						{
-							"name": "keyword.declaration.tag.bs",
-							"end": ":",
-							"patterns": [
-								{
-									"name": "entity.name.tag.scene.body.bs",
-									"begin": ":",
-									"end": "(?=\\[|\\])",
-									"patterns": [
-										{
-											"name": "meta.paragraph.markdown",
-											"begin": "(?<=:)",
-											"end": "(?=\\[|\\])",
-											"patterns": [
-												{
-													"name": "punctuation.definition.heading.markdown",
-													"match": "^\\s*#+\\s.*"
-												},
+                        {
+                            "include": "#code-blocks"
+                        },
+                        {
+                            "name": "keyword.declaration.tag.bs",
+                            "end": ":",
+                            "patterns": [
+                                {
+                                    "name": "entity.name.tag.scene.body.bs",
+                                    "begin": ":",
+                                    "end": "(?=\\])",
+                                    "patterns": [
+                                        {
+                                            "name": "meta.paragraph.markdown",
+                                            "begin": "(?<=:)",
+                                            "end": "(?=\\])",
+                                            "patterns": [
+                                                {
+                                                    "include": "#scenes",
+                                                    "begin": "\\["
+                                                },
+                                                {
+                                                    "name": "punctuation.definition.heading.markdown",
+                                                    "match": "^\\s*#+\\s.*"
+                                                },
                                                 {
                                                     "include": "#numbers"
                                                 },
-												{
-													"name": "punctuation.definition.bold.markdown",
-													"match": "\\*\\*[^\\*]+\\*\\*"
-												},
-												{
-													"name": "punctuation.definition.italic.markdown",
-													"match": "\\*[^\\*]+\\*"
-												}
-											]
-										}
-									]
-								},
-								{
-									"include": "#comments"
-								},
-								{
-									"include": "#types"
-								},
-								{
-									"include": "#strings"
-								},
-								{
-									"include": "#assignment"
-								},
-								{
-									"include": "#operator"
-								},
-								{
-									"include": "#numbers"
-								},
-								{
-									"include": "#control-statement"
-								},
+                                                {
+                                                    "name": "punctuation.definition.bold.markdown",
+                                                    "match": "\\*\\*[^\\*]+\\*\\*"
+                                                },
+                                                {
+                                                    "name": "punctuation.definition.italic.markdown",
+                                                    "match": "\\*[^\\*]+\\*"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "include": "#comments"
+                                },
+                                {
+                                    "include": "#types"
+                                },
+                                {
+                                    "include": "#strings"
+                                },
+                                {
+                                    "include": "#assignment"
+                                },
+                                {
+                                    "include": "#operator"
+                                },
+                                {
+                                    "include": "#numbers"
+                                },
+                                {
+                                    "include": "#control-statement"
+                                },
                                 {
                                     "include": "#punctuation"
                                 },
@@ -124,8 +134,8 @@
                                 {
                                     "include": "#scene-tags"
                                 }
-							]
-						}
+                            ]
+                        }
                     ]
                 }
             ]
@@ -165,7 +175,7 @@
             "patterns": [
                 {
                     "name": "keyword.operator.bs",
-                    "match": "\\b(?:and|or|not|is|<=|>=|<|>|\\+|\\-|\\*|\\/|\\%|\\^)\\b"
+                    "match": "\\b(?:and|or|not|is|in|to|it|<=|>=|<|>|\\+|\\-|\\*|\\/|\\%|\\^)\\b"
                 }
             ]
         },
@@ -195,7 +205,7 @@
             "patterns": [
                 {
                     "name": "keyword.control.bs",
-                    "match": "\\b(?:if|else|for|return|end|continue)\\b"
+                    "match": "\\b(?:if|else|loop|return|end|continue)\\b"
                 }
             ]
         },
@@ -230,7 +240,12 @@
 					"comment": "angle brackets",
 					"name": "punctuation.brackets.angle.bs",
 					"match": "(?<!=)[<>]"
-				}
+				},
+                {
+                    "comment": "export symbol '@'",
+                    "name": "punctuation.export.bs",
+                    "match": "@"
+                }
 			]
 		},
         "variables": {
@@ -247,6 +262,61 @@
                 {
                     "name": "variable.language.tag.bs",
                     "match": "\\b(?<!(?<!\\.)\\.)(?:r#)?[a-z0-9_]+\\b"
+                }
+            ]
+        },
+        "lib-functions" : {
+            "patterns": [
+                {
+                    "name": "support.function.bs",
+                    "match": "\\b(?:print|import|rng)\\b"
+                }
+            ]
+        },
+        "code-blocks" : {
+            "patterns": [
+                {
+                    "name": "source.bs",
+                    "begin": "code.*?:",
+                    "end": "(?=\\])",
+                    "patterns": [
+                        {
+                            "include": "#comments"
+                        },
+                        {
+                            "include": "#types"
+                        },
+                        {
+                            "include": "#strings"
+                        },
+                        {
+                            "include": "#scenes"
+                        },
+                        {
+                            "include": "#assignment"
+                        },
+                        {
+                            "include": "#operator"
+                        },
+                        {
+                            "include": "#numbers"
+                        },
+                        {
+                            "include": "#control-statement"
+                        },
+                        {
+                            "include": "#punctuation"
+                        },
+                        {
+                            "include": "#choices"
+                        },
+                        {
+                            "include": "#variables"
+                        },
+                        {
+                            "include": "#lib-functions"
+                        }
+                    ]
                 }
             ]
         }

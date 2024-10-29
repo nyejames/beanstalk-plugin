@@ -1,5 +1,2 @@
 # Beanstalk Language extension for Visual Studio Code
-Just figuring out how this works atm
-
-Command to remeber for building the package:
-$ vsce package
+Currently just some basic syntax highlighting and file logo.
