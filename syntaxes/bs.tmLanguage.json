@@ -34,10 +34,10 @@
             "include": "#choices"
         },
         {
-            "include": "#variables"
+            "include": "#lib-functions"
         },
         {
-            "include": "#lib-functions"
+            "include": "#variables"
         }
     ],
     "repository": {
@@ -144,7 +144,7 @@
             "patterns": [
                 {
                     "name": "storage.type.bs",
-                    "match": "\\b(?:bool|int|float|string|idx|scene|choice)\\b"
+                    "match": "\\b(?:bool|int|float|string|idx|scene|choice|copy|type|error|unit|style|path)\\b"
                 }
             ]
         },
@@ -245,6 +245,11 @@
                     "comment": "export symbol '@'",
                     "name": "punctuation.export.bs",
                     "match": "@"
+                },
+                {
+                    "comment": "arrow symbol '->'",
+                    "name": "punctuation.arrow.bs",
+                    "match": "->"
                 }
 			]
 		},
@@ -252,7 +257,7 @@
 			"patterns": [
 				{
 					"comment": "variables",
-					"name": "variable.other.bs",
+					"name": "variable.language.bs",
 					"match": "\\b(?<!(?<!\\.)\\.)(?:r#)?[a-z0-9_]+\\b"
 				}
 			]
