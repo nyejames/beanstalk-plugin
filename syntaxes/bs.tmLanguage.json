@@ -16,10 +16,13 @@
             "include": "#strings"
         },
         {
+            "include": "#operators"
+        },
+        {
             "include": "#assignment"
         },
         {
-            "include": "#operator"
+            "include": "#punctuation"
         },
         {
             "include": "#numbers"
@@ -28,10 +31,7 @@
             "include": "#control-statement"
         },
         {
-            "include": "#punctuation"
-        },
-        {
-            "include": "#choices"
+            "include": "#collections"
         },
         {
             "include": "#lib-functions"
@@ -66,43 +66,33 @@
                         },
                         {
                             "name": "keyword.declaration.tag.bs",
-                            "end": ":",
+                            "end": "(?=:)",
                             "patterns": [
                                 {
-                                    "name": "entity.name.tag.scene.body.bs",
-                                    "begin": ":",
+                                    "name": "meta.paragraph.markdown",
+                                    "begin": "(?<=:)",
                                     "end": "(?=\\])",
                                     "patterns": [
                                         {
-                                            "name": "meta.paragraph.markdown",
-                                            "begin": "(?<=:)",
-                                            "end": "(?=\\])",
-                                            "patterns": [
-                                                {
-                                                    "include": "#scenes",
-                                                    "begin": "\\["
-                                                },
-                                                {
-                                                    "name": "punctuation.definition.heading.markdown",
-                                                    "match": "^\\s*#+\\s.*"
-                                                },
-                                                {
-                                                    "include": "#numbers"
-                                                },
-                                                {
-                                                    "name": "punctuation.definition.bold.markdown",
-                                                    "match": "\\*\\*[^\\*]+\\*\\*"
-                                                },
-                                                {
-                                                    "name": "punctuation.definition.italic.markdown",
-                                                    "match": "\\*[^\\*]+\\*"
-                                                }
-                                            ]
+                                            "include": "#scenes",
+                                            "begin": "\\["
+                                        },
+                                        {
+                                            "name": "punctuation.definition.heading.markdown",
+                                            "match": "^\\s*#+\\s.*"
+                                        },
+                                        {
+                                            "include": "#numbers"
+                                        },
+                                        {
+                                            "name": "punctuation.definition.bold.markdown",
+                                            "match": "\\*\\*[^\\*]+\\*\\*"
+                                        },
+                                        {
+                                            "name": "punctuation.definition.italic.markdown",
+                                            "match": "\\*[^\\*]+\\*"
                                         }
                                     ]
-                                },
-                                {
-                                    "include": "#comments"
                                 },
                                 {
                                     "include": "#types"
@@ -114,7 +104,7 @@
                                     "include": "#assignment"
                                 },
                                 {
-                                    "include": "#operator"
+                                    "include": "#operators"
                                 },
                                 {
                                     "include": "#numbers"
@@ -126,7 +116,7 @@
                                     "include": "#punctuation"
                                 },
                                 {
-                                    "include": "#choices"
+                                    "include": "#collections"
                                 },
                                 {
                                     "include": "#variables"
@@ -144,7 +134,7 @@
             "patterns": [
                 {
                     "name": "storage.type.bs",
-                    "match": "\\b(?:bool|int|float|string|idx|scene|choice|copy|type|error|unit|style|path)\\b"
+                    "match": "\\b(?:bool|int|float|string|idx|scene|choice|copy|type|error|unit|style|path|true|false)\\b"
                 }
             ]
         },
@@ -171,15 +161,19 @@
                 }
             ]
         },
-        "operator": {
+        "operators": {
             "patterns": [
                 {
-                    "name": "keyword.operator.bs",
-                    "match": "\\b(?:and|or|not|is|in|to|it|<=|>=|<|>|\\+|\\-|\\*|\\/|\\%|\\^)\\b"
+                    "name": "keyword.operator.control.bs",
+                    "match": "\\b(?:and|or|not|is|in|to)\\b"
+                },
+                {
+                    "name": "keyword.operator.symbol.bs",
+                    "match":"(?:<=|>=|=>|>>|<<|->|<|>|\\+|\\-|\\*|\\/|\\%|\\^)"
                 }
             ]
         },
-        "choices": {
+        "collections": {
             "patterns": [
                 {
                     "comment": "ALL CAPS constants",
@@ -187,9 +181,9 @@
                     "match": "\\b[A-Z]{2}[A-Z0-9_]*\\b"
                 },
                 {
-                    "comment": "booleans",
-                    "name": "constant.language.bool.bs",
-                    "match": "\\b(true|false)\\b"
+                    "comment": "structs are any variable name with a capitol letter just at the start",
+                    "name": "constant.language.struct.bs",
+                    "match": "\\b[A-Z][a-z0-9_]+\\b"
                 }
             ]
         },
@@ -205,7 +199,7 @@
             "patterns": [
                 {
                     "name": "keyword.control.bs",
-                    "match": "\\b(?:if|else|loop|return|end|continue)\\b"
+                    "match": "\\b(?:if|else|loop|return|end|continue|where)\\b"
                 }
             ]
         },
@@ -213,7 +207,7 @@
 			"patterns": [
 				{
 					"comment": "comma",
-					"name": "punctuation.comma.bs",
+					"name": "keyword.punctuation.comma.bs",
 					"match": ","
 				},
 				{
@@ -245,11 +239,6 @@
                     "comment": "export symbol '@'",
                     "name": "punctuation.export.bs",
                     "match": "@"
-                },
-                {
-                    "comment": "arrow symbol '->'",
-                    "name": "punctuation.arrow.bs",
-                    "match": "->"
                 }
 			]
 		},
@@ -274,7 +263,7 @@
             "patterns": [
                 {
                     "name": "support.function.bs",
-                    "match": "\\b(?:print|import|rng)\\b"
+                    "match": "\\b(?:print|import|rng|log|round|abs|sin|cos|tan|expo|gcd)\\b"
                 }
             ]
         },
@@ -282,7 +271,7 @@
             "patterns": [
                 {
                     "name": "source.bs",
-                    "begin": "code.*?:",
+                    "begin": "code.*?(?=:)",
                     "end": "(?=\\])",
                     "patterns": [
                         {
@@ -301,7 +290,7 @@
                             "include": "#assignment"
                         },
                         {
-                            "include": "#operator"
+                            "include": "#operators"
                         },
                         {
                             "include": "#numbers"
@@ -313,7 +302,7 @@
                             "include": "#punctuation"
                         },
                         {
-                            "include": "#choices"
+                            "include": "#collections"
                         },
                         {
                             "include": "#variables"
