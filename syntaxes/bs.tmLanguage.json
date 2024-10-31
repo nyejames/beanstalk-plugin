@@ -133,8 +133,8 @@
         "types": {
             "patterns": [
                 {
-                    "name": "storage.type.bs",
-                    "match": "\\b(?:bool|int|float|string|scene|choice|copy|type|error|unit|style|path|true|false|fn)\\b"
+                    "name": "support.type.primitive.bs",
+                    "match": "\\b(?:int|float|unit|bool|string|scene|choice|copy|type|error|style|path|true|false|fn)\\b"
                 }
             ]
         },
@@ -199,7 +199,7 @@
             "patterns": [
                 {
                     "name": "keyword.control.bs",
-                    "match": "\\b(?:if|else|loop|return|end|continue|where)\\b"
+                    "match": "\\b(?:if|else|loop|return|end|continue|where|defer)\\b"
                 }
             ]
         },
@@ -263,7 +263,7 @@
             "patterns": [
                 {
                     "name": "support.function.bs",
-                    "match": "\\b(?:print|import|rng|log|round|abs|sin|cos|tan|expo|gcd)\\b"
+                    "match": "\\b(?:print|import|math)\\b"
                 }
             ]
         },
