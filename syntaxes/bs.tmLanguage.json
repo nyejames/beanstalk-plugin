@@ -134,7 +134,7 @@
             "patterns": [
                 {
                     "name": "storage.type.bs",
-                    "match": "\\b(?:bool|int|float|string|idx|scene|choice|copy|type|error|unit|style|path|true|false)\\b"
+                    "match": "\\b(?:bool|int|float|string|scene|choice|copy|type|error|unit|style|path|true|false|fn)\\b"
                 }
             ]
         },
@@ -182,7 +182,7 @@
                 },
                 {
                     "comment": "structs are any variable name with a capitol letter just at the start",
-                    "name": "constant.language.struct.bs",
+                    "name": "entity.name.type.struct.bs",
                     "match": "\\b[A-Z][a-z0-9_]+\\b"
                 }
             ]
