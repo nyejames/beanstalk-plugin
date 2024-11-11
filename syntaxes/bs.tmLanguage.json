@@ -134,7 +134,7 @@
             "patterns": [
                 {
                     "name": "support.type.primitive.bs",
-                    "match": "\\b(?:Int|Float|Unit|Bool|String|Scene|Choice|copy|Type|Error|Style|Path|True|False|true|false|fn|\\?|\\!)\\b"
+                    "match": "\\b(?:Int|Float|Unit|Bool|String|Scene|Choice|choice|copy|Type|Error|Style|Path|True|False|true|false|fn|type|\\?|\\!)\\b"
                 }
             ]
         },
@@ -199,7 +199,7 @@
             "patterns": [
                 {
                     "name": "keyword.control.bs",
-                    "match": "\\b(?:if|else|loop|return|end|continue|where|defer|panic|assert)\\b"
+                    "match": "\\b(?:if|else|loop|return|end|continue|where|defer|panic)\\b"
                 }
             ]
         },
@@ -263,7 +263,7 @@
             "patterns": [
                 {
                     "name": "support.function.bs",
-                    "match": "\\b(?:print|import|math)\\b"
+                    "match": "\\b(?:print|import|math|use|assert)\\b"
                 }
             ]
         },
