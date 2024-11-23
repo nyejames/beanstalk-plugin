@@ -199,7 +199,7 @@
             "patterns": [
                 {
                     "name": "keyword.control.bs",
-                    "match": "\\b(?:if|else|loop|return|end|continue|where|defer|panic)\\b"
+                    "match": "\\b(?:if|else|for|return|end|continue|defer|panic|as)\\b"
                 }
             ]
         },
