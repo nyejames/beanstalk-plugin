@@ -65,6 +65,9 @@
                             "include": "#code-blocks"
                         },
                         {
+                            "include": "#tuples"
+                        },
+                        {
                             "name": "keyword.declaration.tag.bs",
                             "end": "(?=:)",
                             "patterns": [
@@ -264,6 +267,47 @@
                 {
                     "name": "support.function.bs",
                     "match": "\\b(?:print|import|math|use|assert)\\b"
+                }
+            ]
+        },
+        "tuples" : {
+            "patterns": [
+                {
+                    "name": "entity.name.type.tuple.bs",
+                    "begin": "\\(",
+                    "end": "\\)",
+                    "patterns": [
+                        {
+                            "include": "#types"
+                        },
+                        {
+                            "include": "#strings"
+                        },
+                        {
+                            "include": "#numbers"
+                        },
+                        {
+                            "include": "#variables"
+                        },
+                        {
+                            "include": "#punctuation"
+                        },
+                        {
+                            "include": "#collections"
+                        },
+                        {
+                            "include": "#lib-functions"
+                        },
+                        {
+                            "include": "#operators"
+                        },
+                        {
+                            "include": "#assignment"
+                        },
+                        {
+                            "include": "#scenes"
+                        }
+                    ]
                 }
             ]
         },
