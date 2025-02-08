@@ -46,11 +46,6 @@
                 {
                     "name": "comment.line.double-slash.bs",
                     "match": "--(?!-)[^\n]*"
-                },
-                {
-                    "name": "comment.block.bs",
-                    "begin": "---+",
-                    "end": "---+"
                 }
             ]
         },
@@ -137,7 +132,7 @@
             "patterns": [
                 {
                     "name": "support.type.primitive.bs",
-                    "match": "\\b(?:Int|Float|Unit|Bool|String|Scene|Choice|choice|copy|Type|Error|Style|Path|True|False|true|false|fn|type|\\?|\\!)\\b"
+                    "match": "\\b(?:Int|Float|Unit|Bool|String|Scene|Choice|copy|Type|Error|Style|Path|True|False|fn\\?|\\!)\\b"
                 }
             ]
         },
@@ -160,7 +155,7 @@
             "patterns": [
                 {
                     "name": "keyword.operator.assignment",
-                    "match": "=|:"
+                    "match": "=|:|@"
                 }
             ]
         },
@@ -172,7 +167,7 @@
                 },
                 {
                     "name": "keyword.operator.symbol.bs",
-                    "match":"(?:<=|>=|=>|>>|<<|->|<|>|\\+|\\-|\\*|\\/|\\%|\\^)"
+                    "match": "(?:<=|>=|=>|>>|<<|->|<|>|\\+|\\-|\\*|\\/|\\%|\\^)"
                 }
             ]
         },
@@ -184,9 +179,9 @@
                     "match": "\\b[A-Z]{2}[A-Z0-9_]*\\b"
                 },
                 {
-                    "comment": "structs are any variable name with a capitol letter just at the start",
+                    "comment": "structs are any variable name in PascalCase",
                     "name": "entity.name.type.struct.bs",
-                    "match": "\\b[A-Z][a-z0-9_]+\\b"
+                    "match": "\\b(?=[A-Z][A-Za-z0-9_]*[a-z])[A-Z][A-Za-z0-9_]*\\b"
                 }
             ]
         },
@@ -202,7 +197,7 @@
             "patterns": [
                 {
                     "name": "keyword.control.bs",
-                    "match": "\\b(?:if|else|for|return|end|continue|defer|panic|as)\\b"
+                    "match": "\\b(?:if|else|match|for|return|end|continue|defer|panic|as)\\b"
                 }
             ]
         },
@@ -331,6 +326,9 @@
                             "include": "#scenes"
                         },
                         {
+                            "include": "#lib-functions"
+                        },
+                        {
                             "include": "#assignment"
                         },
                         {
@@ -350,9 +348,6 @@
                         },
                         {
                             "include": "#variables"
-                        },
-                        {
-                            "include": "#lib-functions"
                         }
                     ]
                 }
