@@ -132,7 +132,7 @@
             "patterns": [
                 {
                     "name": "support.type.primitive.bs",
-                    "match": "\\b(?:Int|Float|Unit|Bool|String|Scene|Choice|copy|Type|Error|Style|Path|True|False|fn\\?|\\!)\\b"
+                    "match": "\\b(?:Int|Float|Unit|Bool|String|Scene|Choice|copy|Type|Error|Style|Path|True|False|true|false|fn|this|\\?|\\!)\\b"
                 }
             ]
         },
@@ -260,8 +260,9 @@
         "lib-functions" : {
             "patterns": [
                 {
+                    "comment": "Includes built in collection methods",
                     "name": "support.function.bs",
-                    "match": "\\b(?:print|import|math|use|assert)\\b"
+                    "match": "\\b(?:print|import|math|use|assert|get|push|pull|clear)\\b"
                 }
             ]
         },

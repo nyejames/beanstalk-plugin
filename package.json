@@ -2,8 +2,8 @@
   "name": "beanstalk-plugin",
   "displayName": "Beanstalk",
   "description": "Language support and syntax highlighting for Beanstalk",
-  "version": "0.1.1",
-  "publisher": "H3licopter",
+  "version": "0.1.2",
+  "publisher": "Nye",
   "license": "Apache-2.0",
   "icon": "./icon.png",
   "engines": {
