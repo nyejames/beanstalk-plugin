@@ -132,7 +132,7 @@
             "patterns": [
                 {
                     "name": "support.type.primitive.bs",
-                    "match": "\\b(?:Int|Float|Bool|String|Scene|Choice|Type|Error|Style|True|False|true|false|fn|\\$|\\?|\\!)\\b"
+                    "match": "\\b(?:Int|Float|Bool|String|Scene|Choice|Type|Error|Style|True|False|Function|sync|async|\\$|\\?|\\!)\\b"
                 }
             ]
         },
@@ -197,7 +197,7 @@
             "patterns": [
                 {
                     "name": "keyword.control.bs",
-                    "match": "\\b(?:if|else|match|for|return|end|continue|defer|panic|as|copy)\\b"
+                    "match": "\\b(?:if|else|for|return|ff|continue|defer|as|copy)\\b"
                 }
             ]
         },
@@ -262,7 +262,7 @@
                 {
                     "comment": "Includes built in collection methods",
                     "name": "support.function.bs",
-                    "match": "\\b(?:print|import|assert|get|set|push|pull|clear|length|last|index|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z)\\b"
+                    "match": "\\b(?:print|import|assert|panic|get|set|push|pull|clear|length|last|index)\\b"
                 }
             ]
         },
