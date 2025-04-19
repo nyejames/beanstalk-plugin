@@ -132,7 +132,7 @@
             "patterns": [
                 {
                     "name": "support.type.primitive.bs",
-                    "match": "\\b(?:Int|Float|Bool|String|Scene|Choice|Type|Error|Style|True|False|Function|sync|async|\\$|\\?|\\!)\\b"
+                    "match": "\\b(?:Int|Float|Bool|String|Scene|Choice|Type|Error|Style|True|False|Function|fn|async|\\$|\\?|\\!)\\b"
                 }
             ]
         },
@@ -197,7 +197,7 @@
             "patterns": [
                 {
                     "name": "keyword.control.bs",
-                    "match": "\\b(?:if|else|for|return|ff|continue|defer|as|copy)\\b"
+                    "match": "\\b(?:if|else|for|return|zz|continue|defer|as|copy|this|slot)\\b"
                 }
             ]
         },
@@ -311,7 +311,7 @@
             "patterns": [
                 {
                     "name": "source.bs",
-                    "begin": "code.*?(?=:)",
+                    "begin": "Code.*?(?=:)",
                     "end": "(?=\\])",
                     "patterns": [
                         {
