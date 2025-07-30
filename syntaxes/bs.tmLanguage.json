@@ -1,5 +1,5 @@
 {
-    "version": "0.1",
+    "version": "0.1.84",
     "name": "Beanstalk",
     "scopeName": "source.bs",
     "patterns": [
@@ -132,7 +132,7 @@
             "patterns": [
                 {
                     "name": "support.type.primitive.bs",
-                    "match": "\\b(?:Int|Float|Bool|String|Scene|Choice|Type|Error|Style|True|False|Function|fn|async|\\$|\\?|\\!)\\b"
+                    "match": "\\b(?:Int|Float|Decimal|Bool|String|Scene|Choice|Type|Error|True|False|Function|Self|Object|async|\\$|\\?|\\!)\\b"
                 }
             ]
         },
@@ -155,7 +155,7 @@
             "patterns": [
                 {
                     "name": "keyword.operator.assignment",
-                    "match": "=|:|@"
+                    "match": "=|@"
                 }
             ]
         },
@@ -197,7 +197,7 @@
             "patterns": [
                 {
                     "name": "keyword.control.bs",
-                    "match": "\\b(?:if|else|for|return|zz|continue|defer|as|copy|this|slot)\\b"
+                    "match": "\\b(?:if|else|for|return|continue|defer|as|copy)\\b"
                 }
             ]
         },
@@ -260,9 +260,9 @@
         "lib-functions" : {
             "patterns": [
                 {
-                    "comment": "Includes built in collection methods",
+                    "comment": "Compiler directives",
                     "name": "support.function.bs",
-                    "match": "\\b(?:print|import|assert|panic|get|set|push|pull|clear|length|last|index)\\b"
+                    "match": "\\b(?:#print|#import|#assert|#panic|#export)\\b"
                 }
             ]
         },
@@ -311,7 +311,7 @@
             "patterns": [
                 {
                     "name": "source.bs",
-                    "begin": "Code.*?(?=:)",
+                    "begin": "code.*?(?=:)",
                     "end": "(?=\\])",
                     "patterns": [
                         {
