@@ -1,7 +1,7 @@
 {
     "version": "0.1.84",
     "name": "Beanstalk",
-    "scopeName": "source.bs",
+    "scopeName": "source.bst",
     "patterns": [
         {
             "include": "#comments"
@@ -44,7 +44,7 @@
         "comments": {
             "patterns": [
                 {
-                    "name": "comment.line.double-slash.bs",
+                    "name": "comment.line.double-slash.bst",
                     "match": "--(?!-)[^\n]*"
                 }
             ]
@@ -52,7 +52,7 @@
         "scenes": {
             "patterns": [
                 {
-                    "name": "entity.name.tag.scene.bs",
+                    "name": "entity.name.tag.scene.bst",
                     "begin": "\\[",
                     "end": "\\]",
                     "patterns": [
@@ -63,7 +63,7 @@
                             "include": "#tuples"
                         },
                         {
-                            "name": "keyword.declaration.tag.bs",
+                            "name": "keyword.declaration.tag.bst",
                             "end": "(?=:)",
                             "patterns": [
                                 {
@@ -131,20 +131,20 @@
         "types": {
             "patterns": [
                 {
-                    "name": "support.type.primitive.bs",
-                    "match": "\\b(?:Int|Float|Decimal|Bool|String|Scene|Choice|Type|Error|True|False|Function|Self|Object|async|\\$|\\?|\\!)\\b"
+                    "name": "support.type.primitive.bst",
+                    "match": "\\b(?:Int|Float|Decimal|Bool|String|Template|Choice|Type|Error|true|false|True|False|Function|async|\\$|\\?|\\!)\\b"
                 }
             ]
         },
         "strings": {
             "patterns": [
                 {
-                    "name": "string.quoted.double.bs",
+                    "name": "string.quoted.double.bst",
                     "begin": "\"",
                     "end": "\"",
                     "patterns": [
                         {
-                            "name": "constant.character.escape.bs",
+                            "name": "constant.character.escape.bst",
                             "match": "\\\\."
                         }
                     ]
@@ -162,11 +162,11 @@
         "operators": {
             "patterns": [
                 {
-                    "name": "keyword.operator.control.bs",
+                    "name": "keyword.operator.control.bst",
                     "match": "\\b(?:and|or|not|is|in|to)\\b"
                 },
                 {
-                    "name": "keyword.operator.symbol.bs",
+                    "name": "keyword.operator.symbol.bst",
                     "match": "(?:<=|>=|=>|>>|<<|->|<|>|\\+|\\-|\\*|\\/|\\%|\\^)"
                 }
             ]
@@ -175,12 +175,12 @@
             "patterns": [
                 {
                     "comment": "ALL CAPS constants",
-                    "name": "constant.other.caps.bs",
+                    "name": "constant.other.caps.bst",
                     "match": "\\b[A-Z]{2}[A-Z0-9_]*\\b"
                 },
                 {
                     "comment": "structs are any variable name in PascalCase",
-                    "name": "entity.name.type.struct.bs",
+                    "name": "entity.name.type.struct.bst",
                     "match": "\\b(?=[A-Z][A-Za-z0-9_]*[a-z])[A-Z][A-Za-z0-9_]*\\b"
                 }
             ]
@@ -188,7 +188,7 @@
         "numbers": {
             "patterns": [
                 {
-                    "name": "constant.numeric.bs",
+                    "name": "constant.numeric.bst",
                     "match": "\\b(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?\\b"
                 }
             ]
@@ -196,8 +196,8 @@
         "control-statement": {
             "patterns": [
                 {
-                    "name": "keyword.control.bs",
-                    "match": "\\b(?:if|else|for|return|continue|defer|as|copy)\\b"
+                    "name": "keyword.control.bst",
+                    "match": "\\b(?:if|else|loop|return|continue|defer|as|copy)\\b"
                 }
             ]
         },
@@ -205,37 +205,37 @@
 			"patterns": [
 				{
 					"comment": "comma",
-					"name": "keyword.punctuation.comma.bs",
+					"name": "keyword.punctuation.comma.bst",
 					"match": ","
 				},
 				{
 					"comment": "curly braces",
-					"name": "punctuation.brackets.curly.bs",
+					"name": "punctuation.brackets.curly.bst",
 					"match": "[{}]"
 				},
 				{
 					"comment": "parentheses, round brackets",
-					"name": "punctuation.brackets.round.bs",
+					"name": "punctuation.brackets.round.bst",
 					"match": "[()]"
 				},
 				{
 					"comment": "semicolon",
-					"name": "punctuation.semi.bs",
+					"name": "punctuation.semi.bst",
 					"match": ";"
 				},
 				{
 					"comment": "square brackets",
-					"name": "punctuation.brackets.square.bs",
+					"name": "punctuation.brackets.square.bst",
 					"match": "[\\[\\]]"
 				},
 				{
 					"comment": "angle brackets",
-					"name": "punctuation.brackets.angle.bs",
+					"name": "punctuation.brackets.angle.bst",
 					"match": "(?<!=)[<>]"
 				},
                 {
                     "comment": "export symbol '@'",
-                    "name": "punctuation.export.bs",
+                    "name": "punctuation.export.bst",
                     "match": "@"
                 }
 			]
@@ -244,7 +244,7 @@
 			"patterns": [
 				{
 					"comment": "variables",
-					"name": "variable.language.bs",
+					"name": "variable.language.bst",
 					"match": "\\b(?<!(?<!\\.)\\.)(?:r#)?[a-z0-9_]+\\b"
 				}
 			]
@@ -252,7 +252,7 @@
         "scene-tags" : {
             "patterns": [
                 {
-                    "name": "variable.language.tag.bs",
+                    "name": "variable.language.tag.bst",
                     "match": "\\b(?<!(?<!\\.)\\.)(?:r#)?[a-z0-9_]+\\b"
                 }
             ]
@@ -261,7 +261,7 @@
             "patterns": [
                 {
                     "comment": "Compiler directives",
-                    "name": "support.function.bs",
+                    "name": "support.function.bst",
                     "match": "\\b(?:#print|#import|#assert|#panic|#export)\\b"
                 }
             ]
@@ -269,7 +269,7 @@
         "tuples" : {
             "patterns": [
                 {
-                    "name": "entity.name.type.tuple.bs",
+                    "name": "entity.name.type.tuple.bst",
                     "begin": "\\(",
                     "end": "\\)",
                     "patterns": [
@@ -310,7 +310,7 @@
         "code-blocks" : {
             "patterns": [
                 {
-                    "name": "source.bs",
+                    "name": "source.bst",
                     "begin": "code.*?(?=:)",
                     "end": "(?=\\])",
                     "patterns": [
