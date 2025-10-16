@@ -311,7 +311,7 @@
             "patterns": [
                 {
                     "name": "source.bst",
-                    "begin": "code.*?(?=:)",
+                    "begin": "Code.*?(?=:)",
                     "end": "(?=\\])",
                     "patterns": [
                         {
