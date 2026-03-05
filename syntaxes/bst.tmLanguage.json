@@ -1,358 +1,1165 @@
 {
-    "version": "0.1.84",
-    "name": "Beanstalk",
-    "scopeName": "source.bst",
-    "patterns": [
-        {
-            "include": "#comments"
-        },
-        {
-            "include": "#scenes"
-        },
-        {
-            "include": "#types"
-        },
-        {
-            "include": "#strings"
-        },
-        {
-            "include": "#operators"
-        },
-        {
-            "include": "#assignment"
-        },
-        {
-            "include": "#punctuation"
-        },
-        {
-            "include": "#numbers"
-        },
-        {
-            "include": "#control-statement"
-        },
-        {
-            "include": "#collections"
-        },
-        {
-            "include": "#lib-functions"
-        },
-        {
-            "include": "#variables"
-        }
-    ],
-    "repository": {
-        "comments": {
-            "patterns": [
-                {
-                    "name": "comment.line.double-slash.bst",
-                    "match": "--(?!-)[^\n]*"
-                }
-            ]
-        },
-        "scenes": {
-            "patterns": [
-                {
-                    "name": "entity.name.tag.scene.bst",
-                    "begin": "\\[",
-                    "end": "\\]",
-                    "patterns": [
-                        {
-                            "include": "#code-blocks"
-                        },
-                        {
-                            "include": "#tuples"
-                        },
-                        {
-                            "name": "keyword.declaration.tag.bst",
-                            "end": "(?=:)",
-                            "patterns": [
-                                {
-                                    "name": "meta.paragraph.markdown",
-                                    "begin": "(?<=:)",
-                                    "end": "(?=\\])",
-                                    "patterns": [
-                                        {
-                                            "include": "#scenes",
-                                            "begin": "\\["
-                                        },
-                                        {
-                                            "name": "punctuation.definition.heading.markdown",
-                                            "match": "^\\s*#+\\s.*"
-                                        },
-                                        {
-                                            "include": "#numbers"
-                                        },
-                                        {
-                                            "name": "punctuation.definition.bold.markdown",
-                                            "match": "\\*\\*[^\\*]+\\*\\*"
-                                        },
-                                        {
-                                            "name": "punctuation.definition.italic.markdown",
-                                            "match": "\\*[^\\*]+\\*"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "include": "#types"
-                                },
-                                {
-                                    "include": "#strings"
-                                },
-                                {
-                                    "include": "#assignment"
-                                },
-                                {
-                                    "include": "#operators"
-                                },
-                                {
-                                    "include": "#numbers"
-                                },
-                                {
-                                    "include": "#control-statement"
-                                },
-                                {
-                                    "include": "#punctuation"
-                                },
-                                {
-                                    "include": "#collections"
-                                },
-                                {
-                                    "include": "#variables"
-                                },
-                                {
-                                    "include": "#scene-tags"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        "types": {
-            "patterns": [
-                {
-                    "name": "support.type.primitive.bst",
-                    "match": "\\b(?:Int|Float|Decimal|Bool|String|Template|Choice|Type|Error|true|false|True|False|Function|async|\\$|\\?|\\!)\\b"
-                }
-            ]
-        },
-        "strings": {
-            "patterns": [
-                {
-                    "name": "string.quoted.double.bst",
-                    "begin": "\"",
-                    "end": "\"",
-                    "patterns": [
-                        {
-                            "name": "constant.character.escape.bst",
-                            "match": "\\\\."
-                        }
-                    ]
-                }
-            ]
-        },
-        "assignment": {
-            "patterns": [
-                {
-                    "name": "keyword.operator.assignment",
-                    "match": "=|@"
-                }
-            ]
-        },
-        "operators": {
-            "patterns": [
-                {
-                    "name": "keyword.operator.control.bst",
-                    "match": "\\b(?:and|or|not|is|in|to)\\b"
-                },
-                {
-                    "name": "keyword.operator.symbol.bst",
-                    "match": "(?:<=|>=|=>|>>|<<|->|<|>|\\+|\\-|\\*|\\/|\\%|\\^)"
-                }
-            ]
-        },
-        "collections": {
-            "patterns": [
-                {
-                    "comment": "ALL CAPS constants",
-                    "name": "constant.other.caps.bst",
-                    "match": "\\b[A-Z]{2}[A-Z0-9_]*\\b"
-                },
-                {
-                    "comment": "structs are any variable name in PascalCase",
-                    "name": "entity.name.type.struct.bst",
-                    "match": "\\b(?=[A-Z][A-Za-z0-9_]*[a-z])[A-Z][A-Za-z0-9_]*\\b"
-                }
-            ]
-        },
-        "numbers": {
-            "patterns": [
-                {
-                    "name": "constant.numeric.bst",
-                    "match": "\\b(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?\\b"
-                }
-            ]
-        },
-        "control-statement": {
-            "patterns": [
-                {
-                    "name": "keyword.control.bst",
-                    "match": "\\b(?:if|else|loop|return|continue|defer|as|copy)\\b"
-                }
-            ]
-        },
-        "punctuation": {
-			"patterns": [
-				{
-					"comment": "comma",
-					"name": "keyword.punctuation.comma.bst",
-					"match": ","
-				},
-				{
-					"comment": "curly braces",
-					"name": "punctuation.brackets.curly.bst",
-					"match": "[{}]"
-				},
-				{
-					"comment": "parentheses, round brackets",
-					"name": "punctuation.brackets.round.bst",
-					"match": "[()]"
-				},
-				{
-					"comment": "semicolon",
-					"name": "punctuation.semi.bst",
-					"match": ";"
-				},
-				{
-					"comment": "square brackets",
-					"name": "punctuation.brackets.square.bst",
-					"match": "[\\[\\]]"
-				},
-				{
-					"comment": "angle brackets",
-					"name": "punctuation.brackets.angle.bst",
-					"match": "(?<!=)[<>]"
-				},
-                {
-                    "comment": "export symbol '@'",
-                    "name": "punctuation.export.bst",
-                    "match": "@"
-                }
-			]
-		},
-        "variables": {
-			"patterns": [
-				{
-					"comment": "variables",
-					"name": "variable.language.bst",
-					"match": "\\b(?<!(?<!\\.)\\.)(?:r#)?[a-z0-9_]+\\b"
-				}
-			]
-		},
-        "scene-tags" : {
-            "patterns": [
-                {
-                    "name": "variable.language.tag.bst",
-                    "match": "\\b(?<!(?<!\\.)\\.)(?:r#)?[a-z0-9_]+\\b"
-                }
-            ]
-        },
-        "lib-functions" : {
-            "patterns": [
-                {
-                    "comment": "Compiler directives",
-                    "name": "support.function.bst",
-                    "match": "\\b(?:#print|#import|#assert|#panic|#export)\\b"
-                }
-            ]
-        },
-        "tuples" : {
-            "patterns": [
-                {
-                    "name": "entity.name.type.tuple.bst",
-                    "begin": "\\(",
-                    "end": "\\)",
-                    "patterns": [
-                        {
-                            "include": "#types"
-                        },
-                        {
-                            "include": "#strings"
-                        },
-                        {
-                            "include": "#numbers"
-                        },
-                        {
-                            "include": "#variables"
-                        },
-                        {
-                            "include": "#punctuation"
-                        },
-                        {
-                            "include": "#collections"
-                        },
-                        {
-                            "include": "#lib-functions"
-                        },
-                        {
-                            "include": "#operators"
-                        },
-                        {
-                            "include": "#assignment"
-                        },
-                        {
-                            "include": "#scenes"
-                        }
-                    ]
-                }
-            ]
-        },
-        "code-blocks" : {
-            "patterns": [
-                {
-                    "name": "source.bst",
-                    "begin": "Code.*?(?=:)",
-                    "end": "(?=\\])",
-                    "patterns": [
-                        {
-                            "include": "#comments"
-                        },
-                        {
-                            "include": "#types"
-                        },
-                        {
-                            "include": "#strings"
-                        },
-                        {
-                            "include": "#scenes"
-                        },
-                        {
-                            "include": "#lib-functions"
-                        },
-                        {
-                            "include": "#assignment"
-                        },
-                        {
-                            "include": "#operators"
-                        },
-                        {
-                            "include": "#numbers"
-                        },
-                        {
-                            "include": "#control-statement"
-                        },
-                        {
-                            "include": "#punctuation"
-                        },
-                        {
-                            "include": "#collections"
-                        },
-                        {
-                            "include": "#variables"
-                        }
-                    ]
-                }
-            ]
-        }
+  "version": "0.2.0",
+  "name": "Beanstalk",
+  "scopeName": "source.bst",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#path-literals"
+    },
+    {
+      "include": "#invalid-at-sign"
+    },
+    {
+      "include": "#template-code-js"
+    },
+    {
+      "include": "#template-code-ts"
+    },
+    {
+      "include": "#template-code-py"
+    },
+    {
+      "include": "#template-code-beanstalk"
+    },
+    {
+      "include": "#template-code-generic"
+    },
+    {
+      "include": "#template-markdown"
+    },
+    {
+      "include": "#template-generic"
+    },
+    {
+      "include": "#raw-strings"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#chars"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#types"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#punctuation"
+    },
+    {
+      "include": "#constants"
+    },
+    {
+      "include": "#type-identifiers"
+    },
+    {
+      "include": "#identifiers"
     }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-dash.bst",
+          "match": "--[^\\n]*"
+        }
+      ]
+    },
+    "invalid-at-sign": {
+      "patterns": [
+        {
+          "name": "invalid.illegal.path-at.bst",
+          "match": "@(?!\\()"
+        }
+      ]
+    },
+    "path-literals": {
+      "patterns": [
+        {
+          "name": "meta.path.import.bst",
+          "begin": "(@)(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.path.begin.bst keyword.control.import.bst"
+            },
+            "2": {
+              "name": "punctuation.section.group.begin.bst"
+            }
+          },
+          "end": "(\\))",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.path.end.bst punctuation.section.group.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#path-group"
+            },
+            {
+              "name": "punctuation.separator.path.bst",
+              "match": "[\\\\/]"
+            },
+            {
+              "name": "constant.other.path.relative.bst",
+              "match": "\\.{1,2}(?=[\\\\/\\)])"
+            },
+            {
+              "name": "entity.name.path.segment.bst entity.name.module.bst",
+              "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+            },
+            {
+              "name": "text.whitespace.bst",
+              "match": "\\s+"
+            },
+            {
+              "name": "invalid.illegal.path.character.bst",
+              "match": "[^\\sA-Za-z0-9_{}\\\\/,\\.]"
+            }
+          ]
+        }
+      ]
+    },
+    "path-group": {
+      "patterns": [
+        {
+          "name": "meta.path.import.group.bst",
+          "begin": "\\{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.group.begin.bst"
+            }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.group.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "name": "entity.name.import.symbol.bst variable.other.object.property.bst",
+              "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+            },
+            {
+              "name": "punctuation.separator.comma.bst",
+              "match": ","
+            },
+            {
+              "name": "text.whitespace.bst",
+              "match": "\\s+"
+            },
+            {
+              "name": "invalid.illegal.path.group.character.bst",
+              "match": "[^\\sA-Za-z0-9_,]"
+            }
+          ]
+        }
+      ]
+    },
+    "template-code-js": {
+      "patterns": [
+        {
+          "name": "meta.template.bst meta.template.code.js.bst",
+          "begin": "\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:js|javascript)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:js|javascript)\"\\s*\\)[^\\]]*\\$(?:markdown|code)\\b)",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-head"
+            },
+            {
+              "include": "#template-body-code-js"
+            }
+          ]
+        }
+      ]
+    },
+    "template-code-ts": {
+      "patterns": [
+        {
+          "name": "meta.template.bst meta.template.code.ts.bst",
+          "begin": "\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:ts|typescript)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:ts|typescript)\"\\s*\\)[^\\]]*\\$(?:markdown|code)\\b)",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-head"
+            },
+            {
+              "include": "#template-body-code-ts"
+            }
+          ]
+        }
+      ]
+    },
+    "template-code-py": {
+      "patterns": [
+        {
+          "name": "meta.template.bst meta.template.code.py.bst",
+          "begin": "\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:py|python)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:py|python)\"\\s*\\)[^\\]]*\\$(?:markdown|code)\\b)",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-head"
+            },
+            {
+              "include": "#template-body-code-py"
+            }
+          ]
+        }
+      ]
+    },
+    "template-code-beanstalk": {
+      "patterns": [
+        {
+          "name": "meta.template.bst meta.template.code.bstlang.bst",
+          "begin": "\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:bst|beanstalk)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:bst|beanstalk)\"\\s*\\)[^\\]]*\\$(?:markdown|code)\\b)",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-head"
+            },
+            {
+              "include": "#template-body-code-beanstalk"
+            }
+          ]
+        }
+      ]
+    },
+    "template-code-generic": {
+      "patterns": [
+        {
+          "name": "meta.template.bst meta.template.code.generic.bst",
+          "begin": "\\[(?=[^\\]]*\\$code\\b)(?![^\\]]*\\$code\\b[^\\]]*\\$(?:markdown|code)\\b)",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-head"
+            },
+            {
+              "include": "#template-body-code-generic"
+            }
+          ]
+        }
+      ]
+    },
+    "template-markdown": {
+      "patterns": [
+        {
+          "name": "meta.template.bst meta.template.markdown.bst",
+          "begin": "\\[(?=[^\\]]*\\$markdown\\b)(?![^\\]]*\\$markdown\\b[^\\]]*\\$(?:markdown|code)\\b)",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-head"
+            },
+            {
+              "include": "#template-body-markdown"
+            }
+          ]
+        }
+      ]
+    },
+    "template-generic": {
+      "patterns": [
+        {
+          "name": "meta.template.bst",
+          "begin": "\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-head"
+            },
+            {
+              "include": "#template-body-generic"
+            }
+          ]
+        }
+      ]
+    },
+    "template-head": {
+      "patterns": [
+        {
+          "name": "meta.template.head.bst",
+          "begin": "(?=[^:\\]])",
+          "end": "(?=\\]|:)",
+          "patterns": [
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#template-style-child"
+            },
+            {
+              "include": "#path-literals"
+            },
+            {
+              "include": "#template-slot-target"
+            },
+            {
+              "include": "#template-head-directives"
+            },
+            {
+              "include": "#raw-strings"
+            },
+            {
+              "include": "#strings"
+            },
+            {
+              "include": "#chars"
+            },
+            {
+              "include": "#numbers"
+            },
+            {
+              "include": "#keywords"
+            },
+            {
+              "include": "#types"
+            },
+            {
+              "include": "#operators"
+            },
+            {
+              "include": "#punctuation"
+            },
+            {
+              "include": "#constants"
+            },
+            {
+              "include": "#type-identifiers"
+            },
+            {
+              "include": "#identifiers"
+            },
+            {
+              "name": "text.whitespace.bst",
+              "match": "\\s+"
+            },
+            {
+              "name": "invalid.illegal.template-head-character.bst",
+              "match": "."
+            }
+          ]
+        }
+      ]
+    },
+    "template-style-child": {
+      "patterns": [
+        {
+          "name": "meta.template.style-child.bst",
+          "begin": "\\$\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.template.style-child.begin.bst"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.template.style-child.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-head"
+            },
+            {
+              "include": "#template-body-generic"
+            }
+          ]
+        }
+      ]
+    },
+    "template-head-directives": {
+      "patterns": [
+        {
+          "name": "keyword.control.directive.template.bst keyword.control.bst",
+          "match": "\\$[A-Za-z_][A-Za-z0-9_]*"
+        }
+      ]
+    },
+    "template-slot-target": {
+      "patterns": [
+        {
+          "name": "entity.name.template.slot.label.bst variable.parameter.bst",
+          "match": "\\$[1-9][0-9]*"
+        }
+      ]
+    },
+    "template-slot-marker": {
+      "patterns": [
+        {
+          "name": "meta.template.slot.marker.bst",
+          "match": "(\\[)([ \\t]*\\.{2,}[ \\t]*)(\\])",
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.slot.begin.bst"
+            },
+            "2": {
+              "name": "keyword.other.template.slot.fill.bst"
+            },
+            "3": {
+              "name": "punctuation.definition.slot.end.bst"
+            }
+          }
+        }
+      ]
+    },
+    "template-body-generic": {
+      "patterns": [
+        {
+          "name": "meta.template.body.bst",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+            }
+          },
+          "end": "(?=\\])",
+          "patterns": [
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "name": "string.unquoted.template.body.bst string.quoted.double.bst",
+              "match": "[^\\[\\]]+"
+            }
+          ]
+        }
+      ]
+    },
+    "template-body-markdown": {
+      "patterns": [
+        {
+          "name": "meta.template.body.bst",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+            }
+          },
+          "end": "(?=\\])",
+          "patterns": [
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "include": "#embedded-markdown"
+            }
+          ]
+        }
+      ]
+    },
+    "template-body-code-js": {
+      "patterns": [
+        {
+          "name": "meta.template.body.bst",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+            }
+          },
+          "end": "(?=\\])",
+          "patterns": [
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "include": "#embedded-code-js"
+            }
+          ]
+        }
+      ]
+    },
+    "template-body-code-ts": {
+      "patterns": [
+        {
+          "name": "meta.template.body.bst",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+            }
+          },
+          "end": "(?=\\])",
+          "patterns": [
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "include": "#embedded-code-ts"
+            }
+          ]
+        }
+      ]
+    },
+    "template-body-code-py": {
+      "patterns": [
+        {
+          "name": "meta.template.body.bst",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+            }
+          },
+          "end": "(?=\\])",
+          "patterns": [
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "include": "#embedded-code-py"
+            }
+          ]
+        }
+      ]
+    },
+    "template-body-code-beanstalk": {
+      "patterns": [
+        {
+          "name": "meta.template.body.bst",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+            }
+          },
+          "end": "(?=\\])",
+          "patterns": [
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "include": "#embedded-code-beanstalk"
+            }
+          ]
+        }
+      ]
+    },
+    "template-body-code-generic": {
+      "patterns": [
+        {
+          "name": "meta.template.body.bst",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+            }
+          },
+          "end": "(?=\\])",
+          "patterns": [
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "include": "#embedded-code-generic"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-markdown": {
+      "patterns": [
+        {
+          "name": "meta.embedded.block.markdown.bst",
+          "begin": "(?=[^\\[\\]])",
+          "end": "(?=[\\[\\]])",
+          "contentName": "meta.embedded.block.markdown.bst text.html.markdown",
+          "patterns": [
+            {
+              "include": "text.html.markdown"
+            },
+            {
+              "name": "markup.heading.markdown",
+              "match": "^\\s{0,3}#{1,6}\\s+.*$"
+            },
+            {
+              "name": "markup.bold.markdown",
+              "match": "\\*\\*[^*\\n]+\\*\\*"
+            },
+            {
+              "name": "markup.italic.markdown",
+              "match": "(?<!\\*)\\*[^*\\n]+\\*(?!\\*)"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-code-js": {
+      "patterns": [
+        {
+          "name": "meta.embedded.block.code.js.bst",
+          "begin": "(?=[^\\[\\]])",
+          "end": "(?=[\\[\\]])",
+          "contentName": "meta.embedded.block.code.js.bst source.js",
+          "patterns": [
+            {
+              "include": "source.js"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-code-ts": {
+      "patterns": [
+        {
+          "name": "meta.embedded.block.code.ts.bst",
+          "begin": "(?=[^\\[\\]])",
+          "end": "(?=[\\[\\]])",
+          "contentName": "meta.embedded.block.code.ts.bst source.ts",
+          "patterns": [
+            {
+              "include": "source.ts"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-code-py": {
+      "patterns": [
+        {
+          "name": "meta.embedded.block.code.py.bst",
+          "begin": "(?=[^\\[\\]])",
+          "end": "(?=[\\[\\]])",
+          "contentName": "meta.embedded.block.code.py.bst source.python",
+          "patterns": [
+            {
+              "include": "source.python"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-code-beanstalk": {
+      "patterns": [
+        {
+          "name": "meta.embedded.block.code.bstlang.bst",
+          "begin": "(?=[^\\[\\]])",
+          "end": "(?=[\\[\\]])",
+          "contentName": "meta.embedded.block.code.bstlang.bst source.bst.embedded",
+          "patterns": [
+            {
+              "include": "#code-beanstalk-fragment"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-code-generic": {
+      "patterns": [
+        {
+          "name": "meta.embedded.block.code.generic.bst",
+          "begin": "(?=[^\\[\\]])",
+          "end": "(?=[\\[\\]])",
+          "contentName": "meta.embedded.block.code.generic.bst source.code.generic.bst",
+          "patterns": [
+            {
+              "include": "#code-generic-fragment"
+            }
+          ]
+        }
+      ]
+    },
+    "code-beanstalk-fragment": {
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#raw-strings"
+        },
+        {
+          "include": "#strings"
+        },
+        {
+          "include": "#chars"
+        },
+        {
+          "include": "#numbers"
+        },
+        {
+          "include": "#keywords"
+        },
+        {
+          "include": "#types"
+        },
+        {
+          "include": "#operators"
+        },
+        {
+          "include": "#punctuation"
+        },
+        {
+          "include": "#constants"
+        },
+        {
+          "include": "#type-identifiers"
+        },
+        {
+          "include": "#identifiers"
+        },
+        {
+          "name": "text.whitespace.bst",
+          "match": "\\s+"
+        }
+      ]
+    },
+    "code-generic-fragment": {
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#raw-strings"
+        },
+        {
+          "include": "#strings"
+        },
+        {
+          "include": "#chars"
+        },
+        {
+          "include": "#numbers"
+        },
+        {
+          "name": "keyword.control.code.generic.bst",
+          "match": "\\b(?:if|else|return|for|while|loop|in|to|upto|by|break|continue|as|copy|def|class|function|const|let|var|import|from|type|interface|enum)\\b"
+        },
+        {
+          "name": "support.type.code.generic.bst",
+          "match": "\\b(?:Int|Float|String|Bool|None|True|False|true|false|number|string|boolean|undefined|null|void|any)\\b"
+        },
+        {
+          "include": "#operators"
+        },
+        {
+          "include": "#punctuation"
+        },
+        {
+          "include": "#constants"
+        },
+        {
+          "include": "#type-identifiers"
+        },
+        {
+          "include": "#identifiers"
+        },
+        {
+          "name": "text.whitespace.bst",
+          "match": "\\s+"
+        }
+      ]
+    },
+    "raw-strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.raw.bst",
+          "begin": "`",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.bst"
+            }
+          },
+          "end": "`",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.bst"
+            }
+          }
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.bst",
+          "begin": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.bst"
+            }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.escape.bst",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "chars": {
+      "patterns": [
+        {
+          "name": "string.quoted.single.char.bst",
+          "begin": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.char.begin.bst"
+            }
+          },
+          "end": "'",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.char.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.escape.bst",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.bst",
+          "match": "\\b\\d(?:[\\d_]*\\d)?(?:\\.\\d(?:[\\d_]*\\d)?)?\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.flow.bst",
+          "match": "\\b(?:if|else|return|loop|break|continue|yield)\\b"
+        },
+        {
+          "name": "keyword.control.loop.range.bst",
+          "match": "\\b(?:in|to|upto|by)\\b"
+        },
+        {
+          "name": "keyword.other.bst",
+          "match": "\\b(?:import|as|copy|use)\\b"
+        },
+        {
+          "name": "keyword.operator.word.bst",
+          "match": "\\b(?:is|not|and|or)\\b"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "support.type.primitive.bst",
+          "match": "\\b(?:Int|Float|String|Bool|None|Fn)\\b"
+        },
+        {
+          "name": "constant.language.boolean.bst",
+          "match": "\\b(?:true|false|True|False)\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.assignment.compound.bst",
+          "match": "\\+=|-=|\\*=|//=|/=|%%=|%=|\\^="
+        },
+        {
+          "name": "keyword.operator.symbol.bst",
+          "match": "=>|>>|<<|->|\\.\\.|::|<=|>="
+        },
+        {
+          "name": "keyword.operator.symbol.bst",
+          "match": "[=+\\-*/%^~?!<>|#]"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.separator.double-colon.bst keyword.control.scope.delimiter.bst",
+          "match": "::"
+        },
+        {
+          "name": "punctuation.separator.colon.bst keyword.control.scope.delimiter.bst",
+          "match": ":"
+        },
+        {
+          "name": "punctuation.separator.comma.bst",
+          "match": ","
+        },
+        {
+          "name": "punctuation.terminator.statement.bst keyword.control.scope.delimiter.bst",
+          "match": ";"
+        },
+        {
+          "name": "punctuation.brackets.curly.bst",
+          "match": "[{}]"
+        },
+        {
+          "name": "punctuation.brackets.round.bst",
+          "match": "[()]"
+        },
+        {
+          "name": "punctuation.brackets.square.bst",
+          "match": "[\\[\\]]"
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.other.caps.bst",
+          "match": "\\b[A-Z]{2}[A-Z0-9_]*\\b"
+        }
+      ]
+    },
+    "type-identifiers": {
+      "patterns": [
+        {
+          "name": "entity.name.type.bst",
+          "match": "\\b[A-Z][A-Za-z0-9_]*\\b"
+        }
+      ]
+    },
+    "identifiers": {
+      "patterns": [
+        {
+          "name": "variable.other.bst",
+          "match": "\\b[a-z_][A-Za-z0-9_]*\\b"
+        }
+      ]
+    }
+  }
 }

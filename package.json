@@ -2,12 +2,24 @@
   "name": "beanstalk-plugin",
   "displayName": "Beanstalk",
   "description": "Language support and syntax highlighting for Beanstalk",
-  "version": "0.1.89",
+  "version": "0.1.9",
+  "files": [
+    "package.json",
+    "syntaxes/bst.tmLanguage.json",
+    "language-configuration.json",
+    "icon.png",
+    "icons/bst-logo.png",
+    "LICENSE"
+  ],
   "publisher": "Nye",
   "license": "Apache-2.0",
   "icon": "./icon.png",
   "engines": {
     "vscode": "^1.95.0"
+  },
+  "scripts": {
+    "test": "node tests/grammar-regression.test.js",
+    "test:grammar": "node tests/grammar-regression.test.js"
   },
   "categories": [
     "Programming Languages"
@@ -26,7 +38,15 @@
     "grammars": [{
       "language": "bst",
       "scopeName": "source.bst",
-      "path": "./syntaxes/bst.tmLanguage.json"
+      "path": "./syntaxes/bst.tmLanguage.json",
+      "embeddedLanguages": {
+        "meta.embedded.block.markdown.bst": "markdown",
+        "meta.embedded.block.code.js.bst": "javascript",
+        "meta.embedded.block.code.ts.bst": "typescript",
+        "meta.embedded.block.code.py.bst": "python",
+        "meta.embedded.block.code.bstlang.bst": "bst",
+        "meta.embedded.block.code.generic.bst": "plaintext"
+      }
     }]
   },
   "repository": {
