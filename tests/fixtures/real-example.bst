@@ -1,6 +1,24 @@
 import @(libs/html/basic)
 import @(styles/docs/{navbar, footer, title})
 
+Basic = |
+    document String = [:
+        <head>
+            [..]
+            <style>
+                [default_style]
+            </style>
+        </head>
+        <body> [..]</body>
+    ],
+    page String = [$markdown:<section>[:[..]][..][..][..]</section>],
+
+    -- Basic formatting
+    center String = [:<span align="center">[..]<span/>],
+    underline String = [:<u>[..]</u>],
+    strikethrough String = [:<s>[..]</s>],
+|
+
 beans = "Hello, World!"
 float Float = 3.14 + 2.71
 

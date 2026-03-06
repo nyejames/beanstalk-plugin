@@ -797,9 +797,6 @@
           "contentName": "meta.embedded.block.markdown.bst text.html.markdown",
           "patterns": [
             {
-              "include": "text.html.markdown"
-            },
-            {
               "name": "markup.heading.markdown",
               "match": "^\\s{0,3}#{1,6}\\s+.*$"
             },
@@ -810,6 +807,14 @@
             {
               "name": "markup.italic.markdown",
               "match": "(?<!\\*)\\*[^*\\n]+\\*(?!\\*)"
+            },
+            {
+              "name": "markup.inline.raw.string.markdown",
+              "match": "`[^`\\n]+`"
+            },
+            {
+              "name": "string.unquoted.template.body.bst string.quoted.double.bst",
+              "match": "[^\\[\\]]+"
             }
           ]
         }
