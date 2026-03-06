@@ -44,6 +44,20 @@ function findPatternByName(name) {
   return result;
 }
 
+function findPatternsByName(name) {
+  const results = [];
+
+  walkObjects(grammar, (node) => {
+    if (node && typeof node === "object" && typeof node.name === "string") {
+      if (node.name === name || node.name.split(/\s+/).includes(name)) {
+        results.push(node);
+      }
+    }
+  });
+
+  return results;
+}
+
 function findPatternByNameContains(nameFragment) {
   let result = null;
 
@@ -127,10 +141,23 @@ test("keywords and types match supported compiler/docs keywords and exclude old 
 });
 
 test("path syntax repository includes dedicated import path and grouped symbols scopes", () => {
-  const pathPattern = findPatternByName("meta.path.import.bst");
-  assert.ok(pathPattern, "expected meta.path.import.bst pattern to exist");
-  assert.ok(new RegExp(pathPattern.begin).test("@(a/b/c)"));
-  assert.ok(new RegExp(pathPattern.begin).test("@(styles/docs/{footer, navbar})"));
+  const pathPatterns = findPatternsByName("meta.path.import.bst");
+  assert.ok(pathPatterns.length >= 2, "expected parenthesized and bare path patterns");
+
+  const parenthesizedPathPattern = pathPatterns.find(
+    (pattern) => typeof pattern.begin === "string" && pattern.begin.includes("(@)(\\()")
+  );
+  assert.ok(parenthesizedPathPattern, "expected parenthesized path pattern");
+  assert.ok(new RegExp(parenthesizedPathPattern.begin).test("@(a/b/c)"));
+  assert.ok(new RegExp(parenthesizedPathPattern.begin).test("@(styles/docs/{footer, navbar})"));
+
+  const barePathPattern = pathPatterns.find(
+    (pattern) => typeof pattern.begin === "string" && pattern.begin.includes("(?!\\()")
+  );
+  assert.ok(barePathPattern, "expected bare path pattern");
+  assert.ok(new RegExp(barePathPattern.begin).test("@a/b/c"));
+  assert.ok(new RegExp(barePathPattern.begin).test("@styles/docs/{footer, navbar}"));
+  assert.ok(new RegExp(barePathPattern.begin).test("@styles/docs/ {footer, navbar}"));
 
   const groupPattern = findPatternByName("meta.path.import.group.bst");
   assert.ok(groupPattern, "expected grouped import pattern to exist");
@@ -141,8 +168,9 @@ test("path syntax repository includes dedicated import path and grouped symbols 
 
   const invalidAtPattern = findPatternByName("invalid.illegal.path-at.bst");
   assert.ok(invalidAtPattern, "expected malformed @ fallback pattern");
-  assert.ok(new RegExp(invalidAtPattern.match).test("@not_a_path"));
+  assert.ok(new RegExp(invalidAtPattern.match).test("@!not_a_path"));
   assert.ok(!new RegExp(invalidAtPattern.match).test("@(valid/path)"));
+  assert.ok(!new RegExp(invalidAtPattern.match).test("@valid/path"));
 });
 
 test("template scopes define head/body and slot-specific highlighting", () => {
@@ -207,6 +235,10 @@ test("fixture contains expected scenarios for manual token inspection", () => {
   for (const snippet of [
     "import @(a/b/c)",
     "import @(styles/docs/{footer, navbar})",
+    "import @a/b/c",
+    "import @styles/docs/{footer, navbar}",
+    "import @styles/docs/ {footer, navbar}",
+    "import @(styles/docs/ {footer, navbar})",
     "[..]",
     "[$1: first slot]",
     "$markdown",

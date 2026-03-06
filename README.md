@@ -26,17 +26,22 @@ Legacy scene-era scopes and stale keyword/type entries were removed.
 
 ## Path Syntax Highlighting
 
-The extension now has dedicated highlighting for path literals:
+The extension now has dedicated highlighting for path literals with optional
+parentheses:
 
+- `@path/to/file`
 - `@(path/to/file)`
-- `@(path/to/file/{symbol_a, symbol_b})`
+- `@path/to/file/{symbol_a, symbol_b}`
+- `@path/to/file/ {symbol_a, symbol_b}`
+- `@(path/to/file/ {symbol_a, symbol_b})`
+- `@path\\to\\file`
 - `@(path\\to\\file)`
 
 Supported path scopes include:
 
 - `meta.path.import.bst`
 - Distinct group/import symbol scopes inside `{...}`
-- Invalid standalone `@` fallback highlighting when not used as `@(...)`
+- Invalid standalone `@` fallback highlighting when not used as a valid path literal
 
 ## Template Highlighting
 

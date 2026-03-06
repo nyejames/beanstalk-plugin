@@ -1,8 +1,12 @@
 import @(a/b/c)
 import @(styles/docs/{footer, navbar})
 import @(styles\\docs\\footer)
+import @a/b/c
+import @styles/docs/{footer, navbar}
+import @styles/docs/ {footer, navbar}
+import @(styles/docs/ {footer, navbar})
 
-@not_a_path
+@!not_a_path
 
 wrapper = [:
     before [..] after

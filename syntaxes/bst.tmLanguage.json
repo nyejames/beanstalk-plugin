@@ -80,7 +80,7 @@
       "patterns": [
         {
           "name": "invalid.illegal.path-at.bst",
-          "match": "@(?!\\()"
+          "match": "@(?!\\(|[A-Za-z_./\\\\])"
         }
       ]
     },
@@ -114,6 +114,41 @@
             {
               "name": "constant.other.path.relative.bst",
               "match": "\\.{1,2}(?=[\\\\/\\)])"
+            },
+            {
+              "name": "entity.name.path.segment.bst entity.name.module.bst",
+              "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+            },
+            {
+              "name": "text.whitespace.bst",
+              "match": "\\s+"
+            },
+            {
+              "name": "invalid.illegal.path.character.bst",
+              "match": "[^\\sA-Za-z0-9_{}\\\\/,\\.]"
+            }
+          ]
+        },
+        {
+          "name": "meta.path.import.bst",
+          "begin": "(@)(?!\\()(?=[A-Za-z_./\\\\])",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.path.begin.bst keyword.control.import.bst"
+            }
+          },
+          "end": "(?=$|\\s+(?!\\{)|[,;\\]\\)\\}])",
+          "patterns": [
+            {
+              "include": "#path-group"
+            },
+            {
+              "name": "punctuation.separator.path.bst",
+              "match": "[\\\\/]"
+            },
+            {
+              "name": "constant.other.path.relative.bst",
+              "match": "\\.{1,2}(?=[\\\\/\\s\\]\\)\\},;]|$)"
             },
             {
               "name": "entity.name.path.segment.bst entity.name.module.bst",

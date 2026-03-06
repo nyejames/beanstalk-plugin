@@ -2,7 +2,7 @@
   "name": "beanstalk-plugin",
   "displayName": "Beanstalk",
   "description": "Language support and syntax highlighting for Beanstalk",
-  "version": "0.1.91",
+  "version": "0.1.92",
   "files": [
     "package.json",
     "syntaxes/bst.tmLanguage.json",
