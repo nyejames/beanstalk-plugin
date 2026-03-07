@@ -6,27 +6,46 @@ import @styles/docs/{footer, navbar}
 import @styles/docs/ {footer, navbar}
 import @(styles/docs/ {footer, navbar})
 
-@!not_a_path
+escaped_string = "line\\n with \\a and \\[ and \\]"
 
 wrapper = [:
-    before [..] after
+    before [$slot] after
+    before named [$slot("style")] after
+    [$code("bst"):
+        thing = [: hello]
+    ]
 ]
 
-filled = [wrapper:
-    [$1: first slot]
-    [$2]
+title = [:
+    <h1 style="[$slot("style")]">
+        [$slot]
+    </h1>
+]
+
+blue = [$insert("style"): color: blue;]
+
+filled = [title, blue:
+    Hello world
 ]
 
 markdown_view = [$code("js"), $markdown:
 
 # Title
-*italic* **bold**
+some text
+and then *italic* **bold** text
+\n escaped text \[\]
+## Subtitle
+        ### Deep Indented Subtitle
+more text
+
+    # whooooooooops
 
 ]
 
 code_generic = [$code:
 loop i in 0 to 10 by 2:
     io(i)
+escaped = \a \[ \]
 ;
 ]
 
@@ -38,6 +57,7 @@ loop i in 10 upto 0 by 2:
 
 code_js = [$markdown, $code("js"):
 const x = 1;
+const nested = [1, [2, [3]]];
 // comment
 ]
 

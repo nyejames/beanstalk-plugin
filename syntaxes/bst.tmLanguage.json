@@ -207,13 +207,13 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.js.bst",
-          "begin": "\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:js|javascript)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:js|javascript)\"\\s*\\)[^\\]]*\\$(?:markdown|code)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:js|javascript)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:js|javascript)\"\\s*\\)[^\\]]*\\$(?:markdown|code)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
             }
           },
-          "end": "\\]",
+          "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
               "name": "punctuation.section.template.end.bst"
@@ -234,13 +234,13 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.ts.bst",
-          "begin": "\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:ts|typescript)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:ts|typescript)\"\\s*\\)[^\\]]*\\$(?:markdown|code)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:ts|typescript)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:ts|typescript)\"\\s*\\)[^\\]]*\\$(?:markdown|code)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
             }
           },
-          "end": "\\]",
+          "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
               "name": "punctuation.section.template.end.bst"
@@ -261,13 +261,13 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.py.bst",
-          "begin": "\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:py|python)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:py|python)\"\\s*\\)[^\\]]*\\$(?:markdown|code)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:py|python)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:py|python)\"\\s*\\)[^\\]]*\\$(?:markdown|code)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
             }
           },
-          "end": "\\]",
+          "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
               "name": "punctuation.section.template.end.bst"
@@ -288,13 +288,13 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.bstlang.bst",
-          "begin": "\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:bst|beanstalk)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:bst|beanstalk)\"\\s*\\)[^\\]]*\\$(?:markdown|code)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:bst|beanstalk)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:bst|beanstalk)\"\\s*\\)[^\\]]*\\$(?:markdown|code)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
             }
           },
-          "end": "\\]",
+          "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
               "name": "punctuation.section.template.end.bst"
@@ -315,13 +315,13 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.generic.bst",
-          "begin": "\\[(?=[^\\]]*\\$code\\b)(?![^\\]]*\\$code\\b[^\\]]*\\$(?:markdown|code)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\b)(?![^\\]]*\\$code\\b[^\\]]*\\$(?:markdown|code)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
             }
           },
-          "end": "\\]",
+          "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
               "name": "punctuation.section.template.end.bst"
@@ -342,13 +342,13 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.markdown.bst",
-          "begin": "\\[(?=[^\\]]*\\$markdown\\b)(?![^\\]]*\\$markdown\\b[^\\]]*\\$(?:markdown|code)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$markdown\\b)(?![^\\]]*\\$markdown\\b[^\\]]*\\$(?:markdown|code)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
             }
           },
-          "end": "\\]",
+          "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
               "name": "punctuation.section.template.end.bst"
@@ -369,13 +369,13 @@
       "patterns": [
         {
           "name": "meta.template.bst",
-          "begin": "\\[",
+          "begin": "(?<!\\\\)\\[",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
             }
           },
-          "end": "\\]",
+          "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
               "name": "punctuation.section.template.end.bst"
@@ -397,10 +397,13 @@
         {
           "name": "meta.template.head.bst",
           "begin": "(?=[^:\\]])",
-          "end": "(?=\\]|:)",
+          "end": "(?=(?<!\\\\)\\]|:)",
           "patterns": [
             {
               "include": "#comments"
+            },
+            {
+              "include": "#escapes"
             },
             {
               "include": "#template-style-child"
@@ -409,7 +412,7 @@
               "include": "#path-literals"
             },
             {
-              "include": "#template-slot-target"
+              "include": "#template-slot-directive"
             },
             {
               "include": "#template-head-directives"
@@ -469,7 +472,7 @@
               "name": "punctuation.definition.template.style-child.begin.bst"
             }
           },
-          "end": "\\]",
+          "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
               "name": "punctuation.definition.template.style-child.end.bst"
@@ -494,11 +497,25 @@
         }
       ]
     },
-    "template-slot-target": {
+    "template-slot-directive": {
       "patterns": [
         {
-          "name": "entity.name.template.slot.label.bst variable.parameter.bst",
-          "match": "\\$[1-9][0-9]*"
+          "name": "meta.template.slot.directive.bst",
+          "match": "(\\$(?:slot|insert))(\\s*\\()(\\s*\"(?:[^\"\\\\]|\\\\.)*\"\\s*)(\\))",
+          "captures": {
+            "1": {
+              "name": "keyword.other.template.slot.directive.bst keyword.control.directive.template.bst"
+            },
+            "2": {
+              "name": "punctuation.section.group.begin.bst"
+            },
+            "3": {
+              "name": "string.quoted.double.bst"
+            },
+            "4": {
+              "name": "punctuation.section.group.end.bst"
+            }
+          }
         }
       ]
     },
@@ -506,18 +523,44 @@
       "patterns": [
         {
           "name": "meta.template.slot.marker.bst",
-          "match": "(\\[)([ \\t]*\\.{2,}[ \\t]*)(\\])",
+          "match": "((?<!\\\\)\\[)([ \\t]*)(\\$slot)([ \\t]*)(\\((?:[ \\t]*\"(?:[^\"\\\\]|\\\\.)*\"[ \\t]*)\\))?([ \\t]*)((?<!\\\\)\\])",
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.slot.begin.bst"
+            },
+            "3": {
+              "name": "keyword.other.template.slot.fill.bst keyword.other.template.slot.directive.bst"
+            },
+            "5": {
+              "name": "meta.template.slot.argument.bst"
+            },
+            "7": {
+              "name": "punctuation.definition.slot.end.bst"
+            }
+          }
+        },
+        {
+          "name": "invalid.deprecated.template.slot.marker.bst",
+          "match": "((?<!\\\\)\\[)([ \\t]*\\.{2,}[ \\t]*)((?<!\\\\)\\])",
           "captures": {
             "1": {
               "name": "punctuation.definition.slot.begin.bst"
             },
             "2": {
-              "name": "keyword.other.template.slot.fill.bst"
+              "name": "invalid.illegal.deprecated.template.slot.fill.bst"
             },
             "3": {
               "name": "punctuation.definition.slot.end.bst"
             }
           }
+        }
+      ]
+    },
+    "escapes": {
+      "patterns": [
+        {
+          "name": "constant.character.escape.bst",
+          "match": "\\\\(?:[A-Za-z]|[\\[\\]])"
         }
       ]
     },
@@ -531,8 +574,11 @@
               "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
             }
           },
-          "end": "(?=\\])",
+          "end": "(?=(?<!\\\\)\\])",
           "patterns": [
+            {
+              "include": "#escapes"
+            },
             {
               "include": "#template-slot-marker"
             },
@@ -575,8 +621,11 @@
               "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
             }
           },
-          "end": "(?=\\])",
+          "end": "(?=(?<!\\\\)\\])",
           "patterns": [
+            {
+              "include": "#escapes"
+            },
             {
               "include": "#template-slot-marker"
             },
@@ -618,8 +667,11 @@
               "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
             }
           },
-          "end": "(?=\\])",
+          "end": "(?=(?<!\\\\)\\])",
           "patterns": [
+            {
+              "include": "#escapes"
+            },
             {
               "include": "#template-slot-marker"
             },
@@ -642,10 +694,10 @@
               "include": "#template-markdown"
             },
             {
-              "include": "#template-generic"
+              "include": "#embedded-code-js"
             },
             {
-              "include": "#embedded-code-js"
+              "include": "#template-generic"
             }
           ]
         }
@@ -661,8 +713,11 @@
               "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
             }
           },
-          "end": "(?=\\])",
+          "end": "(?=(?<!\\\\)\\])",
           "patterns": [
+            {
+              "include": "#escapes"
+            },
             {
               "include": "#template-slot-marker"
             },
@@ -685,10 +740,10 @@
               "include": "#template-markdown"
             },
             {
-              "include": "#template-generic"
+              "include": "#embedded-code-ts"
             },
             {
-              "include": "#embedded-code-ts"
+              "include": "#template-generic"
             }
           ]
         }
@@ -704,8 +759,11 @@
               "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
             }
           },
-          "end": "(?=\\])",
+          "end": "(?=(?<!\\\\)\\])",
           "patterns": [
+            {
+              "include": "#escapes"
+            },
             {
               "include": "#template-slot-marker"
             },
@@ -728,10 +786,10 @@
               "include": "#template-markdown"
             },
             {
-              "include": "#template-generic"
+              "include": "#embedded-code-py"
             },
             {
-              "include": "#embedded-code-py"
+              "include": "#template-generic"
             }
           ]
         }
@@ -747,8 +805,11 @@
               "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
             }
           },
-          "end": "(?=\\])",
+          "end": "(?=(?<!\\\\)\\])",
           "patterns": [
+            {
+              "include": "#escapes"
+            },
             {
               "include": "#template-slot-marker"
             },
@@ -771,10 +832,10 @@
               "include": "#template-markdown"
             },
             {
-              "include": "#template-generic"
+              "include": "#embedded-code-beanstalk"
             },
             {
-              "include": "#embedded-code-beanstalk"
+              "include": "#template-generic"
             }
           ]
         }
@@ -790,8 +851,11 @@
               "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
             }
           },
-          "end": "(?=\\])",
+          "end": "(?=(?<!\\\\)\\])",
           "patterns": [
+            {
+              "include": "#escapes"
+            },
             {
               "include": "#template-slot-marker"
             },
@@ -814,10 +878,10 @@
               "include": "#template-markdown"
             },
             {
-              "include": "#template-generic"
+              "include": "#embedded-code-generic"
             },
             {
-              "include": "#embedded-code-generic"
+              "include": "#template-generic"
             }
           ]
         }
@@ -828,12 +892,15 @@
         {
           "name": "meta.embedded.block.markdown.bst",
           "begin": "(?=[^\\[\\]])",
-          "end": "(?=[\\[\\]])",
+          "end": "(?=(?<!\\\\)[\\[\\]])",
           "contentName": "meta.embedded.block.markdown.bst text.html.markdown",
           "patterns": [
             {
+              "include": "#escapes"
+            },
+            {
               "name": "markup.heading.markdown",
-              "match": "^\\s{0,3}#{1,6}\\s+.*$"
+              "match": "^\\s*#{1,6}\\s+.*$"
             },
             {
               "name": "markup.bold.markdown",
@@ -848,8 +915,12 @@
               "match": "`[^`\\n]+`"
             },
             {
-              "name": "string.unquoted.template.body.bst string.quoted.double.bst",
-              "match": "[^\\[\\]]+"
+              "name": "meta.paragraph.markdown",
+              "match": "[^\\[\\]`*\\n]+"
+            },
+            {
+              "name": "meta.paragraph.markdown",
+              "match": "[^\\[\\]\\n]"
             }
           ]
         }
@@ -859,10 +930,23 @@
       "patterns": [
         {
           "name": "meta.embedded.block.code.js.bst",
+          "begin": "(?<!\\\\)\\[",
+          "end": "(?<!\\\\)\\]",
+          "patterns": [
+            {
+              "include": "#embedded-code-js"
+            }
+          ]
+        },
+        {
+          "name": "meta.embedded.block.code.js.bst",
           "begin": "(?=[^\\[\\]])",
-          "end": "(?=[\\[\\]])",
+          "end": "(?=(?<!\\\\)[\\[\\]])",
           "contentName": "meta.embedded.block.code.js.bst source.js",
           "patterns": [
+            {
+              "include": "#escapes"
+            },
             {
               "include": "source.js"
             }
@@ -874,10 +958,23 @@
       "patterns": [
         {
           "name": "meta.embedded.block.code.ts.bst",
+          "begin": "(?<!\\\\)\\[",
+          "end": "(?<!\\\\)\\]",
+          "patterns": [
+            {
+              "include": "#embedded-code-ts"
+            }
+          ]
+        },
+        {
+          "name": "meta.embedded.block.code.ts.bst",
           "begin": "(?=[^\\[\\]])",
-          "end": "(?=[\\[\\]])",
+          "end": "(?=(?<!\\\\)[\\[\\]])",
           "contentName": "meta.embedded.block.code.ts.bst source.ts",
           "patterns": [
+            {
+              "include": "#escapes"
+            },
             {
               "include": "source.ts"
             }
@@ -889,10 +986,23 @@
       "patterns": [
         {
           "name": "meta.embedded.block.code.py.bst",
+          "begin": "(?<!\\\\)\\[",
+          "end": "(?<!\\\\)\\]",
+          "patterns": [
+            {
+              "include": "#embedded-code-py"
+            }
+          ]
+        },
+        {
+          "name": "meta.embedded.block.code.py.bst",
           "begin": "(?=[^\\[\\]])",
-          "end": "(?=[\\[\\]])",
+          "end": "(?=(?<!\\\\)[\\[\\]])",
           "contentName": "meta.embedded.block.code.py.bst source.python",
           "patterns": [
+            {
+              "include": "#escapes"
+            },
             {
               "include": "source.python"
             }
@@ -904,10 +1014,23 @@
       "patterns": [
         {
           "name": "meta.embedded.block.code.bstlang.bst",
+          "begin": "(?<!\\\\)\\[",
+          "end": "(?<!\\\\)\\]",
+          "patterns": [
+            {
+              "include": "#embedded-code-beanstalk"
+            }
+          ]
+        },
+        {
+          "name": "meta.embedded.block.code.bstlang.bst",
           "begin": "(?=[^\\[\\]])",
-          "end": "(?=[\\[\\]])",
+          "end": "(?=(?<!\\\\)[\\[\\]])",
           "contentName": "meta.embedded.block.code.bstlang.bst source.bst.embedded",
           "patterns": [
+            {
+              "include": "#escapes"
+            },
             {
               "include": "#code-beanstalk-fragment"
             }
@@ -919,10 +1042,23 @@
       "patterns": [
         {
           "name": "meta.embedded.block.code.generic.bst",
+          "begin": "(?<!\\\\)\\[",
+          "end": "(?<!\\\\)\\]",
+          "patterns": [
+            {
+              "include": "#embedded-code-generic"
+            }
+          ]
+        },
+        {
+          "name": "meta.embedded.block.code.generic.bst",
           "begin": "(?=[^\\[\\]])",
-          "end": "(?=[\\[\\]])",
+          "end": "(?=(?<!\\\\)[\\[\\]])",
           "contentName": "meta.embedded.block.code.generic.bst source.code.generic.bst",
           "patterns": [
+            {
+              "include": "#escapes"
+            },
             {
               "include": "#code-generic-fragment"
             }
@@ -1035,7 +1171,12 @@
             "0": {
               "name": "punctuation.definition.string.end.bst"
             }
-          }
+          },
+          "patterns": [
+            {
+              "include": "#escapes"
+            }
+          ]
         }
       ]
     },
@@ -1056,6 +1197,9 @@
             }
           },
           "patterns": [
+            {
+              "include": "#escapes"
+            },
             {
               "name": "constant.character.escape.bst",
               "match": "\\\\."
@@ -1081,6 +1225,9 @@
             }
           },
           "patterns": [
+            {
+              "include": "#escapes"
+            },
             {
               "name": "constant.character.escape.bst",
               "match": "\\\\."

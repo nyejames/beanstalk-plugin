@@ -52,8 +52,9 @@ Templates now separate head and body regions with dedicated scopes:
 
 Slot syntax is visually distinct:
 
-- Body slot markers like `[..]` / `[ .... ]` -> `meta.template.slot.marker.bst`
-- Labeled slot targets like `$1`, `$2` in heads -> `entity.name.template.slot.label.bst`
+- Body slot markers like `[$slot]` and `[$slot("name")]` -> `meta.template.slot.marker.bst`
+- Slot directives with explicit names in heads (for example `$insert("style")`) -> `meta.template.slot.directive.bst`
+- Removed legacy markers like `[..]` are highlighted as deprecated/invalid
 
 ## Directive-Gated Body Highlighting
 

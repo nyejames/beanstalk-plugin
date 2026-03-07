@@ -178,20 +178,36 @@ test("template scopes define head/body and slot-specific highlighting", () => {
     "meta.template.head.bst",
     "meta.template.body.bst",
     "meta.template.slot.marker.bst",
-    "entity.name.template.slot.label.bst"
+    "meta.template.slot.directive.bst"
   ]) {
     assert.ok(findPatternByName(scopeName), `expected scope '${scopeName}'`);
   }
 
   const slotPattern = findPatternByName("meta.template.slot.marker.bst");
   const slotRegex = new RegExp(slotPattern.match);
-  assert.ok(slotRegex.test("[..]"));
-  assert.ok(slotRegex.test("[   ....   ]"));
+  assert.ok(slotRegex.test("[$slot]"));
+  assert.ok(slotRegex.test("[   $slot   ]"));
+  assert.ok(slotRegex.test("[$slot(\"style\")]"));
+  assert.ok(slotRegex.test("[   $slot ( \"style\" )   ]"));
+  assert.ok(!slotRegex.test("[..]"));
+  assert.ok(!slotRegex.test("[$insert(\"style\")]"));
   assert.ok(!slotRegex.test("[.]"));
 
-  const slotTargetPattern = findPatternByName("entity.name.template.slot.label.bst");
-  assert.ok(new RegExp(slotTargetPattern.match).test("$1"));
-  assert.ok(new RegExp(slotTargetPattern.match).test("$22"));
+  const legacySlotPattern = findPatternByName("invalid.deprecated.template.slot.marker.bst");
+  assert.ok(legacySlotPattern, "expected legacy slot fallback to be marked invalid");
+  const legacySlotRegex = new RegExp(legacySlotPattern.match);
+  assert.ok(legacySlotRegex.test("[..]"));
+  assert.ok(legacySlotRegex.test("[   ....   ]"));
+  assert.ok(!legacySlotRegex.test("[$slot]"));
+
+  const slotDirectivePattern = findPatternByName("meta.template.slot.directive.bst");
+  const slotDirectiveRegex = new RegExp(`^${slotDirectivePattern.match}$`);
+  assert.ok(slotDirectiveRegex.test("$slot(\"style\")"));
+  assert.ok(slotDirectiveRegex.test("$insert(\"style\")"));
+  assert.ok(!slotDirectiveRegex.test("$slot"));
+  assert.ok(!slotDirectiveRegex.test("$1"));
+
+  assert.equal(findPatternByName("entity.name.template.slot.label.bst"), null);
 });
 
 test("directive-gated template contexts support markdown/code and common last-wins ordering", () => {
@@ -214,6 +230,186 @@ test("directive-gated template contexts support markdown/code and common last-wi
 
   assert.ok(jsBegin.test("[$markdown, $code(\"js\"): body]"));
   assert.ok(markdownBegin.test("[$code(\"js\"), $markdown: body]"));
+});
+
+test("escaped brackets do not open or close templates", () => {
+  const beginSamples = [
+    ["template-code-js", "[$code(\"js\"): body]", "\\[$code(\"js\"): body]"],
+    ["template-code-ts", "[$code(\"ts\"): body]", "\\[$code(\"ts\"): body]"],
+    ["template-code-py", "[$code(\"py\"): body]", "\\[$code(\"py\"): body]"],
+    ["template-code-beanstalk", "[$code(\"bst\"): body]", "\\[$code(\"bst\"): body]"],
+    ["template-code-generic", "[$code: body]", "\\[$code: body]"],
+    ["template-markdown", "[$markdown: body]", "\\[$markdown: body]"],
+    ["template-generic", "[: body]", "\\[: body]"]
+  ];
+
+  for (const [repositoryKey, openSample, escapedOpenSample] of beginSamples) {
+    const templatePattern = grammar.repository[repositoryKey].patterns[0];
+    const beginRegex = new RegExp(templatePattern.begin);
+    const endRegex = new RegExp(templatePattern.end);
+
+    assert.ok(beginRegex.test(openSample), `${repositoryKey} should open on unescaped '['`);
+    assert.ok(!beginRegex.test(escapedOpenSample), `${repositoryKey} should ignore escaped '['`);
+    assert.ok(endRegex.test("]"), `${repositoryKey} should close on unescaped ']'`);
+    assert.ok(!endRegex.test("\\]"), `${repositoryKey} should ignore escaped ']'`);
+  }
+});
+
+test("template and embedded body splitters ignore escaped closing brackets", () => {
+  const templateBodyEndRegex = new RegExp(grammar.repository["template-body-code-js"].patterns[0].end);
+  assert.ok(templateBodyEndRegex.test("]"), "template body should end on unescaped ']'");
+  assert.ok(!templateBodyEndRegex.test("\\]"), "template body should ignore escaped ']'");
+
+  const embeddedJsBody = grammar.repository["embedded-code-js"].patterns.find(
+    (pattern) => pattern.contentName === "meta.embedded.block.code.js.bst source.js"
+  );
+  assert.ok(embeddedJsBody, "expected JS embedded body pattern");
+
+  const embeddedBodyEndRegex = new RegExp(embeddedJsBody.end);
+  assert.ok(embeddedBodyEndRegex.test("]"), "embedded code body should split on unescaped ']'");
+  assert.ok(!embeddedBodyEndRegex.test("\\]"), "embedded code body should ignore escaped ']'");
+});
+
+test("code template bodies prioritize embedded parsing before generic template fallback", () => {
+  for (const [repositoryKey, embeddedInclude] of [
+    ["template-body-code-js", "#embedded-code-js"],
+    ["template-body-code-ts", "#embedded-code-ts"],
+    ["template-body-code-py", "#embedded-code-py"],
+    ["template-body-code-beanstalk", "#embedded-code-beanstalk"],
+    ["template-body-code-generic", "#embedded-code-generic"]
+  ]) {
+    const bodyPattern = grammar.repository[repositoryKey].patterns[0];
+    const includes = bodyPattern.patterns.map((pattern) => pattern.include).filter(Boolean);
+
+    assert.ok(includes.includes("#template-generic"), `${repositoryKey} should include #template-generic fallback`);
+    assert.ok(includes.includes(embeddedInclude), `${repositoryKey} should include ${embeddedInclude}`);
+    assert.ok(
+      includes.indexOf(embeddedInclude) < includes.indexOf("#template-generic"),
+      `${repositoryKey} should parse embedded content before generic template fallback`
+    );
+  }
+});
+
+test("markdown template bodies assign paragraph scopes without template string fallback", () => {
+  const bodyPattern = grammar.repository["template-body-markdown"].patterns[0];
+  const bodyIncludes = bodyPattern.patterns.map((pattern) => pattern.include).filter(Boolean);
+  assert.ok(bodyIncludes.includes("#embedded-markdown"), "template-body-markdown should include #embedded-markdown");
+
+  const markdownEmbedding = grammar.repository["embedded-markdown"].patterns.find(
+    (pattern) =>
+      pattern.name === "meta.embedded.block.markdown.bst" &&
+      typeof pattern.contentName === "string" &&
+      pattern.contentName.includes("text.html.markdown")
+  );
+
+  assert.ok(markdownEmbedding, "expected markdown embedded body pattern");
+
+  const paragraphPatterns = (markdownEmbedding.patterns || []).filter(
+    (pattern) => pattern.name === "meta.paragraph.markdown"
+  );
+  assert.ok(paragraphPatterns.length >= 2, "expected markdown paragraph fallback patterns");
+
+  const headingPattern = (markdownEmbedding.patterns || []).find(
+    (pattern) => pattern.name === "markup.heading.markdown"
+  );
+  assert.ok(headingPattern, "expected markdown heading pattern");
+  const headingRegex = new RegExp(headingPattern.match, "m");
+  assert.ok(headingRegex.test("# Title"));
+  assert.ok(headingRegex.test("        ### Indented Title"));
+
+  const paragraphRunPattern = paragraphPatterns.find((pattern) => pattern.match === "[^\\[\\]`*\\n]+");
+  assert.ok(paragraphRunPattern, "expected markdown paragraph run pattern to avoid inline delimiter and newline greed");
+
+  const paragraphSingleCharPattern = paragraphPatterns.find((pattern) => pattern.match === "[^\\[\\]\\n]");
+  assert.ok(paragraphSingleCharPattern, "expected markdown paragraph single-char fallback pattern");
+
+  const paragraphRunRegex = new RegExp("^" + paragraphRunPattern.match + "$");
+  assert.ok(paragraphRunRegex.test("plain markdown text"));
+  assert.ok(!paragraphRunRegex.test("*italic*"));
+  assert.ok(!paragraphRunRegex.test("**bold**"));
+  assert.ok(!paragraphRunRegex.test(" **bold**"));
+
+  const markdownIncludes = (markdownEmbedding.patterns || []).map((pattern) => pattern.include).filter(Boolean);
+  assert.ok(
+    !markdownIncludes.includes("text.html.markdown"),
+    "embedded markdown should avoid full markdown include that can consume template delimiters"
+  );
+  assert.ok(
+    !(markdownEmbedding.patterns || []).some(
+      (pattern) => typeof pattern.name === "string" && pattern.name.includes("string.unquoted.template.body.bst")
+    ),
+    "embedded markdown should avoid template string fallback scopes for plain text"
+  );
+});
+
+test("embedded code modes recurse over balanced square brackets", () => {
+  for (const repositoryKey of [
+    "embedded-code-js",
+    "embedded-code-ts",
+    "embedded-code-py",
+    "embedded-code-beanstalk",
+    "embedded-code-generic"
+  ]) {
+    const recursiveBracketPattern = grammar.repository[repositoryKey].patterns.find(
+      (pattern) =>
+        pattern.begin === "(?<!\\\\)\\[" &&
+        pattern.end === "(?<!\\\\)\\]" &&
+        Array.isArray(pattern.patterns) &&
+        pattern.patterns.some((nestedPattern) => nestedPattern.include === `#${repositoryKey}`)
+    );
+
+    assert.ok(recursiveBracketPattern, `expected recursive square-bracket handling in ${repositoryKey}`);
+  }
+});
+
+test("escape patterns cover template bodies, embedded blocks, and string literals", () => {
+  const escapeRepo = grammar.repository.escapes;
+  assert.ok(escapeRepo, "expected escapes repository");
+  const escapePattern = escapeRepo.patterns.find((pattern) => pattern.name === "constant.character.escape.bst");
+  assert.ok(escapePattern, "expected escape pattern");
+
+  const escapeRegex = new RegExp("^" + escapePattern.match + "$");
+  assert.ok(escapeRegex.test("\\n"));
+  assert.ok(escapeRegex.test("\\a"));
+  assert.ok(escapeRegex.test("\\["));
+  assert.ok(escapeRegex.test("\\]"));
+  assert.ok(!escapeRegex.test("\\1"));
+
+  const templateHeadIncludes = grammar.repository["template-head"].patterns[0].patterns
+    .map((pattern) => pattern.include)
+    .filter(Boolean);
+  assert.ok(templateHeadIncludes.includes("#escapes"), "template head should include #escapes");
+
+  for (const repositoryKey of [
+    "template-body-generic",
+    "template-body-markdown",
+    "template-body-code-js",
+    "template-body-code-ts",
+    "template-body-code-py",
+    "template-body-code-beanstalk",
+    "template-body-code-generic"
+  ]) {
+    const bodyIncludes = grammar.repository[repositoryKey].patterns[0].patterns
+      .map((pattern) => pattern.include)
+      .filter(Boolean);
+    assert.ok(bodyIncludes.includes("#escapes"), `${repositoryKey} should include #escapes`);
+  }
+
+  for (const repositoryKey of [
+    "embedded-markdown",
+    "embedded-code-js",
+    "embedded-code-ts",
+    "embedded-code-py",
+    "embedded-code-beanstalk",
+    "embedded-code-generic"
+  ]) {
+    const hasEscapesInclude = grammar.repository[repositoryKey].patterns.some(
+      (pattern) =>
+        Array.isArray(pattern.patterns) &&
+        pattern.patterns.some((nestedPattern) => nestedPattern.include === "#escapes")
+    );
+    assert.ok(hasEscapesInclude, `${repositoryKey} should include #escapes`);
+  }
 });
 
 test("embedded language scopes are exposed in package.json", () => {
@@ -239,10 +435,16 @@ test("fixture contains expected scenarios for manual token inspection", () => {
     "import @styles/docs/{footer, navbar}",
     "import @styles/docs/ {footer, navbar}",
     "import @(styles/docs/ {footer, navbar})",
-    "[..]",
-    "[$1: first slot]",
+    "escaped_string = \"line\\\\n with \\\\a and \\\\[ and \\\\]\"",
+    "[$slot]",
+    "[$slot(\"style\")]",
+    "[$insert(\"style\"): color: blue;]",
     "$markdown",
+    "\\n escaped text \\[\\]",
+    "        ### Deep Indented Subtitle",
+    "escaped = \\a \\[ \\]",
     "$code(\"js\")",
+    "const nested = [1, [2, [3]]];",
     "$code(\"py\")",
     "$formatter(markdown, 10)"
   ]) {

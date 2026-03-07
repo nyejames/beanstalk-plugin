@@ -4,19 +4,19 @@ import @(styles/docs/{navbar, footer, title})
 Basic = |
     document String = [:
         <head>
-            [..]
+            [$slot]
             <style>
                 [default_style]
             </style>
         </head>
-        <body> [..]</body>
+        <body> [$slot]</body>
     ],
-    page String = [$markdown:<section>[:[..]][..][..][..]</section>],
+    page String = [$markdown:<section>[:[$slot]][$slot][$slot][$slot]</section>],
 
     -- Basic formatting
-    center String = [:<span align="center">[..]<span/>],
-    underline String = [:<u>[..]</u>],
-    strikethrough String = [:<s>[..]</s>],
+    center String = [:<span align="center">[$slot]<span/>],
+    underline String = [:<u>[$slot]</u>],
+    strikethrough String = [:<s>[$slot]</s>],
 |
 
 beans = "Hello, World!"
