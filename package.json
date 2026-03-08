@@ -2,18 +2,17 @@
   "name": "beanstalk-plugin",
   "displayName": "Beanstalk",
   "description": "Language support and syntax highlighting for Beanstalk",
-  "version": "0.1.94",
+  "version": "0.1.95",
   "files": [
     "package.json",
     "syntaxes/bst.tmLanguage.json",
     "language-configuration.json",
-    "icon.png",
-    "icons/bst-logo.png",
+    "icons/icon.png",
     "LICENSE"
   ],
   "publisher": "Nye",
   "license": "Apache-2.0",
-  "icon": "./icon.png",
+  "icon": "./icons/icon.png",
   "engines": {
     "vscode": "^1.95.0"
   },
@@ -31,8 +30,8 @@
       "extensions": ["bst"],
       "configuration": "./language-configuration.json",
       "icon": {
-        "light": "./icons/bst-logo.png",
-        "dark": "./icons/bst-logo.png"
+        "light": "./icons/icon.png",
+        "dark": "./icons/icon.png"
       }
     }],
     "grammars": [{

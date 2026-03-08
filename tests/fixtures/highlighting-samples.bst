@@ -33,6 +33,9 @@ markdown_view = [$code("js"), $markdown:
 # Title
 some text
 and then *italic* **bold** text
+check link @https://example.com/docs (Project Docs)
+check route @/docs/getting-started (Guide)
+
 \n escaped text \[\]
 ## Subtitle
         ### Deep Indented Subtitle
@@ -70,6 +73,20 @@ def run():
     return 1
 ]
 
-styled = [$[: Prefix], $ignore, $formatter(markdown, 10):
+styled = [$children([: Prefix]), $slot, $ignore:
 Body content
 ]
+
+note_template = [$note[
+Remember this [nested [note]] and ignore output.
+]]
+
+todo_template = [$todo[
+Follow up on [rendering [edge cases]] next.
+]]
+
+doc_template = [$doc[
+# Template Docs
+Use @https://example.com/docs (Project Docs) for setup.
+Brackets [stay [inside]] this doc block.
+]]

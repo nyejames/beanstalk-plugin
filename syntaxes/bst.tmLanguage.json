@@ -406,7 +406,13 @@
               "include": "#escapes"
             },
             {
-              "include": "#template-style-child"
+              "include": "#template-doc-directive"
+            },
+            {
+              "include": "#template-note-todo-directive"
+            },
+            {
+              "include": "#template-children-directive"
             },
             {
               "include": "#path-literals"
@@ -462,28 +468,236 @@
         }
       ]
     },
-    "template-style-child": {
+    "template-children-directive": {
       "patterns": [
         {
-          "name": "meta.template.style-child.bst",
-          "begin": "\\$\\[",
+          "name": "meta.template.children.directive.bst",
+          "begin": "(\\$children)(\\s*\\()",
           "beginCaptures": {
-            "0": {
-              "name": "punctuation.definition.template.style-child.begin.bst"
+            "1": {
+              "name": "keyword.other.template.children.directive.bst keyword.control.directive.template.bst"
+            },
+            "2": {
+              "name": "punctuation.section.group.begin.bst"
             }
           },
-          "end": "(?<!\\\\)\\]",
+          "end": "(\\))",
           "endCaptures": {
-            "0": {
-              "name": "punctuation.definition.template.style-child.end.bst"
+            "1": {
+              "name": "punctuation.section.group.end.bst"
             }
           },
           "patterns": [
             {
-              "include": "#template-head"
+              "include": "#escapes"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-markdown"
             },
             {
               "include": "#template-body-generic"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "include": "#path-literals"
+            },
+            {
+              "include": "#template-slot-directive"
+            },
+            {
+              "include": "#template-head-directives"
+            },
+            {
+              "include": "#raw-strings"
+            },
+            {
+              "include": "#strings"
+            },
+            {
+              "include": "#chars"
+            },
+            {
+              "include": "#numbers"
+            },
+            {
+              "include": "#keywords"
+            },
+            {
+              "include": "#types"
+            },
+            {
+              "include": "#operators"
+            },
+            {
+              "include": "#punctuation"
+            },
+            {
+              "include": "#constants"
+            },
+            {
+              "include": "#type-identifiers"
+            },
+            {
+              "include": "#identifiers"
+            },
+            {
+              "name": "text.whitespace.bst",
+              "match": "\\s+"
+            }
+          ]
+        }
+      ]
+    },
+    "template-note-todo-directive": {
+      "patterns": [
+        {
+          "name": "meta.template.comment.directive.bst",
+          "begin": "(\\$(?:note|todo))(\\s*)(?<!\\\\)(\\[)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.other.template.comment.directive.bst keyword.control.directive.template.bst"
+            },
+            "3": {
+              "name": "punctuation.definition.comment.begin.bst"
+            }
+          },
+          "end": "(?<!\\\\)(\\])",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.comment.end.bst"
+            }
+          },
+          "contentName": "comment.block.template.directive.bst",
+          "patterns": [
+            {
+              "include": "#template-note-todo-nested-brackets"
+            },
+            {
+              "include": "#escapes"
+            },
+            {
+              "name": "comment.block.template.directive.bst",
+              "match": "[^\\[\\]\\n]+"
+            },
+            {
+              "name": "comment.block.template.directive.bst",
+              "match": "[^\\[\\]]"
+            }
+          ]
+        }
+      ]
+    },
+    "template-note-todo-nested-brackets": {
+      "patterns": [
+        {
+          "name": "comment.block.template.directive.bst",
+          "begin": "(?<!\\\\)(\\[)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.comment.begin.bst"
+            }
+          },
+          "end": "(?<!\\\\)(\\])",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.comment.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-note-todo-nested-brackets"
+            },
+            {
+              "include": "#escapes"
+            },
+            {
+              "name": "comment.block.template.directive.bst",
+              "match": "[^\\[\\]\\n]+"
+            },
+            {
+              "name": "comment.block.template.directive.bst",
+              "match": "[^\\[\\]]"
+            }
+          ]
+        }
+      ]
+    },
+    "template-doc-directive": {
+      "patterns": [
+        {
+          "name": "meta.template.doc.directive.bst",
+          "begin": "(\\$doc)(\\s*)(?<!\\\\)(\\[)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.other.template.doc.directive.bst keyword.control.directive.template.bst"
+            },
+            "3": {
+              "name": "punctuation.definition.comment.begin.bst"
+            }
+          },
+          "end": "(?<!\\\\)(\\])",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.comment.end.bst"
+            }
+          },
+          "contentName": "comment.block.documentation.template.bst",
+          "patterns": [
+            {
+              "include": "#template-doc-nested-brackets"
+            },
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#markdown-fragment"
+            }
+          ]
+        }
+      ]
+    },
+    "template-doc-nested-brackets": {
+      "patterns": [
+        {
+          "name": "comment.block.documentation.template.bst",
+          "begin": "(?<!\\\\)(\\[)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.comment.begin.bst"
+            }
+          },
+          "end": "(?<!\\\\)(\\])",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.comment.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-doc-nested-brackets"
+            },
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#markdown-fragment"
             }
           ]
         }
@@ -501,7 +715,16 @@
       "patterns": [
         {
           "name": "meta.template.slot.directive.bst",
-          "match": "(\\$(?:slot|insert))(\\s*\\()(\\s*\"(?:[^\"\\\\]|\\\\.)*\"\\s*)(\\))",
+          "match": "\\$slot\\b",
+          "captures": {
+            "0": {
+              "name": "keyword.other.template.slot.directive.bst keyword.control.directive.template.bst"
+            }
+          }
+        },
+        {
+          "name": "meta.template.slot.directive.bst",
+          "match": "(\\$insert)(\\s*\\()(\\s*\"(?:[^\"\\\\]|\\\\.)*\"\\s*)(\\))",
           "captures": {
             "1": {
               "name": "keyword.other.template.slot.directive.bst keyword.control.directive.template.bst"
@@ -899,30 +1122,61 @@
               "include": "#escapes"
             },
             {
-              "name": "markup.heading.markdown",
-              "match": "^\\s*#{1,6}\\s+.*$"
-            },
-            {
-              "name": "markup.bold.markdown",
-              "match": "\\*\\*[^*\\n]+\\*\\*"
-            },
-            {
-              "name": "markup.italic.markdown",
-              "match": "(?<!\\*)\\*[^*\\n]+\\*(?!\\*)"
-            },
-            {
-              "name": "markup.inline.raw.string.markdown",
-              "match": "`[^`\\n]+`"
-            },
-            {
-              "name": "meta.paragraph.markdown",
-              "match": "[^\\[\\]`*\\n]+"
-            },
-            {
-              "name": "meta.paragraph.markdown",
-              "match": "[^\\[\\]\\n]"
+              "include": "#markdown-fragment"
             }
           ]
+        }
+      ]
+    },
+    "markdown-fragment": {
+      "patterns": [
+        {
+          "name": "markup.heading.markdown",
+          "match": "^\\s*#{1,6}\\s+.*$"
+        },
+        {
+          "name": "meta.link.inline.markdown.bst",
+          "match": "(?<!\\S)(@)((?:[A-Za-z][A-Za-z0-9+.-]*:|//|/|\\.\\./|\\./|#|\\?)[^\\s()\\[\\]]*)([ \\t]+)(\\()([^()\\n]*\\S[^()\\n]*)(\\))",
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.link.begin.markdown"
+            },
+            "2": {
+              "name": "markup.underline.link.markdown"
+            },
+            "3": {
+              "name": "text.whitespace.bst"
+            },
+            "4": {
+              "name": "punctuation.definition.metadata.begin.markdown"
+            },
+            "5": {
+              "name": "string.other.link.description.title.markdown"
+            },
+            "6": {
+              "name": "punctuation.definition.metadata.end.markdown"
+            }
+          }
+        },
+        {
+          "name": "markup.bold.markdown",
+          "match": "\\*\\*[^*\\n]+\\*\\*"
+        },
+        {
+          "name": "markup.italic.markdown",
+          "match": "(?<!\\*)\\*[^*\\n]+\\*(?!\\*)"
+        },
+        {
+          "name": "markup.inline.raw.string.markdown",
+          "match": "`[^`\\n]+`"
+        },
+        {
+          "name": "meta.paragraph.markdown",
+          "match": "[^\\[\\]`*@\\n]+"
+        },
+        {
+          "name": "meta.paragraph.markdown",
+          "match": "[^\\[\\]\\n]"
         }
       ]
     },

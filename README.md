@@ -53,8 +53,10 @@ Templates now separate head and body regions with dedicated scopes:
 Slot syntax is visually distinct:
 
 - Body slot markers like `[$slot]` and `[$slot("name")]` -> `meta.template.slot.marker.bst`
-- Slot directives with explicit names in heads (for example `$insert("style")`) -> `meta.template.slot.directive.bst`
+- Head slot/style directives like `$slot`, `$insert("style")`, and `$children(...)` -> directive-specific template scopes
+- Head comment directives `$note[...]`, `$todo[...]`, and `$doc[...]` use balanced square brackets
 - Removed legacy markers like `[..]` are highlighted as deprecated/invalid
+- Legacy `$[...]` style-child syntax is no longer recognized in template heads
 
 ## Directive-Gated Body Highlighting
 
@@ -70,6 +72,20 @@ Template body highlighting is gated by formatter directives in template heads:
 Mixed `$markdown` and `$code(...)` directives use a TextMate lookahead heuristic to mimic last-directive-wins for common patterns.
 
 `$formatter(...)` remains neutrally directive-highlighted (not marked invalid).
+
+## Markdown Links
+
+Inside `$markdown` bodies (and `$doc[...]` blocks), custom links are highlighted with:
+
+- `@target (label)`
+
+Rules:
+
+- `@` must be immediately followed by `target`
+- `target` must start with one of: `scheme:`, `//`, `/`, `./`, `../`, `#`, `?`
+- `target` ends at whitespace before `(`
+- `label` must be non-empty
+- A non-whitespace character directly before `@` prevents link parsing
 
 ## Known Limits
 

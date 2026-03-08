@@ -178,10 +178,15 @@ test("template scopes define head/body and slot-specific highlighting", () => {
     "meta.template.head.bst",
     "meta.template.body.bst",
     "meta.template.slot.marker.bst",
-    "meta.template.slot.directive.bst"
+    "meta.template.slot.directive.bst",
+    "meta.template.children.directive.bst",
+    "meta.template.comment.directive.bst",
+    "meta.template.doc.directive.bst"
   ]) {
     assert.ok(findPatternByName(scopeName), `expected scope '${scopeName}'`);
   }
+
+  assert.equal(grammar.repository["template-style-child"], undefined);
 
   const slotPattern = findPatternByName("meta.template.slot.marker.bst");
   const slotRegex = new RegExp(slotPattern.match);
@@ -200,12 +205,32 @@ test("template scopes define head/body and slot-specific highlighting", () => {
   assert.ok(legacySlotRegex.test("[   ....   ]"));
   assert.ok(!legacySlotRegex.test("[$slot]"));
 
-  const slotDirectivePattern = findPatternByName("meta.template.slot.directive.bst");
-  const slotDirectiveRegex = new RegExp(`^${slotDirectivePattern.match}$`);
-  assert.ok(slotDirectiveRegex.test("$slot(\"style\")"));
-  assert.ok(slotDirectiveRegex.test("$insert(\"style\")"));
-  assert.ok(!slotDirectiveRegex.test("$slot"));
-  assert.ok(!slotDirectiveRegex.test("$1"));
+  const slotDirectivePatterns = findPatternsByName("meta.template.slot.directive.bst");
+  assert.ok(slotDirectivePatterns.length >= 2, "expected distinct $slot and $insert directive patterns");
+
+  const anchoredSlotDirectiveRegexes = slotDirectivePatterns
+    .map((pattern) => pattern.match)
+    .filter(Boolean)
+    .map((match) => new RegExp(`^${match}$`));
+  assert.ok(anchoredSlotDirectiveRegexes.some((regex) => regex.test("$slot")));
+  assert.ok(anchoredSlotDirectiveRegexes.some((regex) => regex.test("$insert(\"style\")")));
+  assert.ok(!anchoredSlotDirectiveRegexes.some((regex) => regex.test("$slot(\"style\")")));
+  assert.ok(!anchoredSlotDirectiveRegexes.some((regex) => regex.test("$1")));
+
+  const childrenDirectivePattern = findPatternByName("meta.template.children.directive.bst");
+  assert.ok(childrenDirectivePattern, "expected $children directive pattern");
+  assert.ok(new RegExp(childrenDirectivePattern.begin).test("$children(\"style\")"));
+  assert.ok(new RegExp(childrenDirectivePattern.begin).test("$children([: Prefix])"));
+
+  const noteTodoDirectivePattern = findPatternByName("meta.template.comment.directive.bst");
+  assert.ok(noteTodoDirectivePattern, "expected $note/$todo directive pattern");
+  const noteTodoBeginRegex = new RegExp(noteTodoDirectivePattern.begin);
+  assert.ok(noteTodoBeginRegex.test("$note["));
+  assert.ok(noteTodoBeginRegex.test("$todo ["));
+
+  const docDirectivePattern = findPatternByName("meta.template.doc.directive.bst");
+  assert.ok(docDirectivePattern, "expected $doc directive pattern");
+  assert.ok(new RegExp(docDirectivePattern.begin).test("$doc["));
 
   assert.equal(findPatternByName("entity.name.template.slot.label.bst"), null);
 });
@@ -304,12 +329,16 @@ test("markdown template bodies assign paragraph scopes without template string f
 
   assert.ok(markdownEmbedding, "expected markdown embedded body pattern");
 
-  const paragraphPatterns = (markdownEmbedding.patterns || []).filter(
+  const markdownFragment = grammar.repository["markdown-fragment"];
+  assert.ok(markdownFragment, "expected reusable markdown fragment repository");
+
+  const fragmentPatterns = markdownFragment.patterns || [];
+  const paragraphPatterns = fragmentPatterns.filter(
     (pattern) => pattern.name === "meta.paragraph.markdown"
   );
   assert.ok(paragraphPatterns.length >= 2, "expected markdown paragraph fallback patterns");
 
-  const headingPattern = (markdownEmbedding.patterns || []).find(
+  const headingPattern = fragmentPatterns.find(
     (pattern) => pattern.name === "markup.heading.markdown"
   );
   assert.ok(headingPattern, "expected markdown heading pattern");
@@ -317,7 +346,23 @@ test("markdown template bodies assign paragraph scopes without template string f
   assert.ok(headingRegex.test("# Title"));
   assert.ok(headingRegex.test("        ### Indented Title"));
 
-  const paragraphRunPattern = paragraphPatterns.find((pattern) => pattern.match === "[^\\[\\]`*\\n]+");
+  const markdownLinkPattern = fragmentPatterns.find(
+    (pattern) => pattern.name === "meta.link.inline.markdown.bst"
+  );
+  assert.ok(markdownLinkPattern, "expected custom markdown @target (label) link pattern");
+  const markdownLinkRegex = new RegExp(`^${markdownLinkPattern.match}$`);
+  assert.ok(markdownLinkRegex.test("@https://example.com/docs (Docs)"));
+  assert.ok(markdownLinkRegex.test("@/docs/intro (Intro)"));
+  assert.ok(markdownLinkRegex.test("@./local/path (Local)"));
+  assert.ok(markdownLinkRegex.test("@../parent/path (Parent)"));
+  assert.ok(markdownLinkRegex.test("@#section (Section)"));
+  assert.ok(markdownLinkRegex.test("@?tab=overview (Overview)"));
+  assert.ok(!markdownLinkRegex.test("x@https://example.com (Docs)"));
+  assert.ok(!markdownLinkRegex.test("@https://example.com(Docs)"));
+  assert.ok(!markdownLinkRegex.test("@https://example.com ()"));
+  assert.ok(!markdownLinkRegex.test("@invalid-target (Docs)"));
+
+  const paragraphRunPattern = paragraphPatterns.find((pattern) => pattern.match === "[^\\[\\]`*@\\n]+");
   assert.ok(paragraphRunPattern, "expected markdown paragraph run pattern to avoid inline delimiter and newline greed");
 
   const paragraphSingleCharPattern = paragraphPatterns.find((pattern) => pattern.match === "[^\\[\\]\\n]");
@@ -330,6 +375,7 @@ test("markdown template bodies assign paragraph scopes without template string f
   assert.ok(!paragraphRunRegex.test(" **bold**"));
 
   const markdownIncludes = (markdownEmbedding.patterns || []).map((pattern) => pattern.include).filter(Boolean);
+  assert.ok(markdownIncludes.includes("#markdown-fragment"));
   assert.ok(
     !markdownIncludes.includes("text.html.markdown"),
     "embedded markdown should avoid full markdown include that can consume template delimiters"
@@ -439,7 +485,14 @@ test("fixture contains expected scenarios for manual token inspection", () => {
     "[$slot]",
     "[$slot(\"style\")]",
     "[$insert(\"style\"): color: blue;]",
+    "$slot",
+    "$children([: Prefix])",
+    "$note[",
+    "$todo[",
+    "$doc[",
     "$markdown",
+    "@https://example.com/docs (Project Docs)",
+    "@/docs/getting-started (Guide)",
     "\\n escaped text \\[\\]",
     "        ### Deep Indented Subtitle",
     "escaped = \\a \\[ \\]",
