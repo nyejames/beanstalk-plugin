@@ -63,13 +63,16 @@ Slot syntax is visually distinct:
 Template body highlighting is gated by formatter directives in template heads:
 
 - `$markdown` -> `meta.embedded.block.markdown.bst`
+- `$css` -> `meta.embedded.block.css.bst`
 - `$code` -> `meta.embedded.block.code.generic.bst`
 - `$code("bst")` / `$code("beanstalk")` -> Beanstalk-flavoured code scopes
 - `$code("js")` / `$code("javascript")` -> JS embedded scopes
 - `$code("ts")` / `$code("typescript")` -> TS embedded scopes
 - `$code("py")` / `$code("python")` -> Python embedded scopes
 
-Mixed `$markdown` and `$code(...)` directives use a TextMate lookahead heuristic to mimic last-directive-wins for common patterns.
+Mixed `$markdown`, `$css`, and `$code(...)` directives use a TextMate lookahead heuristic to mimic last-directive-wins for common patterns.
+
+`$css` templates treat the template body as CSS with balanced square-bracket parsing and do not parse child templates inside that body.
 
 `$formatter(...)` remains neutrally directive-highlighted (not marked invalid).
 

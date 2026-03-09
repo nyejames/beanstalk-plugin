@@ -28,6 +28,9 @@
       "include": "#template-code-generic"
     },
     {
+      "include": "#template-css"
+    },
+    {
       "include": "#template-markdown"
     },
     {
@@ -207,7 +210,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.js.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:js|javascript)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:js|javascript)\"\\s*\\)[^\\]]*\\$(?:markdown|code)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:js|javascript)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:js|javascript)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -234,7 +237,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.ts.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:ts|typescript)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:ts|typescript)\"\\s*\\)[^\\]]*\\$(?:markdown|code)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:ts|typescript)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:ts|typescript)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -261,7 +264,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.py.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:py|python)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:py|python)\"\\s*\\)[^\\]]*\\$(?:markdown|code)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:py|python)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:py|python)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -288,7 +291,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.bstlang.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:bst|beanstalk)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:bst|beanstalk)\"\\s*\\)[^\\]]*\\$(?:markdown|code)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:bst|beanstalk)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:bst|beanstalk)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -315,7 +318,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.generic.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\b)(?![^\\]]*\\$code\\b[^\\]]*\\$(?:markdown|code)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\b)(?![^\\]]*\\$code\\b[^\\]]*\\$(?:markdown|code|css)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -338,11 +341,38 @@
         }
       ]
     },
+    "template-css": {
+      "patterns": [
+        {
+          "name": "meta.template.bst meta.template.css.bst",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$css\\b)(?![^\\]]*\\$css\\b[^\\]]*\\$(?:markdown|code|css)\\b)",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "(?<!\\\\)\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-head"
+            },
+            {
+              "include": "#template-body-css"
+            }
+          ]
+        }
+      ]
+    },
     "template-markdown": {
       "patterns": [
         {
           "name": "meta.template.bst meta.template.markdown.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$markdown\\b)(?![^\\]]*\\$markdown\\b[^\\]]*\\$(?:markdown|code)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$markdown\\b)(?![^\\]]*\\$markdown\\b[^\\]]*\\$(?:markdown|code|css)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -505,6 +535,9 @@
             },
             {
               "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-css"
             },
             {
               "include": "#template-markdown"
@@ -821,6 +854,9 @@
               "include": "#template-code-generic"
             },
             {
+              "include": "#template-css"
+            },
+            {
               "include": "#template-markdown"
             },
             {
@@ -868,6 +904,9 @@
               "include": "#template-code-generic"
             },
             {
+              "include": "#template-css"
+            },
+            {
               "include": "#template-markdown"
             },
             {
@@ -875,6 +914,28 @@
             },
             {
               "include": "#embedded-markdown"
+            }
+          ]
+        }
+      ]
+    },
+    "template-body-css": {
+      "patterns": [
+        {
+          "name": "meta.template.body.bst",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+            }
+          },
+          "end": "(?=(?<!\\\\)\\])",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#embedded-css"
             }
           ]
         }
@@ -912,6 +973,9 @@
             },
             {
               "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-css"
             },
             {
               "include": "#template-markdown"
@@ -960,6 +1024,9 @@
               "include": "#template-code-generic"
             },
             {
+              "include": "#template-css"
+            },
+            {
               "include": "#template-markdown"
             },
             {
@@ -1004,6 +1071,9 @@
             },
             {
               "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-css"
             },
             {
               "include": "#template-markdown"
@@ -1052,6 +1122,9 @@
               "include": "#template-code-generic"
             },
             {
+              "include": "#template-css"
+            },
+            {
               "include": "#template-markdown"
             },
             {
@@ -1098,6 +1171,9 @@
               "include": "#template-code-generic"
             },
             {
+              "include": "#template-css"
+            },
+            {
               "include": "#template-markdown"
             },
             {
@@ -1123,6 +1199,34 @@
             },
             {
               "include": "#markdown-fragment"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-css": {
+      "patterns": [
+        {
+          "name": "meta.embedded.block.css.bst",
+          "begin": "(?<!\\\\)\\[",
+          "end": "(?<!\\\\)\\]",
+          "patterns": [
+            {
+              "include": "#embedded-css"
+            }
+          ]
+        },
+        {
+          "name": "meta.embedded.block.css.bst",
+          "begin": "(?=[^\\[\\]])",
+          "end": "(?=(?<!\\\\)[\\[\\]])",
+          "contentName": "meta.embedded.block.css.bst source.css",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "source.css"
             }
           ]
         }

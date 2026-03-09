@@ -45,6 +45,13 @@ more text
 
 ]
 
+css_view = [$css:
+.card {
+    color: red;
+    content: "[alpha [beta]]";
+}
+]
+
 code_generic = [$code:
 loop i in 0 to 10 by 2:
     io(i)
@@ -90,3 +97,61 @@ doc_template = [$doc[
 Use @https://example.com/docs (Project Docs) for setup.
 Brackets [stay [inside]] this doc block.
 ]]
+
+formatter_hint = [$formatter(markdown, 10):
+Body content
+]
+
+# default_style = [$css:
+    @charset "UTF-8";
+    :root {
+      color-scheme: light dark;
+      /* Default Background Colours */
+      --bst-bg-lightmode: #fff;
+      --bst-bg-darkmode: #13171f;
+      --bst-text-lightmode: #373c44;
+      --bst-text-darkmode: #e0e3e7;
+      --bst-font-family-emoji: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      --bst-line-height: 1.5;
+      --bst-font-weight: 400;
+      --bst-font-size: 100%;
+    }
+
+    @media (min-width: 1536px) {
+      :root {
+        --bst-font-size: 131.25%;
+      }
+      .container {
+        max-width: 1450px;
+      }
+    }
+
+    .bst-code-keyword {
+      color: var(--keyword-light);
+      color:light-dark( var(--keyword-light), var(--keyword-dark))
+    }
+    .bst-code-string {
+      color: var(--string-light);
+      color:light-dark( var(--string-light), var(--string-dark))
+    }
+
+    /* BASIC CSS RESET STUFF */
+
+    /**
+     * Document
+     * Content-box & Responsive typography
+    */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      background-repeat: no-repeat;
+    }
+
+    ::before,
+    ::after {
+      text-decoration: inherit;
+      vertical-align: inherit;
+    }
+]
+
