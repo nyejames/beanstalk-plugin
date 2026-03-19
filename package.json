@@ -2,7 +2,7 @@
   "name": "beanstalk-plugin",
   "displayName": "Beanstalk",
   "description": "Language support and syntax highlighting for Beanstalk",
-  "version": "0.1.96",
+  "version": "0.1.97",
   "files": [
     "package.json",
     "syntaxes/bst.tmLanguage.json",
@@ -41,6 +41,7 @@
       "embeddedLanguages": {
         "meta.embedded.block.markdown.bst": "markdown",
         "meta.embedded.block.css.bst": "css",
+        "meta.embedded.block.html.bst": "html",
         "meta.embedded.block.code.js.bst": "javascript",
         "meta.embedded.block.code.ts.bst": "typescript",
         "meta.embedded.block.code.py.bst": "python",

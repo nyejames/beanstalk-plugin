@@ -16,8 +16,18 @@ wrapper = [:
     ]
 ]
 
-title = [:
+#[:
+    stuff going on in here [$code("js"), "nested fella"]
+]
+
+title = [$html:
     <h1 style="[$slot("style")]">
+        [$slot]
+    </h1>
+]
+
+title = [$html:
+    <h1 style="[$slot("style"): pointless body for demo]">
         [$slot]
     </h1>
 ]
@@ -50,6 +60,16 @@ css_view = [$css:
     color: red;
     content: "[alpha [beta]]";
 }
+]
+
+html_view = [$html:
+<h1 style="[$slot("style")]">
+    [$slot]
+</h1>
+
+<div class = "[imported_class: and some more classes]">
+    ["string inside": [: nested template] [$code("bst")]]
+</div>
 ]
 
 code_generic = [$code:
@@ -154,4 +174,3 @@ Body content
       vertical-align: inherit;
     }
 ]
-

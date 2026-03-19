@@ -31,6 +31,9 @@
       "include": "#template-css"
     },
     {
+      "include": "#template-html"
+    },
+    {
       "include": "#template-markdown"
     },
     {
@@ -210,7 +213,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.js.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:js|javascript)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:js|javascript)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:js|javascript)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:js|javascript)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css|html)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -237,7 +240,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.ts.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:ts|typescript)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:ts|typescript)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:ts|typescript)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:ts|typescript)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css|html)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -264,7 +267,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.py.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:py|python)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:py|python)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:py|python)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:py|python)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css|html)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -291,7 +294,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.bstlang.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:bst|beanstalk)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:bst|beanstalk)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:bst|beanstalk)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:bst|beanstalk)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css|html)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -318,7 +321,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.generic.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\b)(?![^\\]]*\\$code\\b[^\\]]*\\$(?:markdown|code|css)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\b)(?![^\\]]*\\$code\\b[^\\]]*\\$(?:markdown|code|css|html)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -345,7 +348,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.css.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$css\\b)(?![^\\]]*\\$css\\b[^\\]]*\\$(?:markdown|code|css)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$css\\b)(?![^\\]]*\\$css\\b[^\\]]*\\$(?:markdown|code|css|html)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -368,11 +371,38 @@
         }
       ]
     },
+    "template-html": {
+      "patterns": [
+        {
+          "name": "meta.template.bst meta.template.html.bst",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$html\\b)(?![^\\]]*\\$html\\b[^\\]]*\\$(?:markdown|code|css|html)\\b)",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "(?<!\\\\)\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-head"
+            },
+            {
+              "include": "#template-body-html"
+            }
+          ]
+        }
+      ]
+    },
     "template-markdown": {
       "patterns": [
         {
           "name": "meta.template.bst meta.template.markdown.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$markdown\\b)(?![^\\]]*\\$markdown\\b[^\\]]*\\$(?:markdown|code|css)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$markdown\\b)(?![^\\]]*\\$markdown\\b[^\\]]*\\$(?:markdown|code|css|html)\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -538,6 +568,9 @@
             },
             {
               "include": "#template-css"
+            },
+            {
+              "include": "#template-html"
             },
             {
               "include": "#template-markdown"
@@ -779,7 +812,7 @@
       "patterns": [
         {
           "name": "meta.template.slot.marker.bst",
-          "match": "((?<!\\\\)\\[)([ \\t]*)(\\$slot)([ \\t]*)(\\((?:[ \\t]*\"(?:[^\"\\\\]|\\\\.)*\"[ \\t]*)\\))?([ \\t]*)((?<!\\\\)\\])",
+          "match": "((?<!\\\\)\\[)([ \\t]*)(\\$slot)([ \\t]*)(?:(\\()([ \\t]*)(\"(?:[^\"\\\\]|\\\\.)*\")([ \\t]*)(\\)))?([ \\t]*)((?<!\\\\)\\])",
           "captures": {
             "1": {
               "name": "punctuation.definition.slot.begin.bst"
@@ -788,9 +821,15 @@
               "name": "keyword.other.template.slot.fill.bst keyword.other.template.slot.directive.bst"
             },
             "5": {
-              "name": "meta.template.slot.argument.bst"
+              "name": "punctuation.section.group.begin.bst"
             },
             "7": {
+              "name": "string.quoted.double.bst"
+            },
+            "9": {
+              "name": "punctuation.section.group.end.bst"
+            },
+            "11": {
               "name": "punctuation.definition.slot.end.bst"
             }
           }
@@ -857,6 +896,9 @@
               "include": "#template-css"
             },
             {
+              "include": "#template-html"
+            },
+            {
               "include": "#template-markdown"
             },
             {
@@ -907,6 +949,9 @@
               "include": "#template-css"
             },
             {
+              "include": "#template-html"
+            },
+            {
               "include": "#template-markdown"
             },
             {
@@ -936,6 +981,58 @@
             },
             {
               "include": "#embedded-css"
+            }
+          ]
+        }
+      ]
+    },
+    "template-body-html": {
+      "patterns": [
+        {
+          "name": "meta.template.body.bst",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+            }
+          },
+          "end": "(?=(?<!\\\\)\\])",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-css"
+            },
+            {
+              "include": "#template-html"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "include": "#embedded-html"
             }
           ]
         }
@@ -976,6 +1073,9 @@
             },
             {
               "include": "#template-css"
+            },
+            {
+              "include": "#template-html"
             },
             {
               "include": "#template-markdown"
@@ -1027,6 +1127,9 @@
               "include": "#template-css"
             },
             {
+              "include": "#template-html"
+            },
+            {
               "include": "#template-markdown"
             },
             {
@@ -1074,6 +1177,9 @@
             },
             {
               "include": "#template-css"
+            },
+            {
+              "include": "#template-html"
             },
             {
               "include": "#template-markdown"
@@ -1125,6 +1231,9 @@
               "include": "#template-css"
             },
             {
+              "include": "#template-html"
+            },
+            {
               "include": "#template-markdown"
             },
             {
@@ -1172,6 +1281,9 @@
             },
             {
               "include": "#template-css"
+            },
+            {
+              "include": "#template-html"
             },
             {
               "include": "#template-markdown"
@@ -1229,6 +1341,298 @@
               "include": "source.css"
             }
           ]
+        }
+      ]
+    },
+    "embedded-html": {
+      "patterns": [
+        {
+          "name": "meta.embedded.block.html.bst",
+          "begin": "(?<!\\\\)\\[",
+          "end": "(?<!\\\\)\\]",
+          "patterns": [
+            {
+              "include": "#embedded-html"
+            }
+          ]
+        },
+        {
+          "name": "meta.embedded.block.html.bst",
+          "begin": "(?=[^\\[\\]])",
+          "end": "(?=(?<!\\\\)[\\[\\]])",
+          "contentName": "meta.embedded.block.html.bst text.html.basic",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-css"
+            },
+            {
+              "include": "#template-html"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "include": "#embedded-html-fragment"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-html-string-double": {
+      "patterns": [
+        {
+          "name": "meta.attribute.value.html.bst",
+          "begin": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.bst string.quoted.double.html.bst"
+            }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.bst string.quoted.double.html.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-css"
+            },
+            {
+              "include": "#template-html"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "name": "string.quoted.double.html.bst",
+              "match": "[^\"\\\\\\[]+"
+            },
+            {
+              "name": "string.quoted.double.html.bst",
+              "match": "[^\"\\\\]"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-html-string-single": {
+      "patterns": [
+        {
+          "name": "meta.attribute.value.html.bst",
+          "begin": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.bst string.quoted.single.html.bst"
+            }
+          },
+          "end": "'",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.bst string.quoted.single.html.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-css"
+            },
+            {
+              "include": "#template-html"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "name": "string.quoted.single.html.bst",
+              "match": "[^'\\\\\\[]+"
+            },
+            {
+              "name": "string.quoted.single.html.bst",
+              "match": "[^'\\\\]"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-html-fragment": {
+      "patterns": [
+        {
+          "name": "comment.block.html.bst",
+          "begin": "<!--",
+          "end": "-->",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "name": "comment.block.html.bst",
+              "match": "[^-]+"
+            },
+            {
+              "name": "comment.block.html.bst",
+              "match": "."
+            }
+          ]
+        },
+        {
+          "name": "meta.tag.html.bst",
+          "begin": "(</?)(?=[A-Za-z])",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.tag.begin.html"
+            }
+          },
+          "end": "(/?>)",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.tag.end.html"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#embedded-html-string-double"
+            },
+            {
+              "include": "#embedded-html-string-single"
+            },
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-css"
+            },
+            {
+              "include": "#template-html"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "name": "entity.name.tag.html",
+              "match": "\\b[A-Za-z][A-Za-z0-9:-]*\\b"
+            },
+            {
+              "name": "entity.other.attribute-name.html",
+              "match": "\\b[A-Za-z_:][A-Za-z0-9:._-]*\\b(?=\\s*=)"
+            },
+            {
+              "name": "punctuation.separator.key-value.html",
+              "match": "="
+            },
+            {
+              "name": "text.whitespace.bst",
+              "match": "\\s+"
+            },
+            {
+              "name": "invalid.illegal.html-tag-character.bst",
+              "match": "."
+            }
+          ]
+        },
+        {
+          "name": "constant.character.entity.html",
+          "match": "&(?:[A-Za-z][A-Za-z0-9]+|#\\d+|#x[0-9A-Fa-f]+);"
+        },
+        {
+          "name": "text.html.bst",
+          "match": "[^<&\\[\\]]+"
+        },
+        {
+          "name": "text.html.bst",
+          "match": "[^\\[\\]]"
         }
       ]
     },

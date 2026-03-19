@@ -197,6 +197,7 @@ test("template scopes define head/body and slot-specific highlighting", () => {
   assert.ok(!slotRegex.test("[..]"));
   assert.ok(!slotRegex.test("[$insert(\"style\")]"));
   assert.ok(!slotRegex.test("[.]"));
+  assert.equal(slotPattern.captures["7"]?.name, "string.quoted.double.bst");
 
   const legacySlotPattern = findPatternByName("invalid.deprecated.template.slot.marker.bst");
   assert.ok(legacySlotPattern, "expected legacy slot fallback to be marked invalid");
@@ -235,32 +236,42 @@ test("template scopes define head/body and slot-specific highlighting", () => {
   assert.equal(findPatternByName("entity.name.template.slot.label.bst"), null);
 });
 
-test("directive-gated template contexts support markdown/code and common last-wins ordering", () => {
+test("directive-gated template contexts support markdown/css/html/code and common last-wins ordering", () => {
   const markdownTemplate = findPatternByNameContains("meta.template.markdown.bst");
   const cssTemplate = findPatternByNameContains("meta.template.css.bst");
+  const htmlTemplate = findPatternByNameContains("meta.template.html.bst");
   const jsTemplate = findPatternByNameContains("meta.template.code.js.bst");
   const bstTemplate = findPatternByNameContains("meta.template.code.bstlang.bst");
   const genericCodeTemplate = findPatternByNameContains("meta.template.code.generic.bst");
 
-  assert.ok(markdownTemplate && cssTemplate && jsTemplate && bstTemplate && genericCodeTemplate);
+  assert.ok(markdownTemplate && cssTemplate && htmlTemplate && jsTemplate && bstTemplate && genericCodeTemplate);
 
   const markdownBegin = new RegExp(markdownTemplate.begin);
   const cssBegin = new RegExp(cssTemplate.begin);
+  const htmlBegin = new RegExp(htmlTemplate.begin);
   const jsBegin = new RegExp(jsTemplate.begin);
   const bstBegin = new RegExp(bstTemplate.begin);
   const genericCodeBegin = new RegExp(genericCodeTemplate.begin);
 
   assert.ok(markdownBegin.test("[$markdown: body]"));
   assert.ok(cssBegin.test("[$css: body]"));
+  assert.ok(htmlBegin.test("[$html: body]"));
   assert.ok(jsBegin.test("[$code(\"js\"): body]"));
   assert.ok(bstBegin.test("[$code(\"bst\"): body]"));
   assert.ok(genericCodeBegin.test("[$code: body]"));
 
   assert.ok(jsBegin.test("[$markdown, $code(\"js\"): body]"));
   assert.ok(jsBegin.test("[$css, $code(\"js\"): body]"));
+  assert.ok(jsBegin.test("[$html, $code(\"js\"): body]"));
   assert.ok(markdownBegin.test("[$code(\"js\"), $markdown: body]"));
   assert.ok(markdownBegin.test("[$css, $markdown: body]"));
+  assert.ok(markdownBegin.test("[$html, $markdown: body]"));
   assert.ok(cssBegin.test("[$code(\"js\"), $css: body]"));
+  assert.ok(cssBegin.test("[$html, $css: body]"));
+  // $html should take over body parsing when it is the last formatter directive.
+  assert.ok(htmlBegin.test("[$code(\"js\"), $html: body]"));
+  assert.ok(htmlBegin.test("[$css, $html: body]"));
+  assert.ok(htmlBegin.test("[$markdown, $html: body]"));
 });
 
 test("escaped brackets do not open or close templates", () => {
@@ -271,6 +282,7 @@ test("escaped brackets do not open or close templates", () => {
     ["template-code-beanstalk", "[$code(\"bst\"): body]", "\\[$code(\"bst\"): body]"],
     ["template-code-generic", "[$code: body]", "\\[$code: body]"],
     ["template-css", "[$css: body]", "\\[$css: body]"],
+    ["template-html", "[$html: body]", "\\[$html: body]"],
     ["template-markdown", "[$markdown: body]", "\\[$markdown: body]"],
     ["template-generic", "[: body]", "\\[: body]"]
   ];
@@ -409,9 +421,63 @@ test("css template bodies embed css and avoid child-template fallback", () => {
   assert.ok(cssEmbedding, "expected CSS embedded body pattern");
 });
 
-test("embedded css/code modes recurse over balanced square brackets", () => {
+test("html template bodies embed html and support nested templates and slot markers", () => {
+  const bodyPattern = grammar.repository["template-body-html"].patterns[0];
+  const bodyIncludes = bodyPattern.patterns.map((pattern) => pattern.include).filter(Boolean);
+  // `$html` should parse nested templates before falling back to HTML embedding.
+  assert.ok(bodyIncludes.includes("#template-slot-marker"));
+  assert.ok(bodyIncludes.includes("#template-generic"));
+  assert.ok(bodyIncludes.includes("#embedded-html"));
+  assert.ok(
+    bodyIncludes.indexOf("#template-generic") < bodyIncludes.indexOf("#embedded-html"),
+    "template-body-html should parse nested templates before HTML embedding"
+  );
+
+  const htmlEmbedding = grammar.repository["embedded-html"].patterns.find(
+    (pattern) =>
+      pattern.name === "meta.embedded.block.html.bst" &&
+      typeof pattern.contentName === "string" &&
+      pattern.contentName.includes("text.html.basic")
+  );
+  assert.ok(htmlEmbedding, "expected HTML embedded body pattern");
+
+  const htmlEmbeddingIncludes = (htmlEmbedding.patterns || []).map((pattern) => pattern.include).filter(Boolean);
+  assert.ok(htmlEmbeddingIncludes.includes("#template-slot-marker"));
+  assert.ok(htmlEmbeddingIncludes.includes("#template-generic"));
+  assert.ok(htmlEmbeddingIncludes.includes("#embedded-html-fragment"));
+  assert.ok(
+    htmlEmbeddingIncludes.indexOf("#template-generic") < htmlEmbeddingIncludes.indexOf("#embedded-html-fragment"),
+    "embedded-html should parse nested templates before HTML fragment fallback"
+  );
+
+  const htmlFragment = grammar.repository["embedded-html-fragment"];
+  assert.ok(htmlFragment, "expected embedded HTML fragment repository");
+  const htmlFragmentIncludes = (htmlFragment.patterns || [])
+    .flatMap((pattern) => (pattern.patterns || []).map((nestedPattern) => nestedPattern.include))
+    .filter(Boolean);
+  assert.ok(htmlFragmentIncludes.includes("#embedded-html-string-double"));
+  assert.ok(htmlFragmentIncludes.includes("#embedded-html-string-single"));
+
+  const htmlDoubleQuotedString = grammar.repository["embedded-html-string-double"].patterns[0];
+  const htmlSingleQuotedString = grammar.repository["embedded-html-string-single"].patterns[0];
+  assert.equal(htmlDoubleQuotedString.name, "meta.attribute.value.html.bst");
+  assert.equal(htmlSingleQuotedString.name, "meta.attribute.value.html.bst");
+  assert.ok(
+    htmlDoubleQuotedString.beginCaptures["0"].name.includes("string.quoted.double.html.bst") &&
+      htmlDoubleQuotedString.endCaptures["0"].name.includes("string.quoted.double.html.bst"),
+    "double-quoted html delimiters should keep string-like scopes"
+  );
+  assert.ok(
+    htmlSingleQuotedString.beginCaptures["0"].name.includes("string.quoted.single.html.bst") &&
+      htmlSingleQuotedString.endCaptures["0"].name.includes("string.quoted.single.html.bst"),
+    "single-quoted html delimiters should keep string-like scopes"
+  );
+});
+
+test("embedded css/html/code modes recurse over balanced square brackets", () => {
   for (const repositoryKey of [
     "embedded-css",
+    "embedded-html",
     "embedded-code-js",
     "embedded-code-ts",
     "embedded-code-py",
@@ -452,6 +518,7 @@ test("escape patterns cover template bodies, embedded blocks, and string literal
     "template-body-generic",
     "template-body-markdown",
     "template-body-css",
+    "template-body-html",
     "template-body-code-js",
     "template-body-code-ts",
     "template-body-code-py",
@@ -467,6 +534,9 @@ test("escape patterns cover template bodies, embedded blocks, and string literal
   for (const repositoryKey of [
     "embedded-markdown",
     "embedded-css",
+    "embedded-html",
+    "embedded-html-string-double",
+    "embedded-html-string-single",
     "embedded-code-js",
     "embedded-code-ts",
     "embedded-code-py",
@@ -489,6 +559,7 @@ test("embedded language scopes are exposed in package.json", () => {
   const embedded = grammarContribution.embeddedLanguages || {};
   assert.equal(embedded["meta.embedded.block.markdown.bst"], "markdown");
   assert.equal(embedded["meta.embedded.block.css.bst"], "css");
+  assert.equal(embedded["meta.embedded.block.html.bst"], "html");
   assert.equal(embedded["meta.embedded.block.code.js.bst"], "javascript");
   assert.equal(embedded["meta.embedded.block.code.ts.bst"], "typescript");
   assert.equal(embedded["meta.embedded.block.code.py.bst"], "python");
@@ -517,6 +588,8 @@ test("fixture contains expected scenarios for manual token inspection", () => {
     "$doc[",
     "$markdown",
     "$css",
+    "$html",
+    "<h1 style=\"[$slot(\"style\")]\">",
     "@https://example.com/docs (Project Docs)",
     "@/docs/getting-started (Guide)",
     "\\n escaped text \\[\\]",
@@ -535,6 +608,7 @@ test("repository exposes all expected new stable scope families", () => {
   const expectedIncludes = [
     "#path-literals",
     "#template-css",
+    "#template-html",
     "#template-markdown",
     "#template-code-generic",
     "#template-generic"
@@ -546,8 +620,10 @@ test("repository exposes all expected new stable scope families", () => {
 
   for (const scopeName of [
     "meta.path.import.bst",
+    "meta.template.html.bst",
     "meta.embedded.block.markdown.bst",
     "meta.embedded.block.css.bst",
+    "meta.embedded.block.html.bst",
     "meta.embedded.block.code.generic.bst",
     "meta.embedded.block.code.js.bst",
     "meta.embedded.block.code.ts.bst",
