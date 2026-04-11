@@ -773,6 +773,10 @@
       "patterns": [
         {
           "name": "keyword.control.directive.template.bst keyword.control.bst",
+          "match": "\\$(?:slot|insert|fresh|markdown|code|raw|note|todo|doc|children)\\b"
+        },
+        {
+          "name": "keyword.control.directive.template.bst keyword.control.bst",
           "match": "\\$[A-Za-z_][A-Za-z0-9_]*"
         }
       ]
@@ -1891,11 +1895,11 @@
         },
         {
           "name": "keyword.control.code.generic.bst",
-          "match": "\\b(?:if|else|return|for|while|loop|in|to|upto|by|break|continue|as|copy|def|class|function|const|let|var|import|from|type|interface|enum)\\b"
+          "match": "\\b(?:if|else|case|return|for|while|loop|to|upto|by|break|continue|as|copy|must|def|class|function|const|let|var|import|from|type|interface|enum)\\b"
         },
         {
           "name": "support.type.code.generic.bst",
-          "match": "\\b(?:Int|Float|String|Bool|None|True|False|true|false|number|string|boolean|undefined|null|void|any)\\b"
+          "match": "\\b(?:Int|Float|String|Bool|Char|None|True|False|true|false|none|number|string|boolean|undefined|null|void|any)\\b"
         },
         {
           "include": "#operators"
@@ -2010,18 +2014,18 @@
       "patterns": [
         {
           "name": "keyword.control.flow.bst",
-          "match": "\\b(?:if|else|return|loop|break|continue|yield)\\b"
+          "match": "\\b(?:if|else|case|return|loop|break|continue|yield)\\b"
         },
         {
           "name": "keyword.control.loop.range.bst",
-          "match": "\\b(?:in|to|upto|by)\\b"
+          "match": "\\b(?:to|upto|by)\\b"
         },
         {
           "name": "keyword.other.bst",
-          "match": "\\b(?:import|as|copy|use)\\b"
+          "match": "\\b(?:import|as|copy|must)\\b"
         },
         {
-          "name": "keyword.operator.word.bst",
+          "name": "keyword.control.logical.bst",
           "match": "\\b(?:is|not|and|or)\\b"
         }
       ]
@@ -2030,11 +2034,19 @@
       "patterns": [
         {
           "name": "support.type.primitive.bst",
-          "match": "\\b(?:Int|Float|String|Bool|None|Fn)\\b"
+          "match": "\\b(?:Int|Float|String|Bool|Char|None|Fn)\\b"
         },
         {
           "name": "constant.language.boolean.bst",
           "match": "\\b(?:true|false|True|False)\\b"
+        },
+        {
+          "name": "constant.language.none.bst",
+          "match": "\\b(?:none)\\b"
+        },
+        {
+          "name": "variable.language.trait-this.bst",
+          "match": "\\b(?:This)\\b"
         }
       ]
     },
@@ -2049,8 +2061,12 @@
           "match": "=>|>>|<<|->|\\.\\.|::|<=|>="
         },
         {
+          "name": "keyword.operator.export.bst",
+          "match": "#"
+        },
+        {
           "name": "keyword.operator.symbol.bst",
-          "match": "[=+\\-*/%^~?!<>|#]"
+          "match": "[=+\\-*/%^~?!<>|]"
         }
       ]
     },
@@ -2088,6 +2104,14 @@
     },
     "constants": {
       "patterns": [
+        {
+          "name": "support.function.builtin.bst",
+          "match": "\\b(?:io)\\b"
+        },
+        {
+          "name": "support.type.builtin.bst",
+          "match": "\\b(?:Error)\\b"
+        },
         {
           "name": "constant.other.caps.bst",
           "match": "\\b[A-Z]{2}[A-Z0-9_]*\\b"

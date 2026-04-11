@@ -8,6 +8,18 @@ import @(styles/docs/ {footer, navbar})
 
 escaped_string = "line\\n with \\a and \\[ and \\]"
 
+if thing is:
+    case 0 => io("zero")
+    case < 0 => io("negative")
+    case > 1 => io("big number")
+    case not 5 => io("not 5")
+    else => io("only one")
+;
+
+loop items |item, index|:
+    io([index]: [item])
+;
+
 wrapper = [:
     before [$slot] after
     before named [$slot("style")] after
@@ -104,19 +116,19 @@ styled = [$children([: Prefix]), $slot, $ignore:
 Body content
 ]
 
-note_template = [$note[
-Remember this [nested [note]] and ignore output.
-]]
+note_template = [$note:
+    Remember this [nested [note]] and ignore output.
+]
 
-todo_template = [$todo[
+todo_template = [$todo:
 Follow up on [rendering [edge cases]] next.
-]]
+]
 
-doc_template = [$doc[
+doc_template = [$doc:
 # Template Docs
 Use @https://example.com/docs (Project Docs) for setup.
 Brackets [stay [inside]] this doc block.
-]]
+]
 
 formatter_hint = [$formatter(markdown, 10):
 Body content
