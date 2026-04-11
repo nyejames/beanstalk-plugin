@@ -12,10 +12,32 @@ string_template ~= [:
     This is the Beanstalk programming language
 ]
 
+TRAIT must:
+    func1 |x String| -> String;
+    func2 |x Int| -> Int;
+;
+
 bool ~= true
 
 mutable_collection ~= {}
 immutable_collection = {}
+
+template = [$markdown:
+
+    # Templates [$markdown: inside heading] then back to heading
+    **Template [: inside bold text]**
+
+    # This is a markdown template
+
+    You can use **markdown** in these templates, and they will be rendered as HTML when the program runs.
+
+    here is a [: nested template] inside the markdown.
+
+    **Bold** and *italic* text is supported, as well as @https://beanstalk-lang.org (links) and lists:
+    - Item 1
+    - Item 2
+]
+
 
 NewStruct = |
     value Float,

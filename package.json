@@ -2,7 +2,7 @@
   "name": "beanstalk-plugin",
   "displayName": "Beanstalk",
   "description": "Language support and syntax highlighting for Beanstalk",
-  "version": "0.1.98",
+  "version": "0.1.99",
   "files": [
     "package.json",
     "syntaxes/bst.tmLanguage.json",
@@ -12,7 +12,7 @@
   ],
   "publisher": "Nye",
   "license": "Apache-2.0",
-  "icon": "./icons/icon.png",
+  "icon": "icons/icon.png",
   "engines": {
     "vscode": "^1.95.0"
   },

@@ -1644,7 +1644,52 @@
       "patterns": [
         {
           "name": "markup.heading.markdown",
-          "match": "^\\s*#{1,6}\\s+.*$"
+          "begin": "^(\\s*#{1,6}\\s+)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.heading.markdown"
+            }
+          },
+          "end": "$",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-css"
+            },
+            {
+              "include": "#template-html"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "name": "markup.heading.markdown",
+              "match": "[^\\[\\]\\n]+"
+            }
+          ]
         },
         {
           "name": "meta.link.inline.markdown.bst",
@@ -1672,11 +1717,111 @@
         },
         {
           "name": "markup.bold.markdown",
-          "match": "\\*\\*[^*\\n]+\\*\\*"
+          "begin": "(\\*\\*)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.bold.markdown"
+            }
+          },
+          "end": "(\\*\\*)",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.bold.markdown"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-css"
+            },
+            {
+              "include": "#template-html"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "name": "markup.bold.markdown",
+              "match": "[^*\\[\\]\\n]+"
+            }
+          ]
         },
         {
           "name": "markup.italic.markdown",
-          "match": "(?<!\\*)\\*[^*\\n]+\\*(?!\\*)"
+          "begin": "(?<!\\*)(\\*)(?!\\*)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.italic.markdown"
+            }
+          },
+          "end": "(\\*)(?!\\*)",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.italic.markdown"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-css"
+            },
+            {
+              "include": "#template-html"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "name": "markup.italic.markdown",
+              "match": "[^*\\[\\]\\n]+"
+            }
+          ]
         },
         {
           "name": "markup.inline.raw.string.markdown",
