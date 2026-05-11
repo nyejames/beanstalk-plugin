@@ -17,6 +17,10 @@ TRAIT must:
     func2 |x Int| -> Int;
 ;
 
+identity type T |value T| -> T:
+    return value
+;
+
 bool ~= true
 
 mutable_collection ~= {}
@@ -53,6 +57,10 @@ thing = not true
 
 loop items |item, index|:
     io([index]: [item])
+;
+
+loop to & 10 |item|:
+    io([:Number: [item]])
 ;
 
 if thing is:

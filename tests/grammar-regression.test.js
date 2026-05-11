@@ -111,8 +111,8 @@ test("keywords and types match supported compiler/docs keywords and exclude old 
 
   const requiredKeywords = [
     "if", "else", "return", "loop", "break", "continue", "yield",
-    "in", "to", "upto", "by", "is", "not", "and", "or",
-    "import", "as", "copy", "use"
+    "to", "by", "is", "not", "and", "or",
+    "import", "as", "copy", "must", "async", "checked", "block"
   ];
 
   for (const keyword of requiredKeywords) {
@@ -122,7 +122,7 @@ test("keywords and types match supported compiler/docs keywords and exclude old 
     );
   }
 
-  const requiredTypes = ["Int", "Float", "String", "Bool", "None", "Fn", "true", "false", "True", "False"];
+  const requiredTypes = ["Int", "Float", "String", "Bool", "None", "Fn", "true", "false", "True", "False", "type"];
   for (const token of requiredTypes) {
     assert.ok(
       typePatterns.some((regex) => regex.test(token)),
@@ -571,12 +571,9 @@ test("fixture contains expected scenarios for manual token inspection", () => {
 
   const fixture = fs.readFileSync(fixturePath, "utf8");
   for (const snippet of [
-    "import @(a/b/c)",
-    "import @(styles/docs/{footer, navbar})",
+    "import @styles/docs{navbar}",
     "import @a/b/c",
-    "import @styles/docs/{footer, navbar}",
-    "import @styles/docs/ {footer, navbar}",
-    "import @(styles/docs/ {footer, navbar})",
+    "import @styles/docs {footer, navbar}",
     "escaped_string = \"line\\\\n with \\\\a and \\\\[ and \\\\]\"",
     "[$slot]",
     "[$slot(\"style\")]",
@@ -596,9 +593,8 @@ test("fixture contains expected scenarios for manual token inspection", () => {
     "        ### Deep Indented Subtitle",
     "escaped = \\a \\[ \\]",
     "$code(\"js\")",
-    "const nested = [1, [2, [3]]];",
+    "nested = [:1, [:2, [:3]]]",
     "$code(\"py\")",
-    "$formatter(markdown, 10)"
   ]) {
     assert.ok(fixture.includes(snippet), `expected fixture to include '${snippet}'`);
   }

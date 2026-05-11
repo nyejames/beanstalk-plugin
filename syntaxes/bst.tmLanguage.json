@@ -2040,7 +2040,7 @@
         },
         {
           "name": "keyword.control.code.generic.bst",
-          "match": "\\b(?:if|else|case|return|for|while|loop|to|upto|by|break|continue|as|copy|must|def|class|function|const|let|var|import|from|type|interface|enum)\\b"
+          "match": "\\b(?:if|else|case|return|for|while|loop|to|by|break|continue|as|copy|must|def|class|function|const|let|var|import|from|type|interface|enum)\\b"
         },
         {
           "name": "support.type.code.generic.bst",
@@ -2167,7 +2167,7 @@
         },
         {
           "name": "keyword.other.bst",
-          "match": "\\b(?:import|as|copy|must)\\b"
+          "match": "\\b(?:import|as|copy|must|async|checked|block)\\b"
         },
         {
           "name": "keyword.control.logical.bst",
@@ -2192,6 +2192,10 @@
         {
           "name": "variable.language.trait-this.bst",
           "match": "\\b(?:This)\\b"
+        },
+        {
+          "name": "variable.language.generics.bst",
+          "match": "\\b(?:type|of)\\b"
         }
       ]
     },
