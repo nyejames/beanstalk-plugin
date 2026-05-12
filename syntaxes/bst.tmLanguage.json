@@ -2159,11 +2159,11 @@
       "patterns": [
         {
           "name": "keyword.control.flow.bst",
-          "match": "\\b(?:if|else|case|return|loop|break|continue|yield)\\b"
+          "match": "\\b(?:if|else|case|return|loop|break|continue|yield|catch)\\b"
         },
         {
           "name": "keyword.control.loop.range.bst",
-          "match": "\\b(?:to|upto|by)\\b"
+          "match": "\\b(?:to|by)\\b"
         },
         {
           "name": "keyword.other.bst",

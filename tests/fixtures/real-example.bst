@@ -100,7 +100,10 @@ canError |x String| -> String, Float, Error!:
 ;
 
 defaultIfError || -> String, Float:
-    string, number = canError("") ! "", 0.0
+    value = parse_number(text) catch |err| -> 0:
+        io(err.message)
+    ;
+    
     return string, number
 ;
 
