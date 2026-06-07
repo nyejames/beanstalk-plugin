@@ -59,7 +59,7 @@ loop items |item, index|:
     io([item])
 ;
 
-loop 0 to & 10 by 2 |i|:
+loop 0 to 10 by 2 |i|:
     io([i])
 ;
 

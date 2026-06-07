@@ -1728,12 +1728,6 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-rs"
-            },
-            {
-              "include": "#template-code-shell"
-            },
-            {
               "include": "#template-code-beanstalk"
             },
             {
@@ -1818,12 +1812,6 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-rs"
-            },
-            {
-              "include": "#template-code-shell"
-            },
-            {
               "include": "#template-code-beanstalk"
             },
             {
@@ -1876,12 +1864,6 @@
             },
             {
               "include": "#template-code-py"
-            },
-            {
-              "include": "#template-code-rs"
-            },
-            {
-              "include": "#template-code-shell"
             },
             {
               "include": "#template-code-rs"
