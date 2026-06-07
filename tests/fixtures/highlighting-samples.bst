@@ -1,188 +1,201 @@
-import @(a/b/c)
-import @(styles/docs/{footer, navbar})
-import @(styles\\docs\\footer)
-import @a/b/c
-import @styles/docs/{footer, navbar}
-import @styles/docs/ {footer, navbar}
-import @(styles/docs/ {footer, navbar})
+-- Single-line comment
 
-escaped_string = "line\\n with \\a and \\[ and \\]"
+import @styles/docs {navbar, title, section}
+import @html {center}
+import @core/math as math
 
-if thing is:
-    case 0 => io("zero")
-    case < 0 => io("negative")
-    case > 1 => io("big number")
-    case not 5 => io("not 5")
-    else => io("only one")
+page_title #= "Templates"
+page_description #String = "Template syntax in Beanstalk."
+page_head #= theme_head
+
+count ~= 0
+ratio Float = 1.5
+text_slice = "text"
+raw_slice = `raw`
+letter = 'A'
+
+message = [:
+    Templates create owned strings.
+]
+
+values ~{Int} = {}
+names {String} = {"Priya", "Gollum"}
+
+Person = |
+    name String,
+    age Int,
+|
+
+Status ::
+    Ready,
+    Failed | message String |,
+;
+
+increment |value Int| -> Int:
+    return value + 1
+;
+
+name, count = pair()
+
+display |this Person| -> String:
+    return this.name
+;
+
+vec ~= Person(name = "Nye", age = 30)
+~vec.display()
+
+if value is true:
+    io("then")
+else
+    io("else")
+;
+
+if value is:
+    0 => io("zero")
+    else =>
 ;
 
 loop items |item, index|:
-    io([index]: [item])
+    io([item])
 ;
 
-wrapper = [:
-    before [$slot] after
-    before named [$slot("style")] after
-    [$code("bst"):
-        thing = [: hello]
+loop 0 to & 10 by 2 |i|:
+    io([i])
+;
+
+assert(index < items.length)
+assert(index < items.length, "out of bounds")
+
+maybe_name String? = none
+display_name = if maybe_name is |name| then name else "guest"
+
+value = parse_number(text)!
+fallback = parse_number(text) catch:
+    then 0
+;
+
+value = identity(42)
+
+-- Template with markdown
+[$markdown:
+    # Hello
+    This is *markdown*.
+
+    @example.com (Here is a link!)
+
+    Some `inline code` here.
+]
+
+-- Template with code blocks
+[codeblock, $code("bst"):
+    io("Hello, World!")
+
+    name = "Alice"
+    io([: Hello, [name]])
+]
+
+[codeblock, $code("js"):
+    const x = 42;
+    function greet(name) {
+        return `Hello, ${name}`;
+    }
+]
+
+[codeblock, $code("ts"):
+    interface User {
+        name: string;
+        age: number;
+    }
+    const user: User = { name: "Ada", age: 30 };
+]
+
+[codeblock, $code("py"):
+    def greet(name: str) -> str:
+        return f"Hello, {name}"
+]
+
+[codeblock, $code("rs"):
+    fn main() {
+        println!("Hello, world!");
+    }
+]
+
+[codeblock, $code("rust"):
+    struct Point {
+        x: f64,
+        y: f64,
+    }
+]
+
+[codeblock, $code("sh"):
+    echo "Hello, world!"
+    ls -la
+]
+
+[codeblock, $code("shell"):
+    #!/bin/bash
+    for f in *.txt; do
+        echo "$f"
+    done
+]
+
+[codeblock, $code("bash"):
+    export PATH="/usr/local/bin:$PATH"
+]
+
+-- Template with slot and insert
+[$slot]
+
+[$slot("style")]
+
+[$insert("style"): color: blue;]
+
+[$children([: Prefix]):
+    [: one]
+]
+
+-- Template control flow
+[if show:
+    Visible
+]
+
+[list, if show:
+    Visible inside list
+]
+
+[loop has_next():
+    [next_item()]
+]
+
+[loop items |item|:
+    [if item.skip:
+        [continue]
     ]
+    [item]
 ]
 
-#[:
-    stuff going on in here [$code("js"), "nested fella"]
+-- Template with CSS and HTML directives
+[$css:
+    body {
+        color: red;
+    }
 ]
 
-title = [$html:
-    <h1 style="[$slot("style")]">
-        [$slot]
-    </h1>
+[$html:
+    <h1>Title</h1>
+    <p>Paragraph</p>
 ]
 
-title = [$html:
-    <h1 style="[$slot("style"): pointless body for demo]">
-        [$slot]
-    </h1>
-]
+-- Escape sequences
+escaped = \n \a \[ \]
 
-blue = [$insert("style"): color: blue;]
-
-filled = [title, blue:
-    Hello world
-]
-
-markdown_view = [$code("js"), $markdown:
-
-# Title
-some text
-and then *italic* **bold** text
-check link @https://example.com/docs (Project Docs)
-check route @/docs/getting-started (Guide)
-
-\n escaped text \[\]
-## Subtitle
-        ### Deep Indented Subtitle
-more text
-
-    # whooooooooops
-
-]
-
-css_view = [$css:
-.card {
-    color: red;
-    content: "[alpha [beta]]";
-}
-]
-
-html_view = [$html:
-<h1 style="[$slot("style")]">
-    [$slot]
-</h1>
-
-<div class = "[imported_class: and some more classes]">
-    ["string inside": [: nested template] [$code("bst")]]
-</div>
-]
-
-code_generic = [$code:
-loop i in 0 to 10 by 2:
-    io(i)
-escaped = \a \[ \]
+-- This receiver param
+reset |this ~Vector2|:
+    this.x = 0
+    this.y = 0
 ;
-]
 
-code_bst = [$markdown, $code("bst"):
-loop i in 10 upto 0 by 2:
-    io(i)
+-- Traits
+SHOW must:
+    show |This| -> String
 ;
-]
-
-code_js = [$markdown, $code("js"):
-const x = 1;
-const nested = [1, [2, [3]]];
-// comment
-]
-
-code_ts = [$code("ts"):
-type Name = string;
-]
-
-code_py = [$code("py"):
-def run():
-    return 1
-]
-
-styled = [$children([: Prefix]), $slot, $ignore:
-Body content
-]
-
-note_template = [$note:
-    Remember this [nested [note]] and ignore output.
-]
-
-todo_template = [$todo:
-Follow up on [rendering [edge cases]] next.
-]
-
-doc_template = [$doc:
-# Template Docs
-Use @https://example.com/docs (Project Docs) for setup.
-Brackets [stay [inside]] this doc block.
-]
-
-formatter_hint = [$formatter(markdown, 10):
-Body content
-]
-
-# default_style = [$css:
-    @charset "UTF-8";
-    :root {
-      color-scheme: light dark;
-      /* Default Background Colours */
-      --bst-bg-lightmode: #fff;
-      --bst-bg-darkmode: #13171f;
-      --bst-text-lightmode: #373c44;
-      --bst-text-darkmode: #e0e3e7;
-      --bst-font-family-emoji: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-      --bst-line-height: 1.5;
-      --bst-font-weight: 400;
-      --bst-font-size: 100%;
-    }
-
-    @media (min-width: 1536px) {
-      :root {
-        --bst-font-size: 131.25%;
-      }
-      .container {
-        max-width: 1450px;
-      }
-    }
-
-    .bst-code-keyword {
-      color: var(--keyword-light);
-      color:light-dark( var(--keyword-light), var(--keyword-dark))
-    }
-    .bst-code-string {
-      color: var(--string-light);
-      color:light-dark( var(--string-light), var(--string-dark))
-    }
-
-    /* BASIC CSS RESET STUFF */
-
-    /**
-     * Document
-     * Content-box & Responsive typography
-    */
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      background-repeat: no-repeat;
-    }
-
-    ::before,
-    ::after {
-      text-decoration: inherit;
-      vertical-align: inherit;
-    }
-]

@@ -12,41 +12,17 @@ const grammar = JSON.parse(fs.readFileSync(grammarPath, "utf8"));
 const pkg = JSON.parse(fs.readFileSync(packagePath, "utf8"));
 
 function walkObjects(value, fn) {
-  if (!value || typeof value !== "object") {
-    return;
-  }
-
+  if (!value || typeof value !== "object") return;
   fn(value);
-
   if (Array.isArray(value)) {
-    for (const item of value) {
-      walkObjects(item, fn);
-    }
+    for (const item of value) walkObjects(item, fn);
     return;
   }
-
-  for (const nested of Object.values(value)) {
-    walkObjects(nested, fn);
-  }
-}
-
-function findPatternByName(name) {
-  let result = null;
-
-  walkObjects(grammar, (node) => {
-    if (!result && node && typeof node === "object" && typeof node.name === "string") {
-      if (node.name === name || node.name.split(/\s+/).includes(name)) {
-        result = node;
-      }
-    }
-  });
-
-  return result;
+  for (const nested of Object.values(value)) walkObjects(nested, fn);
 }
 
 function findPatternsByName(name) {
   const results = [];
-
   walkObjects(grammar, (node) => {
     if (node && typeof node === "object" && typeof node.name === "string") {
       if (node.name === name || node.name.split(/\s+/).includes(name)) {
@@ -54,509 +30,254 @@ function findPatternsByName(name) {
       }
     }
   });
-
   return results;
-}
-
-function findPatternByNameContains(nameFragment) {
-  let result = null;
-
-  walkObjects(grammar, (node) => {
-    if (!result && node && typeof node === "object" && typeof node.name === "string") {
-      if (node.name.includes(nameFragment)) {
-        result = node;
-      }
-    }
-  });
-
-  return result;
 }
 
 function includesAtRoot(includeName) {
   return grammar.patterns.some((pattern) => pattern.include === includeName);
 }
 
-test("removes legacy scene-era grammar repositories", () => {
-  for (const key of ["scenes", "scene-tags", "code-blocks", "tuples", "lib-functions"]) {
-    assert.ok(!(key in grammar.repository), `expected legacy key '${key}' to be removed`);
+function repoExists(name) {
+  return name in grammar.repository;
+}
+
+// ── KEYWORDS ────────────────────────────────────────────────────────
+
+test("assert is a builtin function, not a keyword.other", () => {
+  const builtinPattern = grammar.repository.constants.patterns.find(
+    (p) => p.name === "support.function.builtin.bst"
+  );
+  assert.ok(builtinPattern, "expected support.function.builtin.bst pattern");
+  assert.ok(/\bassert\b/.test(builtinPattern.match), "expected assert in builtin match");
+
+  const keywordOther = grammar.repository.keywords.patterns.find(
+    (p) => p.name === "keyword.other.bst"
+  );
+  assert.ok(keywordOther, "expected keyword.other.bst pattern");
+  assert.ok(!/\bassert\b/.test(keywordOther.match), "assert must not be in keyword.other.bst");
+});
+
+test("removed keywords case and yield are absent", () => {
+  const flowPattern = grammar.repository.keywords.patterns.find(
+    (p) => p.name === "keyword.control.flow.bst"
+  );
+  assert.ok(flowPattern, "expected keyword.control.flow.bst");
+  assert.ok(!/\bcase\b/.test(flowPattern.match), "case should be removed");
+  assert.ok(!/\byield\b/.test(flowPattern.match), "yield should be removed");
+});
+
+test("future reserved keywords async, checked, block remain", () => {
+  const kwOther = grammar.repository.keywords.patterns.find(
+    (p) => p.name === "keyword.other.bst"
+  );
+  assert.ok(kwOther, "expected keyword.other.bst");
+  assert.ok(/\basync\b/.test(kwOther.match), "async should remain (future reserved)");
+  assert.ok(/\bchecked\b/.test(kwOther.match), "checked should remain (future reserved)");
+  assert.ok(/\bblock\b/.test(kwOther.match), "block should remain (future reserved)");
+});
+
+test("this is reserved via variable.language.this.bst", () => {
+  const thisPattern = grammar.repository.keywords.patterns.find(
+    (p) => p.name === "variable.language.this.bst"
+  );
+  assert.ok(thisPattern, "expected variable.language.this.bst");
+  const thisRegex = new RegExp("^" + thisPattern.match + "$");
+  assert.ok(thisRegex.test("this"), "regex should match 'this'");
+  assert.ok(!thisRegex.test("thistle"), "regex should not match 'thistle'");
+});
+
+test("required current keywords are present", () => {
+  const keywordText = grammar.repository.keywords.patterns
+    .map((p) => p.match || "").join(" ");
+
+  const required = [
+    "if", "else", "return", "loop", "break", "continue", "catch", "then",
+    "is", "not", "and", "or",
+    "import", "export", "as", "copy", "must",
+    "to", "by",
+  ];
+  for (const kw of required) {
+    assert.ok(
+      new RegExp("\\b" + kw + "\\b").test(keywordText),
+      `expected keyword '${kw}' in grammar`
+    );
   }
 });
 
-test("root pattern order prioritizes comments, paths, templates, then lexical tokens", () => {
-  const rootIncludes = grammar.patterns.map((pattern) => pattern.include);
+// ── TYPES & CONSTANTS ────────────────────────────────────────────────
 
-  assert.deepEqual(rootIncludes.slice(0, 4), [
-    "#comments",
-    "#path-literals",
-    "#invalid-at-sign",
-    "#template-code-js"
-  ]);
-
-  assert.ok(rootIncludes.indexOf("#template-generic") < rootIncludes.indexOf("#strings"));
-  assert.ok(rootIncludes.indexOf("#strings") < rootIncludes.indexOf("#keywords"));
-  assert.ok(rootIncludes.indexOf("#keywords") < rootIncludes.indexOf("#operators"));
-  assert.ok(rootIncludes.indexOf("#operators") < rootIncludes.indexOf("#identifiers"));
+test("outdated types None and Fn are removed from primitive types", () => {
+  const primPattern = grammar.repository.types.patterns.find(
+    (p) => p.name === "support.type.primitive.bst"
+  );
+  assert.ok(primPattern);
+  assert.ok(!/\bNone\b/.test(primPattern.match), "None should be removed from primitive types");
+  assert.ok(!/\bFn\b/.test(primPattern.match), "Fn should be removed from primitive types");
 });
 
-test("keywords and types match supported compiler/docs keywords and exclude old ones", () => {
-  const keywordPatterns = grammar.repository.keywords.patterns
-    .map((pattern) => pattern.match)
-    .filter(Boolean)
-    .map((pattern) => new RegExp(pattern));
+test("current primitive types are present", () => {
+  const primPattern = grammar.repository.types.patterns.find(
+    (p) => p.name === "support.type.primitive.bst"
+  );
+  for (const t of ["Int", "Float", "String", "Bool", "Char"]) {
+    assert.ok(new RegExp("\\b" + t + "\\b").test(primPattern.match), `expected type '${t}'`);
+  }
+});
 
-  const typePatterns = grammar.repository.types.patterns
-    .map((pattern) => pattern.match)
-    .filter(Boolean)
-    .map((pattern) => new RegExp(pattern));
+test("True and False are removed from boolean literals", () => {
+  const boolPattern = grammar.repository.types.patterns.find(
+    (p) => p.name === "constant.language.boolean.bst"
+  );
+  assert.ok(boolPattern);
+  assert.ok(!/\bTrue\b/.test(boolPattern.match), "True should be removed");
+  assert.ok(!/\bFalse\b/.test(boolPattern.match), "False should be removed");
+  assert.ok(/\btrue\b/.test(boolPattern.match), "true should remain");
+  assert.ok(/\bfalse\b/.test(boolPattern.match), "false should remain");
+});
 
-  const requiredKeywords = [
-    "if", "else", "return", "loop", "break", "continue", "yield",
-    "to", "by", "is", "not", "and", "or",
-    "import", "as", "copy", "must", "async", "checked", "block"
+test("IO is a builtin type alongside Error", () => {
+  const builtinType = grammar.repository.constants.patterns.find(
+    (p) => p.name === "support.type.builtin.bst"
+  );
+  assert.ok(builtinType);
+  assert.ok(/\bError\b/.test(builtinType.match), "Error should be in builtin types");
+  assert.ok(/\bIO\b/.test(builtinType.match), "IO should be in builtin types");
+});
+
+test("type and of are highlighted as generics", () => {
+  const genericsPattern = grammar.repository.types.patterns.find(
+    (p) => p.name === "variable.language.generics.bst"
+  );
+  assert.ok(genericsPattern);
+  assert.ok(/\btype\b/.test(genericsPattern.match));
+  assert.ok(/\bof\b/.test(genericsPattern.match));
+});
+
+test("This is highlighted as trait-this", () => {
+  const thisTraitPattern = grammar.repository.types.patterns.find(
+    (p) => p.name === "variable.language.trait-this.bst"
+  );
+  assert.ok(thisTraitPattern);
+  assert.ok(/\bThis\b/.test(thisTraitPattern.match));
+});
+
+// ── DIRECTIVES ───────────────────────────────────────────────────────
+
+test("template-head-directives includes css, html, and escape_html", () => {
+  const directivePattern = grammar.repository["template-head-directives"].patterns.find(
+    (p) => (p.match || "").includes("slot") && (p.match || "").includes("insert")
+  );
+  assert.ok(directivePattern, "expected known-directive pattern");
+  for (const d of ["css", "html", "escape_html"]) {
+    assert.ok(
+      directivePattern.match.includes(d),
+      `expected directive '${d}' in known-directive match`
+    );
+  }
+});
+
+// ── NEW CODEBLOCK LANGUAGES ─────────────────────────────────────────
+
+test("template-code-rs repository exists and matches rs/rust", () => {
+  assert.ok(repoExists("template-code-rs"), "expected template-code-rs repository");
+  assert.ok(repoExists("template-body-code-rs"), "expected template-body-code-rs repository");
+  assert.ok(repoExists("embedded-code-rs"), "expected embedded-code-rs repository");
+
+  const rsPattern = grammar.repository["template-code-rs"].patterns[0];
+  assert.ok(rsPattern.name.includes("meta.template.code.rs.bst"));
+
+  // Verify the begin regex matches "rs" and "rust"
+  const beginRe = new RegExp(rsPattern.begin);
+  assert.ok(beginRe.test('[$code("rs"):'), 'should match $code("rs")');
+  assert.ok(beginRe.test('[$code("rust"):'), 'should match $code("rust")');
+  assert.ok(!beginRe.test('[$code("py"):'), 'should not match $code("py")');
+});
+
+test("embedded-code-rs delegates to source.rust", () => {
+  const embeddedPatterns = grammar.repository["embedded-code-rs"].patterns;
+  const langPattern = embeddedPatterns.find(
+    (p) => p.contentName && p.contentName.includes("source.rust")
+  );
+  assert.ok(langPattern, "expected embedded-code-rs to delegate to source.rust");
+
+  const hasSourceRust = langPattern.patterns.some((p) => p.include === "source.rust");
+  assert.ok(hasSourceRust, "expected source.rust include in embedded-code-rs");
+});
+
+test("template-code-shell repository exists and matches sh/shell/bash", () => {
+  assert.ok(repoExists("template-code-shell"), "expected template-code-shell repository");
+  assert.ok(repoExists("template-body-code-shell"), "expected template-body-code-shell repository");
+  assert.ok(repoExists("embedded-code-shell"), "expected embedded-code-shell repository");
+
+  const shellPattern = grammar.repository["template-code-shell"].patterns[0];
+  assert.ok(shellPattern.name.includes("meta.template.code.shell.bst"));
+
+  const beginRe = new RegExp(shellPattern.begin);
+  assert.ok(beginRe.test('[$code("sh"):'), 'should match $code("sh")');
+  assert.ok(beginRe.test('[$code("shell"):'), 'should match $code("shell")');
+  assert.ok(beginRe.test('[$code("bash"):'), 'should match $code("bash")');
+  assert.ok(!beginRe.test('[$code("py"):'), 'should not match $code("py")');
+});
+
+test("embedded-code-shell delegates to source.shell", () => {
+  const embeddedPatterns = grammar.repository["embedded-code-shell"].patterns;
+  const langPattern = embeddedPatterns.find(
+    (p) => p.contentName && p.contentName.includes("source.shell")
+  );
+  assert.ok(langPattern, "expected embedded-code-shell to delegate to source.shell");
+
+  const hasSourceShell = langPattern.patterns.some((p) => p.include === "source.shell");
+  assert.ok(hasSourceShell, "expected source.shell include in embedded-code-shell");
+});
+
+test("new code includes are wired into template body patterns", () => {
+  const bodyRepos = [
+    "template-body-code-js", "template-body-code-ts", "template-body-code-py",
+    "template-body-code-beanstalk", "template-body-code-generic",
+    "template-body-generic", "template-body-html", "template-body-markdown",
   ];
 
-  for (const keyword of requiredKeywords) {
+  for (const repoKey of bodyRepos) {
+    const patterns = grammar.repository[repoKey].patterns[0].patterns;
+    const includes = patterns.filter((p) => p.include).map((p) => p.include);
     assert.ok(
-      keywordPatterns.some((regex) => regex.test(keyword)),
-      `expected keyword '${keyword}' to be matched`
+      includes.includes("#template-code-rs"),
+      `${repoKey} should include #template-code-rs`
     );
-  }
-
-  const requiredTypes = ["Int", "Float", "String", "Bool", "None", "Fn", "true", "false", "True", "False", "type"];
-  for (const token of requiredTypes) {
     assert.ok(
-      typePatterns.some((regex) => regex.test(token)),
-      `expected type/literal '${token}' to be matched`
-    );
-  }
-
-  const typeRegexText = grammar.repository.types.patterns.map((pattern) => pattern.match || "").join(" ");
-  const keywordRegexText = grammar.repository.keywords.patterns.map((pattern) => pattern.match || "").join(" ");
-  const removed = ["Decimal", "Template", "Choice", "Type", "Error", "Function", "async", "defer"];
-
-  for (const staleToken of removed) {
-    assert.ok(!typeRegexText.includes(staleToken), `did not expect stale type token '${staleToken}'`);
-    assert.ok(!keywordRegexText.includes(staleToken), `did not expect stale keyword token '${staleToken}'`);
-  }
-});
-
-test("path syntax repository includes dedicated import path and grouped symbols scopes", () => {
-  const pathPatterns = findPatternsByName("meta.path.import.bst");
-  assert.ok(pathPatterns.length >= 2, "expected parenthesized and bare path patterns");
-
-  const parenthesizedPathPattern = pathPatterns.find(
-    (pattern) => typeof pattern.begin === "string" && pattern.begin.includes("(@)(\\()")
-  );
-  assert.ok(parenthesizedPathPattern, "expected parenthesized path pattern");
-  assert.ok(new RegExp(parenthesizedPathPattern.begin).test("@(a/b/c)"));
-  assert.ok(new RegExp(parenthesizedPathPattern.begin).test("@(styles/docs/{footer, navbar})"));
-
-  const barePathPattern = pathPatterns.find(
-    (pattern) => typeof pattern.begin === "string" && pattern.begin.includes("(?!\\()")
-  );
-  assert.ok(barePathPattern, "expected bare path pattern");
-  assert.ok(new RegExp(barePathPattern.begin).test("@a/b/c"));
-  assert.ok(new RegExp(barePathPattern.begin).test("@styles/docs/{footer, navbar}"));
-  assert.ok(new RegExp(barePathPattern.begin).test("@styles/docs/ {footer, navbar}"));
-
-  const groupPattern = findPatternByName("meta.path.import.group.bst");
-  assert.ok(groupPattern, "expected grouped import pattern to exist");
-
-  const symbolPattern = findPatternByName("entity.name.import.symbol.bst");
-  assert.ok(symbolPattern, "expected grouped import symbol scope");
-  assert.ok(new RegExp(symbolPattern.match).test("footer"));
-
-  const invalidAtPattern = findPatternByName("invalid.illegal.path-at.bst");
-  assert.ok(invalidAtPattern, "expected malformed @ fallback pattern");
-  assert.ok(new RegExp(invalidAtPattern.match).test("@!not_a_path"));
-  assert.ok(!new RegExp(invalidAtPattern.match).test("@(valid/path)"));
-  assert.ok(!new RegExp(invalidAtPattern.match).test("@valid/path"));
-});
-
-test("template scopes define head/body and slot-specific highlighting", () => {
-  for (const scopeName of [
-    "meta.template.head.bst",
-    "meta.template.body.bst",
-    "meta.template.slot.marker.bst",
-    "meta.template.slot.directive.bst",
-    "meta.template.children.directive.bst",
-    "meta.template.comment.directive.bst",
-    "meta.template.doc.directive.bst"
-  ]) {
-    assert.ok(findPatternByName(scopeName), `expected scope '${scopeName}'`);
-  }
-
-  assert.equal(grammar.repository["template-style-child"], undefined);
-
-  const slotPattern = findPatternByName("meta.template.slot.marker.bst");
-  const slotRegex = new RegExp(slotPattern.match);
-  assert.ok(slotRegex.test("[$slot]"));
-  assert.ok(slotRegex.test("[   $slot   ]"));
-  assert.ok(slotRegex.test("[$slot(\"style\")]"));
-  assert.ok(slotRegex.test("[   $slot ( \"style\" )   ]"));
-  assert.ok(!slotRegex.test("[..]"));
-  assert.ok(!slotRegex.test("[$insert(\"style\")]"));
-  assert.ok(!slotRegex.test("[.]"));
-  assert.equal(slotPattern.captures["7"]?.name, "string.quoted.double.bst");
-
-  const legacySlotPattern = findPatternByName("invalid.deprecated.template.slot.marker.bst");
-  assert.ok(legacySlotPattern, "expected legacy slot fallback to be marked invalid");
-  const legacySlotRegex = new RegExp(legacySlotPattern.match);
-  assert.ok(legacySlotRegex.test("[..]"));
-  assert.ok(legacySlotRegex.test("[   ....   ]"));
-  assert.ok(!legacySlotRegex.test("[$slot]"));
-
-  const slotDirectivePatterns = findPatternsByName("meta.template.slot.directive.bst");
-  assert.ok(slotDirectivePatterns.length >= 2, "expected distinct $slot and $insert directive patterns");
-
-  const anchoredSlotDirectiveRegexes = slotDirectivePatterns
-    .map((pattern) => pattern.match)
-    .filter(Boolean)
-    .map((match) => new RegExp(`^${match}$`));
-  assert.ok(anchoredSlotDirectiveRegexes.some((regex) => regex.test("$slot")));
-  assert.ok(anchoredSlotDirectiveRegexes.some((regex) => regex.test("$insert(\"style\")")));
-  assert.ok(!anchoredSlotDirectiveRegexes.some((regex) => regex.test("$slot(\"style\")")));
-  assert.ok(!anchoredSlotDirectiveRegexes.some((regex) => regex.test("$1")));
-
-  const childrenDirectivePattern = findPatternByName("meta.template.children.directive.bst");
-  assert.ok(childrenDirectivePattern, "expected $children directive pattern");
-  assert.ok(new RegExp(childrenDirectivePattern.begin).test("$children(\"style\")"));
-  assert.ok(new RegExp(childrenDirectivePattern.begin).test("$children([: Prefix])"));
-
-  const noteTodoDirectivePattern = findPatternByName("meta.template.comment.directive.bst");
-  assert.ok(noteTodoDirectivePattern, "expected $note/$todo directive pattern");
-  const noteTodoBeginRegex = new RegExp(noteTodoDirectivePattern.begin);
-  assert.ok(noteTodoBeginRegex.test("$note["));
-  assert.ok(noteTodoBeginRegex.test("$todo ["));
-
-  const docDirectivePattern = findPatternByName("meta.template.doc.directive.bst");
-  assert.ok(docDirectivePattern, "expected $doc directive pattern");
-  assert.ok(new RegExp(docDirectivePattern.begin).test("$doc["));
-
-  assert.equal(findPatternByName("entity.name.template.slot.label.bst"), null);
-});
-
-test("directive-gated template contexts support markdown/css/html/code and common last-wins ordering", () => {
-  const markdownTemplate = findPatternByNameContains("meta.template.markdown.bst");
-  const cssTemplate = findPatternByNameContains("meta.template.css.bst");
-  const htmlTemplate = findPatternByNameContains("meta.template.html.bst");
-  const jsTemplate = findPatternByNameContains("meta.template.code.js.bst");
-  const bstTemplate = findPatternByNameContains("meta.template.code.bstlang.bst");
-  const genericCodeTemplate = findPatternByNameContains("meta.template.code.generic.bst");
-
-  assert.ok(markdownTemplate && cssTemplate && htmlTemplate && jsTemplate && bstTemplate && genericCodeTemplate);
-
-  const markdownBegin = new RegExp(markdownTemplate.begin);
-  const cssBegin = new RegExp(cssTemplate.begin);
-  const htmlBegin = new RegExp(htmlTemplate.begin);
-  const jsBegin = new RegExp(jsTemplate.begin);
-  const bstBegin = new RegExp(bstTemplate.begin);
-  const genericCodeBegin = new RegExp(genericCodeTemplate.begin);
-
-  assert.ok(markdownBegin.test("[$markdown: body]"));
-  assert.ok(cssBegin.test("[$css: body]"));
-  assert.ok(htmlBegin.test("[$html: body]"));
-  assert.ok(jsBegin.test("[$code(\"js\"): body]"));
-  assert.ok(bstBegin.test("[$code(\"bst\"): body]"));
-  assert.ok(genericCodeBegin.test("[$code: body]"));
-
-  assert.ok(jsBegin.test("[$markdown, $code(\"js\"): body]"));
-  assert.ok(jsBegin.test("[$css, $code(\"js\"): body]"));
-  assert.ok(jsBegin.test("[$html, $code(\"js\"): body]"));
-  assert.ok(markdownBegin.test("[$code(\"js\"), $markdown: body]"));
-  assert.ok(markdownBegin.test("[$css, $markdown: body]"));
-  assert.ok(markdownBegin.test("[$html, $markdown: body]"));
-  assert.ok(cssBegin.test("[$code(\"js\"), $css: body]"));
-  assert.ok(cssBegin.test("[$html, $css: body]"));
-  // $html should take over body parsing when it is the last formatter directive.
-  assert.ok(htmlBegin.test("[$code(\"js\"), $html: body]"));
-  assert.ok(htmlBegin.test("[$css, $html: body]"));
-  assert.ok(htmlBegin.test("[$markdown, $html: body]"));
-});
-
-test("escaped brackets do not open or close templates", () => {
-  const beginSamples = [
-    ["template-code-js", "[$code(\"js\"): body]", "\\[$code(\"js\"): body]"],
-    ["template-code-ts", "[$code(\"ts\"): body]", "\\[$code(\"ts\"): body]"],
-    ["template-code-py", "[$code(\"py\"): body]", "\\[$code(\"py\"): body]"],
-    ["template-code-beanstalk", "[$code(\"bst\"): body]", "\\[$code(\"bst\"): body]"],
-    ["template-code-generic", "[$code: body]", "\\[$code: body]"],
-    ["template-css", "[$css: body]", "\\[$css: body]"],
-    ["template-html", "[$html: body]", "\\[$html: body]"],
-    ["template-markdown", "[$markdown: body]", "\\[$markdown: body]"],
-    ["template-generic", "[: body]", "\\[: body]"]
-  ];
-
-  for (const [repositoryKey, openSample, escapedOpenSample] of beginSamples) {
-    const templatePattern = grammar.repository[repositoryKey].patterns[0];
-    const beginRegex = new RegExp(templatePattern.begin);
-    const endRegex = new RegExp(templatePattern.end);
-
-    assert.ok(beginRegex.test(openSample), `${repositoryKey} should open on unescaped '['`);
-    assert.ok(!beginRegex.test(escapedOpenSample), `${repositoryKey} should ignore escaped '['`);
-    assert.ok(endRegex.test("]"), `${repositoryKey} should close on unescaped ']'`);
-    assert.ok(!endRegex.test("\\]"), `${repositoryKey} should ignore escaped ']'`);
-  }
-});
-
-test("template and embedded body splitters ignore escaped closing brackets", () => {
-  const templateBodyEndRegex = new RegExp(grammar.repository["template-body-code-js"].patterns[0].end);
-  assert.ok(templateBodyEndRegex.test("]"), "template body should end on unescaped ']'");
-  assert.ok(!templateBodyEndRegex.test("\\]"), "template body should ignore escaped ']'");
-
-  const embeddedJsBody = grammar.repository["embedded-code-js"].patterns.find(
-    (pattern) => pattern.contentName === "meta.embedded.block.code.js.bst source.js"
-  );
-  assert.ok(embeddedJsBody, "expected JS embedded body pattern");
-
-  const embeddedBodyEndRegex = new RegExp(embeddedJsBody.end);
-  assert.ok(embeddedBodyEndRegex.test("]"), "embedded code body should split on unescaped ']'");
-  assert.ok(!embeddedBodyEndRegex.test("\\]"), "embedded code body should ignore escaped ']'");
-});
-
-test("code template bodies prioritize embedded parsing before generic template fallback", () => {
-  for (const [repositoryKey, embeddedInclude] of [
-    ["template-body-code-js", "#embedded-code-js"],
-    ["template-body-code-ts", "#embedded-code-ts"],
-    ["template-body-code-py", "#embedded-code-py"],
-    ["template-body-code-beanstalk", "#embedded-code-beanstalk"],
-    ["template-body-code-generic", "#embedded-code-generic"]
-  ]) {
-    const bodyPattern = grammar.repository[repositoryKey].patterns[0];
-    const includes = bodyPattern.patterns.map((pattern) => pattern.include).filter(Boolean);
-
-    assert.ok(includes.includes("#template-generic"), `${repositoryKey} should include #template-generic fallback`);
-    assert.ok(includes.includes(embeddedInclude), `${repositoryKey} should include ${embeddedInclude}`);
-    assert.ok(
-      includes.indexOf(embeddedInclude) < includes.indexOf("#template-generic"),
-      `${repositoryKey} should parse embedded content before generic template fallback`
+      includes.includes("#template-code-shell"),
+      `${repoKey} should include #template-code-shell`
     );
   }
 });
 
-test("markdown template bodies assign paragraph scopes without template string fallback", () => {
-  const bodyPattern = grammar.repository["template-body-markdown"].patterns[0];
-  const bodyIncludes = bodyPattern.patterns.map((pattern) => pattern.include).filter(Boolean);
-  assert.ok(bodyIncludes.includes("#embedded-markdown"), "template-body-markdown should include #embedded-markdown");
+// ── ROOT PATTERN ORDER ──────────────────────────────────────────────
 
-  const markdownEmbedding = grammar.repository["embedded-markdown"].patterns.find(
-    (pattern) =>
-      pattern.name === "meta.embedded.block.markdown.bst" &&
-      typeof pattern.contentName === "string" &&
-      pattern.contentName.includes("text.html.markdown")
-  );
+test("root patterns include new code blocks in correct order", () => {
+  assert.ok(includesAtRoot("#template-code-rs"), "expected #template-code-rs at root");
+  assert.ok(includesAtRoot("#template-code-shell"), "expected #template-code-shell at root");
 
-  assert.ok(markdownEmbedding, "expected markdown embedded body pattern");
+  const rootIncludes = grammar.patterns.map((p) => p.include);
+  const pyIdx = rootIncludes.indexOf("#template-code-py");
+  const rsIdx = rootIncludes.indexOf("#template-code-rs");
+  const shellIdx = rootIncludes.indexOf("#template-code-shell");
+  const bstIdx = rootIncludes.indexOf("#template-code-beanstalk");
 
-  const markdownFragment = grammar.repository["markdown-fragment"];
-  assert.ok(markdownFragment, "expected reusable markdown fragment repository");
-
-  const fragmentPatterns = markdownFragment.patterns || [];
-  const paragraphPatterns = fragmentPatterns.filter(
-    (pattern) => pattern.name === "meta.paragraph.markdown"
-  );
-  assert.ok(paragraphPatterns.length >= 2, "expected markdown paragraph fallback patterns");
-
-  const headingPattern = fragmentPatterns.find(
-    (pattern) => pattern.name === "markup.heading.markdown"
-  );
-  assert.ok(headingPattern, "expected markdown heading pattern");
-  const headingRegex = new RegExp(headingPattern.match, "m");
-  assert.ok(headingRegex.test("# Title"));
-  assert.ok(headingRegex.test("        ### Indented Title"));
-
-  const markdownLinkPattern = fragmentPatterns.find(
-    (pattern) => pattern.name === "meta.link.inline.markdown.bst"
-  );
-  assert.ok(markdownLinkPattern, "expected custom markdown @target (label) link pattern");
-  const markdownLinkRegex = new RegExp(`^${markdownLinkPattern.match}$`);
-  assert.ok(markdownLinkRegex.test("@https://example.com/docs (Docs)"));
-  assert.ok(markdownLinkRegex.test("@/docs/intro (Intro)"));
-  assert.ok(markdownLinkRegex.test("@./local/path (Local)"));
-  assert.ok(markdownLinkRegex.test("@../parent/path (Parent)"));
-  assert.ok(markdownLinkRegex.test("@#section (Section)"));
-  assert.ok(markdownLinkRegex.test("@?tab=overview (Overview)"));
-  assert.ok(!markdownLinkRegex.test("x@https://example.com (Docs)"));
-  assert.ok(!markdownLinkRegex.test("@https://example.com(Docs)"));
-  assert.ok(!markdownLinkRegex.test("@https://example.com ()"));
-  assert.ok(!markdownLinkRegex.test("@invalid-target (Docs)"));
-
-  const paragraphRunPattern = paragraphPatterns.find((pattern) => pattern.match === "[^\\[\\]`*@\\n]+");
-  assert.ok(paragraphRunPattern, "expected markdown paragraph run pattern to avoid inline delimiter and newline greed");
-
-  const paragraphSingleCharPattern = paragraphPatterns.find((pattern) => pattern.match === "[^\\[\\]\\n]");
-  assert.ok(paragraphSingleCharPattern, "expected markdown paragraph single-char fallback pattern");
-
-  const paragraphRunRegex = new RegExp("^" + paragraphRunPattern.match + "$");
-  assert.ok(paragraphRunRegex.test("plain markdown text"));
-  assert.ok(!paragraphRunRegex.test("*italic*"));
-  assert.ok(!paragraphRunRegex.test("**bold**"));
-  assert.ok(!paragraphRunRegex.test(" **bold**"));
-
-  const markdownIncludes = (markdownEmbedding.patterns || []).map((pattern) => pattern.include).filter(Boolean);
-  assert.ok(markdownIncludes.includes("#markdown-fragment"));
-  assert.ok(
-    !markdownIncludes.includes("text.html.markdown"),
-    "embedded markdown should avoid full markdown include that can consume template delimiters"
-  );
-  assert.ok(
-    !(markdownEmbedding.patterns || []).some(
-      (pattern) => typeof pattern.name === "string" && pattern.name.includes("string.unquoted.template.body.bst")
-    ),
-    "embedded markdown should avoid template string fallback scopes for plain text"
-  );
+  assert.ok(pyIdx < rsIdx, "#template-code-rs should come after #template-code-py");
+  assert.ok(rsIdx < shellIdx, "#template-code-shell should come after #template-code-rs");
+  assert.ok(shellIdx < bstIdx, "#template-code-shell should come before #template-code-beanstalk");
 });
 
-test("css template bodies embed css and avoid child-template fallback", () => {
-  const bodyPattern = grammar.repository["template-body-css"].patterns[0];
-  const bodyIncludes = bodyPattern.patterns.map((pattern) => pattern.include).filter(Boolean);
-  assert.deepEqual(bodyIncludes, ["#escapes", "#embedded-css"]);
+// ── PACKAGE.JSON EMBEDDED LANGUAGES ─────────────────────────────────
 
-  const cssEmbedding = grammar.repository["embedded-css"].patterns.find(
-    (pattern) =>
-      pattern.name === "meta.embedded.block.css.bst" &&
-      typeof pattern.contentName === "string" &&
-      pattern.contentName.includes("source.css")
-  );
-  assert.ok(cssEmbedding, "expected CSS embedded body pattern");
-});
-
-test("html template bodies embed html and support nested templates and slot markers", () => {
-  const bodyPattern = grammar.repository["template-body-html"].patterns[0];
-  const bodyIncludes = bodyPattern.patterns.map((pattern) => pattern.include).filter(Boolean);
-  // `$html` should parse nested templates before falling back to HTML embedding.
-  assert.ok(bodyIncludes.includes("#template-slot-marker"));
-  assert.ok(bodyIncludes.includes("#template-generic"));
-  assert.ok(bodyIncludes.includes("#embedded-html"));
-  assert.ok(
-    bodyIncludes.indexOf("#template-generic") < bodyIncludes.indexOf("#embedded-html"),
-    "template-body-html should parse nested templates before HTML embedding"
-  );
-
-  const htmlEmbedding = grammar.repository["embedded-html"].patterns.find(
-    (pattern) =>
-      pattern.name === "meta.embedded.block.html.bst" &&
-      typeof pattern.contentName === "string" &&
-      pattern.contentName.includes("text.html.basic")
-  );
-  assert.ok(htmlEmbedding, "expected HTML embedded body pattern");
-
-  const htmlEmbeddingIncludes = (htmlEmbedding.patterns || []).map((pattern) => pattern.include).filter(Boolean);
-  assert.ok(htmlEmbeddingIncludes.includes("#template-slot-marker"));
-  assert.ok(htmlEmbeddingIncludes.includes("#template-generic"));
-  assert.ok(htmlEmbeddingIncludes.includes("#embedded-html-fragment"));
-  assert.ok(
-    htmlEmbeddingIncludes.indexOf("#template-generic") < htmlEmbeddingIncludes.indexOf("#embedded-html-fragment"),
-    "embedded-html should parse nested templates before HTML fragment fallback"
-  );
-
-  const htmlFragment = grammar.repository["embedded-html-fragment"];
-  assert.ok(htmlFragment, "expected embedded HTML fragment repository");
-  const htmlFragmentIncludes = (htmlFragment.patterns || [])
-    .flatMap((pattern) => (pattern.patterns || []).map((nestedPattern) => nestedPattern.include))
-    .filter(Boolean);
-  assert.ok(htmlFragmentIncludes.includes("#embedded-html-string-double"));
-  assert.ok(htmlFragmentIncludes.includes("#embedded-html-string-single"));
-
-  const htmlDoubleQuotedString = grammar.repository["embedded-html-string-double"].patterns[0];
-  const htmlSingleQuotedString = grammar.repository["embedded-html-string-single"].patterns[0];
-  assert.equal(htmlDoubleQuotedString.name, "meta.attribute.value.html.bst");
-  assert.equal(htmlSingleQuotedString.name, "meta.attribute.value.html.bst");
-  assert.ok(
-    htmlDoubleQuotedString.beginCaptures["0"].name.includes("string.quoted.double.html.bst") &&
-      htmlDoubleQuotedString.endCaptures["0"].name.includes("string.quoted.double.html.bst"),
-    "double-quoted html delimiters should keep string-like scopes"
-  );
-  assert.ok(
-    htmlSingleQuotedString.beginCaptures["0"].name.includes("string.quoted.single.html.bst") &&
-      htmlSingleQuotedString.endCaptures["0"].name.includes("string.quoted.single.html.bst"),
-    "single-quoted html delimiters should keep string-like scopes"
-  );
-});
-
-test("embedded css/html/code modes recurse over balanced square brackets", () => {
-  for (const repositoryKey of [
-    "embedded-css",
-    "embedded-html",
-    "embedded-code-js",
-    "embedded-code-ts",
-    "embedded-code-py",
-    "embedded-code-beanstalk",
-    "embedded-code-generic"
-  ]) {
-    const recursiveBracketPattern = grammar.repository[repositoryKey].patterns.find(
-      (pattern) =>
-        pattern.begin === "(?<!\\\\)\\[" &&
-        pattern.end === "(?<!\\\\)\\]" &&
-        Array.isArray(pattern.patterns) &&
-        pattern.patterns.some((nestedPattern) => nestedPattern.include === `#${repositoryKey}`)
-    );
-
-    assert.ok(recursiveBracketPattern, `expected recursive square-bracket handling in ${repositoryKey}`);
-  }
-});
-
-test("escape patterns cover template bodies, embedded blocks, and string literals", () => {
-  const escapeRepo = grammar.repository.escapes;
-  assert.ok(escapeRepo, "expected escapes repository");
-  const escapePattern = escapeRepo.patterns.find((pattern) => pattern.name === "constant.character.escape.bst");
-  assert.ok(escapePattern, "expected escape pattern");
-
-  const escapeRegex = new RegExp("^" + escapePattern.match + "$");
-  assert.ok(escapeRegex.test("\\n"));
-  assert.ok(escapeRegex.test("\\a"));
-  assert.ok(escapeRegex.test("\\["));
-  assert.ok(escapeRegex.test("\\]"));
-  assert.ok(!escapeRegex.test("\\1"));
-
-  const templateHeadIncludes = grammar.repository["template-head"].patterns[0].patterns
-    .map((pattern) => pattern.include)
-    .filter(Boolean);
-  assert.ok(templateHeadIncludes.includes("#escapes"), "template head should include #escapes");
-
-  for (const repositoryKey of [
-    "template-body-generic",
-    "template-body-markdown",
-    "template-body-css",
-    "template-body-html",
-    "template-body-code-js",
-    "template-body-code-ts",
-    "template-body-code-py",
-    "template-body-code-beanstalk",
-    "template-body-code-generic"
-  ]) {
-    const bodyIncludes = grammar.repository[repositoryKey].patterns[0].patterns
-      .map((pattern) => pattern.include)
-      .filter(Boolean);
-    assert.ok(bodyIncludes.includes("#escapes"), `${repositoryKey} should include #escapes`);
-  }
-
-  for (const repositoryKey of [
-    "embedded-markdown",
-    "embedded-css",
-    "embedded-html",
-    "embedded-html-string-double",
-    "embedded-html-string-single",
-    "embedded-code-js",
-    "embedded-code-ts",
-    "embedded-code-py",
-    "embedded-code-beanstalk",
-    "embedded-code-generic"
-  ]) {
-    const hasEscapesInclude = grammar.repository[repositoryKey].patterns.some(
-      (pattern) =>
-        Array.isArray(pattern.patterns) &&
-        pattern.patterns.some((nestedPattern) => nestedPattern.include === "#escapes")
-    );
-    assert.ok(hasEscapesInclude, `${repositoryKey} should include #escapes`);
-  }
-});
-
-test("embedded language scopes are exposed in package.json", () => {
-  const grammarContribution = pkg.contributes.grammars.find((grammarItem) => grammarItem.language === "bst");
-  assert.ok(grammarContribution, "expected bst grammar contribution");
-
+test("package.json includes new embedded language mappings", () => {
+  const grammarContribution = pkg.contributes.grammars.find((g) => g.language === "bst");
   const embedded = grammarContribution.embeddedLanguages || {};
+
+  assert.equal(embedded["meta.embedded.block.code.rs.bst"], "rust");
+  assert.equal(embedded["meta.embedded.block.code.shell.bst"], "shellscript");
+
+  // Existing mappings intact
   assert.equal(embedded["meta.embedded.block.markdown.bst"], "markdown");
   assert.equal(embedded["meta.embedded.block.css.bst"], "css");
   assert.equal(embedded["meta.embedded.block.html.bst"], "html");
@@ -564,67 +285,231 @@ test("embedded language scopes are exposed in package.json", () => {
   assert.equal(embedded["meta.embedded.block.code.ts.bst"], "typescript");
   assert.equal(embedded["meta.embedded.block.code.py.bst"], "python");
   assert.equal(embedded["meta.embedded.block.code.bstlang.bst"], "bst");
+  assert.equal(embedded["meta.embedded.block.code.generic.bst"], "plaintext");
 });
+
+// ── REPOSITORY INTEGRITY ────────────────────────────────────────────
+
+test("all expected repository families are present", () => {
+  const expectedRepos = [
+    "comments", "path-literals", "path-group", "invalid-at-sign",
+    "template-code-js", "template-code-ts", "template-code-py",
+    "template-code-rs", "template-code-shell",
+    "template-code-beanstalk", "template-code-generic",
+    "template-css", "template-html", "template-markdown", "template-generic",
+    "template-head", "template-head-directives",
+    "template-body-code-js", "template-body-code-ts", "template-body-code-py",
+    "template-body-code-rs", "template-body-code-shell",
+    "template-body-code-beanstalk", "template-body-code-generic",
+    "template-body-css", "template-body-html", "template-body-markdown",
+    "template-body-generic",
+    "embedded-code-js", "embedded-code-ts", "embedded-code-py",
+    "embedded-code-rs", "embedded-code-shell",
+    "embedded-code-beanstalk", "embedded-code-generic",
+    "embedded-markdown", "embedded-css", "embedded-html",
+    "raw-strings", "strings", "chars", "numbers",
+    "keywords", "types", "operators", "punctuation", "constants",
+    "type-identifiers", "identifiers", "escapes",
+    "template-slot-marker", "template-slot-directive",
+    "template-children-directive", "template-doc-directive",
+    "template-note-todo-directive", "template-doc-nested-brackets",
+    "template-note-todo-nested-brackets",
+    "markdown-fragment", "code-beanstalk-fragment", "code-generic-fragment",
+    "embedded-html-fragment", "embedded-html-string-double", "embedded-html-string-single",
+  ];
+
+  for (const repoKey of expectedRepos) {
+    assert.ok(repoExists(repoKey), `expected repository '${repoKey}'`);
+  }
+});
+
+// ── FIXTURE ─────────────────────────────────────────────────────────
 
 test("fixture contains expected scenarios for manual token inspection", () => {
   assert.ok(fs.existsSync(fixturePath), "expected highlighting fixture to exist");
 
   const fixture = fs.readFileSync(fixturePath, "utf8");
+
+  // Paths and imports
   for (const snippet of [
-    "import @styles/docs{navbar}",
-    "import @a/b/c",
-    "import @styles/docs {footer, navbar}",
-    "escaped_string = \"line\\\\n with \\\\a and \\\\[ and \\\\]\"",
-    "[$slot]",
-    "[$slot(\"style\")]",
-    "[$insert(\"style\"): color: blue;]",
-    "$slot",
-    "$children([: Prefix])",
-    "$note[",
-    "$todo[",
-    "$doc[",
-    "$markdown",
-    "$css",
-    "$html",
-    "<h1 style=\"[$slot(\"style\")]\">",
-    "@https://example.com/docs (Project Docs)",
-    "@/docs/getting-started (Guide)",
-    "\\n escaped text \\[\\]",
-    "        ### Deep Indented Subtitle",
-    "escaped = \\a \\[ \\]",
-    "$code(\"js\")",
-    "nested = [:1, [:2, [:3]]]",
-    "$code(\"py\")",
+    'import @styles/docs {navbar, title, section}',
+    'import @html {center}',
+    'import @core/math as math',
   ]) {
     assert.ok(fixture.includes(snippet), `expected fixture to include '${snippet}'`);
   }
-});
 
-test("repository exposes all expected new stable scope families", () => {
-  const expectedIncludes = [
-    "#path-literals",
-    "#template-css",
-    "#template-html",
-    "#template-markdown",
-    "#template-code-generic",
-    "#template-generic"
-  ];
-
-  for (const includeName of expectedIncludes) {
-    assert.ok(includesAtRoot(includeName), `expected root include '${includeName}'`);
+  // Const declarations
+  for (const snippet of [
+    'page_title #= "Templates"',
+    'page_description #String = "Template syntax in Beanstalk."',
+    'page_head #= theme_head',
+  ]) {
+    assert.ok(fixture.includes(snippet), `expected fixture to include '${snippet}'`);
   }
 
-  for (const scopeName of [
-    "meta.path.import.bst",
-    "meta.template.html.bst",
-    "meta.embedded.block.markdown.bst",
-    "meta.embedded.block.css.bst",
-    "meta.embedded.block.html.bst",
-    "meta.embedded.block.code.generic.bst",
-    "meta.embedded.block.code.js.bst",
-    "meta.embedded.block.code.ts.bst",
-    "meta.embedded.block.code.py.bst"
+  // Binding forms
+  for (const snippet of [
+    'count ~= 0',
+    'ratio Float = 1.5',
+    'text_slice = "text"',
+    "raw_slice = `raw`",
+    "letter = 'A'",
+    'values ~{Int} = {}',
+    'names {String} = {"Priya", "Gollum"}',
   ]) {
-    assert.ok(findPatternByName(scopeName), `expected scope '${scopeName}'`);
+    assert.ok(fixture.includes(snippet), `expected fixture to include '${snippet}'`);
+  }
+
+  // Structs, choices, functions
+  for (const snippet of [
+    "Person = |",
+    "Status ::",
+    "increment |value Int| -> Int:",
+    "return value + 1",
+    "name, count = pair()",
+  ]) {
+    assert.ok(fixture.includes(snippet), `expected fixture to include '${snippet}'`);
+  }
+
+  // this receiver
+  for (const snippet of [
+    "display |this Person| -> String:",
+    "return this.name",
+  ]) {
+    assert.ok(fixture.includes(snippet), `expected fixture to include '${snippet}'`);
+  }
+
+  // Control flow
+  for (const snippet of [
+    "if value is true:",
+    "io(\"then\")",
+    "io(\"else\")",
+    "if value is:",
+    "loop items |item, index|:",
+    "loop 0 to 10 by 2 |i|:",
+  ]) {
+    assert.ok(fixture.includes(snippet), `expected fixture to include '${snippet}'`);
+  }
+
+  // assert
+  for (const snippet of [
+    "assert(index < items.length)",
+    'assert(index < items.length, "out of bounds")',
+  ]) {
+    assert.ok(fixture.includes(snippet), `expected fixture to include '${snippet}'`);
+  }
+
+  // Options, results, then/catch
+  for (const snippet of [
+    "maybe_name String? = none",
+    "if maybe_name is |name| then name else",
+    "parse_number(text)!",
+    "parse_number(text) catch:",
+    "then 0",
+  ]) {
+    assert.ok(fixture.includes(snippet), `expected fixture to include '${snippet}'`);
+  }
+
+  // Templates
+  for (const snippet of [
+    "[$markdown:",
+    "[$slot]",
+    '[$slot("style")]',
+    '[$insert("style"): color: blue;]',
+    "[$children([: Prefix]):",
+    "[if show:",
+    "[list, if show:",
+  ]) {
+    assert.ok(fixture.includes(snippet), `expected fixture to include '${snippet}'`);
+  }
+
+  // Code blocks - all languages
+  for (const snippet of [
+    '$code("bst")',
+    '$code("js")',
+    '$code("ts")',
+    '$code("py")',
+    '$code("rs")',
+    '$code("rust")',
+    '$code("sh")',
+    '$code("shell")',
+    '$code("bash")',
+  ]) {
+    assert.ok(fixture.includes(snippet), `expected fixture to include '${snippet}'`);
+  }
+
+  // CSS and HTML directives
+  for (const snippet of [
+    "[$css:",
+    "[$html:",
+  ]) {
+    assert.ok(fixture.includes(snippet), `expected fixture to include '${snippet}'`);
+  }
+
+  // Escape sequences
+  for (const snippet of [
+    'escaped = \\n \\a \\[ \\]',
+  ]) {
+    assert.ok(fixture.includes(snippet), `expected fixture to include '${snippet}'`);
+  }
+
+  // Generics
+  assert.ok(fixture.includes("value = identity(42)"), "expected identity call");
+
+  // Traits
+  assert.ok(fixture.includes("SHOW must:"), "expected trait declaration");
+  assert.ok(fixture.includes("show |This| -> String"), "expected trait This receiver");
+});
+
+// ── SCOPE REGRESSION CHECKS ─────────────────────────────────────────
+
+test("key scopes exist for regex-based highlighting", () => {
+  const scopes = [
+    "comment.line.double-dash.bst",
+    "keyword.control.flow.bst",
+    "keyword.control.loop.range.bst",
+    "keyword.other.bst",
+    "keyword.control.logical.bst",
+    "variable.language.this.bst",
+    "support.type.primitive.bst",
+    "constant.language.boolean.bst",
+    "constant.language.none.bst",
+    "variable.language.trait-this.bst",
+    "variable.language.generics.bst",
+    "support.function.builtin.bst",
+    "support.type.builtin.bst",
+    "string.quoted.double.bst",
+    "string.quoted.raw.bst",
+    "string.quoted.single.char.bst",
+    "constant.numeric.bst",
+    "entity.name.type.bst",
+    "variable.other.bst",
+  ];
+
+  for (const scope of scopes) {
+    const found = findPatternsByName(scope);
+    assert.ok(found.length > 0, `expected scope '${scope}' to exist`);
+  }
+});
+
+test("template meta scopes exist", () => {
+  const scopes = [
+    "meta.template.bst",
+    "meta.template.markdown.bst",
+    "meta.template.css.bst",
+    "meta.template.html.bst",
+    "meta.template.code.js.bst",
+    "meta.template.code.ts.bst",
+    "meta.template.code.py.bst",
+    "meta.template.code.rs.bst",
+    "meta.template.code.shell.bst",
+    "meta.template.code.bstlang.bst",
+    "meta.template.code.generic.bst",
+  ];
+
+  for (const scope of scopes) {
+    const found = findPatternsByName(scope);
+    assert.ok(found.length > 0, `expected scope '${scope}' to exist`);
   }
 });

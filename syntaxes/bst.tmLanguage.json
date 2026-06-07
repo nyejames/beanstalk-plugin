@@ -22,6 +22,12 @@
       "include": "#template-code-py"
     },
     {
+      "include": "#template-code-rs"
+    },
+    {
+      "include": "#template-code-shell"
+    },
+    {
       "include": "#template-code-beanstalk"
     },
     {
@@ -773,7 +779,7 @@
       "patterns": [
         {
           "name": "keyword.control.directive.template.bst keyword.control.bst",
-          "match": "\\$(?:slot|insert|fresh|markdown|code|raw|note|todo|doc|children)\\b"
+          "match": "\\$(?:slot|insert|fresh|markdown|code|raw|note|todo|doc|children|css|html|escape_html)\\b"
         },
         {
           "name": "keyword.control.directive.template.bst keyword.control.bst",
@@ -891,6 +897,12 @@
               "include": "#template-code-py"
             },
             {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
+            },
+            {
               "include": "#template-code-beanstalk"
             },
             {
@@ -942,6 +954,12 @@
             },
             {
               "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
             },
             {
               "include": "#template-code-beanstalk"
@@ -1018,6 +1036,12 @@
               "include": "#template-code-py"
             },
             {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
+            },
+            {
               "include": "#template-code-beanstalk"
             },
             {
@@ -1068,6 +1092,12 @@
             },
             {
               "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
             },
             {
               "include": "#template-code-beanstalk"
@@ -1122,6 +1152,12 @@
               "include": "#template-code-py"
             },
             {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
+            },
+            {
               "include": "#template-code-beanstalk"
             },
             {
@@ -1172,6 +1208,12 @@
             },
             {
               "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
             },
             {
               "include": "#template-code-beanstalk"
@@ -1226,6 +1268,12 @@
               "include": "#template-code-py"
             },
             {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
+            },
+            {
               "include": "#template-code-beanstalk"
             },
             {
@@ -1276,6 +1324,12 @@
             },
             {
               "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
             },
             {
               "include": "#template-code-beanstalk"
@@ -1668,6 +1722,18 @@
               "include": "#template-code-py"
             },
             {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
+            },
+            {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
+            },
+            {
               "include": "#template-code-beanstalk"
             },
             {
@@ -1746,6 +1812,18 @@
               "include": "#template-code-py"
             },
             {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
+            },
+            {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
+            },
+            {
               "include": "#template-code-beanstalk"
             },
             {
@@ -1798,6 +1876,18 @@
             },
             {
               "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
+            },
+            {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
             },
             {
               "include": "#template-code-beanstalk"
@@ -2159,19 +2249,23 @@
       "patterns": [
         {
           "name": "keyword.control.flow.bst",
-          "match": "\\b(?:if|else|case|return|loop|break|continue|yield|catch)\\b"
+          "match": "\\b(?:if|else|return|loop|break|continue|catch|then)\\b"
         },
         {
           "name": "keyword.control.loop.range.bst",
-          "match": "\\b(?:to|by)\\b"
+          "match": "\\b(?:to|by|\\&)\\b"
         },
         {
           "name": "keyword.other.bst",
-          "match": "\\b(?:import|as|copy|must|async|checked|block)\\b"
+          "match": "\\b(?:import|export|as|copy|must|async|checked|block)\\b"
         },
         {
           "name": "keyword.control.logical.bst",
           "match": "\\b(?:is|not|and|or)\\b"
+        },
+        {
+          "name": "variable.language.this.bst",
+          "match": "\\bthis\\b"
         }
       ]
     },
@@ -2179,11 +2273,11 @@
       "patterns": [
         {
           "name": "support.type.primitive.bst",
-          "match": "\\b(?:Int|Float|String|Bool|Char|None|Fn)\\b"
+          "match": "\\b(?:Int|Float|String|Bool|Char)\\b"
         },
         {
           "name": "constant.language.boolean.bst",
-          "match": "\\b(?:true|false|True|False)\\b"
+          "match": "\\b(?:true|false)\\b"
         },
         {
           "name": "constant.language.none.bst",
@@ -2203,19 +2297,11 @@
       "patterns": [
         {
           "name": "keyword.operator.assignment.compound.bst",
-          "match": "\\+=|-=|\\*=|//=|/=|%%=|%=|\\^="
+          "match": "\\+=|-=|\\*=|//=|/=|%%=|%=|\\^=|\\#="
         },
         {
           "name": "keyword.operator.symbol.bst",
-          "match": "=>|>>|<<|->|\\.\\.|::|<=|>="
-        },
-        {
-          "name": "keyword.operator.export.bst",
-          "match": "#"
-        },
-        {
-          "name": "keyword.operator.symbol.bst",
-          "match": "[=+\\-*/%^~?!<>|]"
+          "match": "\\=|\\+\\-|\\*|\\/|\\%|\\^|\\~|\\#|\\?|\\!|\\<|\\>|=>|>>|<<|->|\\.\\.|::|<=|>="
         }
       ]
     },
@@ -2255,11 +2341,11 @@
       "patterns": [
         {
           "name": "support.function.builtin.bst",
-          "match": "\\b(?:io)\\b"
+          "match": "\\b(?:io|assert)\\b"
         },
         {
           "name": "support.type.builtin.bst",
-          "match": "\\b(?:Error)\\b"
+          "match": "\\b(?:Error|IO)\\b"
         },
         {
           "name": "constant.other.caps.bst",
@@ -2280,6 +2366,232 @@
         {
           "name": "variable.other.bst",
           "match": "\\b[a-z_][A-Za-z0-9_]*\\b"
+        }
+      ]
+    },
+    "template-code-rs": {
+      "patterns": [
+        {
+          "name": "meta.template.bst meta.template.code.rs.bst",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:rs|rust)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:rs|rust)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css|html)\\b)",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "(?<!\\\\)\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-head"
+            },
+            {
+              "include": "#template-body-code-rs"
+            }
+          ]
+        }
+      ]
+    },
+    "template-body-code-rs": {
+      "patterns": [
+        {
+          "name": "meta.template.body.bst",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+            }
+          },
+          "end": "(?=(?<!\\\\)\\])",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-css"
+            },
+            {
+              "include": "#template-html"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "include": "#embedded-code-rs"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-code-rs": {
+      "patterns": [
+        {
+          "name": "meta.embedded.block.code.rs.bst",
+          "begin": "(?<!\\\\)\\[",
+          "end": "(?<!\\\\)\\]",
+          "patterns": [
+            {
+              "include": "#embedded-code-rs"
+            }
+          ]
+        },
+        {
+          "name": "meta.embedded.block.code.rs.bst",
+          "begin": "(?=[^\\[\\]])",
+          "end": "(?=(?<!\\\\)[\\[\\]])",
+          "contentName": "meta.embedded.block.code.rs.bst source.rust",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "source.rust"
+            }
+          ]
+        }
+      ]
+    },
+    "template-code-shell": {
+      "patterns": [
+        {
+          "name": "meta.template.bst meta.template.code.shell.bst",
+          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:sh|shell|bash)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:sh|shell|bash)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css|html)\\b)",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "(?<!\\\\)\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-head"
+            },
+            {
+              "include": "#template-body-code-shell"
+            }
+          ]
+        }
+      ]
+    },
+    "template-body-code-shell": {
+      "patterns": [
+        {
+          "name": "meta.template.body.bst",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+            }
+          },
+          "end": "(?=(?<!\\\\)\\])",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-css"
+            },
+            {
+              "include": "#template-html"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "include": "#embedded-code-shell"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-code-shell": {
+      "patterns": [
+        {
+          "name": "meta.embedded.block.code.shell.bst",
+          "begin": "(?<!\\\\)\\[",
+          "end": "(?<!\\\\)\\]",
+          "patterns": [
+            {
+              "include": "#embedded-code-shell"
+            }
+          ]
+        },
+        {
+          "name": "meta.embedded.block.code.shell.bst",
+          "begin": "(?=[^\\[\\]])",
+          "end": "(?=(?<!\\\\)[\\[\\]])",
+          "contentName": "meta.embedded.block.code.shell.bst source.shell",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "source.shell"
+            }
+          ]
         }
       ]
     }

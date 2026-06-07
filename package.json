@@ -2,7 +2,7 @@
   "name": "beanstalk-plugin",
   "displayName": "Beanstalk",
   "description": "Language support and syntax highlighting for Beanstalk",
-  "version": "0.1.101",
+  "version": "0.2.0",
   "files": [
     "package.json",
     "syntaxes/bst.tmLanguage.json",
@@ -24,31 +24,44 @@
     "Programming Languages"
   ],
   "contributes": {
-    "languages": [{
-      "id": "bst",
-      "aliases": ["Beanstalk", "bst", "beanstalk", "BST"],
-      "extensions": ["bst"],
-      "configuration": "./language-configuration.json",
-      "icon": {
-        "light": "./icons/icon.png",
-        "dark": "./icons/icon.png"
+    "languages": [
+      {
+        "id": "bst",
+        "aliases": [
+          "Beanstalk",
+          "bst",
+          "beanstalk",
+          "BST"
+        ],
+        "extensions": [
+          "bst"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/icon.png",
+          "dark": "./icons/icon.png"
+        }
       }
-    }],
-    "grammars": [{
-      "language": "bst",
-      "scopeName": "source.bst",
-      "path": "./syntaxes/bst.tmLanguage.json",
-      "embeddedLanguages": {
-        "meta.embedded.block.markdown.bst": "markdown",
-        "meta.embedded.block.css.bst": "css",
-        "meta.embedded.block.html.bst": "html",
-        "meta.embedded.block.code.js.bst": "javascript",
-        "meta.embedded.block.code.ts.bst": "typescript",
-        "meta.embedded.block.code.py.bst": "python",
-        "meta.embedded.block.code.bstlang.bst": "bst",
-        "meta.embedded.block.code.generic.bst": "plaintext"
+    ],
+    "grammars": [
+      {
+        "language": "bst",
+        "scopeName": "source.bst",
+        "path": "./syntaxes/bst.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.markdown.bst": "markdown",
+          "meta.embedded.block.css.bst": "css",
+          "meta.embedded.block.html.bst": "html",
+          "meta.embedded.block.code.js.bst": "javascript",
+          "meta.embedded.block.code.ts.bst": "typescript",
+          "meta.embedded.block.code.py.bst": "python",
+          "meta.embedded.block.code.bstlang.bst": "bst",
+          "meta.embedded.block.code.generic.bst": "plaintext",
+          "meta.embedded.block.code.rs.bst": "rust",
+          "meta.embedded.block.code.shell.bst": "shellscript"
+        }
       }
-    }]
+    ]
   },
   "repository": {
     "type": "git",
