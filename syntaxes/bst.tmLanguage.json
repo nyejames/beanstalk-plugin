@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0",
+  "version": "0.2.1",
   "name": "Beanstalk",
   "scopeName": "source.bst",
   "patterns": [
@@ -219,7 +219,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.js.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:js|javascript)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:js|javascript)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css|html)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$code\\s*\\(\\s*\\\"(?:js|javascript)\\\"\\s*\\))",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -246,7 +246,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.ts.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:ts|typescript)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:ts|typescript)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css|html)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$code\\s*\\(\\s*\\\"(?:ts|typescript)\\\"\\s*\\))",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -273,7 +273,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.py.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:py|python)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:py|python)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css|html)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$code\\s*\\(\\s*\\\"(?:py|python)\\\"\\s*\\))",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -296,11 +296,65 @@
         }
       ]
     },
+    "template-code-rs": {
+      "patterns": [
+        {
+          "name": "meta.template.bst meta.template.code.rs.bst",
+          "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$code\\s*\\(\\s*\\\"(?:rs|rust)\\\"\\s*\\))",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "(?<!\\\\)\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-head"
+            },
+            {
+              "include": "#template-body-code-rs"
+            }
+          ]
+        }
+      ]
+    },
+    "template-code-shell": {
+      "patterns": [
+        {
+          "name": "meta.template.bst meta.template.code.shell.bst",
+          "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$code\\s*\\(\\s*\\\"(?:sh|shell|bash)\\\"\\s*\\))",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "(?<!\\\\)\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-head"
+            },
+            {
+              "include": "#template-body-code-shell"
+            }
+          ]
+        }
+      ]
+    },
     "template-code-beanstalk": {
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.bstlang.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:bst|beanstalk)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:bst|beanstalk)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css|html)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$code\\s*\\(\\s*\\\"(?:bst|beanstalk)\\\"\\s*\\))",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -327,7 +381,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.code.generic.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\b)(?![^\\]]*\\$code\\b[^\\]]*\\$(?:markdown|code|css|html)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$code\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -354,7 +408,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.css.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$css\\b)(?![^\\]]*\\$css\\b[^\\]]*\\$(?:markdown|code|css|html)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$css\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -381,7 +435,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.html.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$html\\b)(?![^\\]]*\\$html\\b[^\\]]*\\$(?:markdown|code|css|html)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$html\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -408,7 +462,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.markdown.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$markdown\\b)(?![^\\]]*\\$markdown\\b[^\\]]*\\$(?:markdown|code|css|html)\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$markdown\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -534,6 +588,92 @@
         }
       ]
     },
+    "template-head-directives": {
+      "patterns": [
+        {
+          "name": "keyword.control.directive.template.bst keyword.control.bst",
+          "match": "\\$(?:slot|insert|fresh|markdown|code|raw|note|todo|doc|children|css|html|escape_html)\\b"
+        },
+        {
+          "name": "keyword.control.directive.template.bst keyword.control.bst",
+          "match": "\\$[A-Za-z_][A-Za-z0-9_]*"
+        }
+      ]
+    },
+    "template-slot-directive": {
+      "patterns": [
+        {
+          "name": "meta.template.slot.directive.bst",
+          "match": "\\$slot\\b",
+          "captures": {
+            "0": {
+              "name": "keyword.other.template.slot.directive.bst keyword.control.directive.template.bst"
+            }
+          }
+        },
+        {
+          "name": "meta.template.slot.directive.bst",
+          "match": "(\\$insert)(\\s*\\()(\\s*\\\"(?:[^\\\"\\\\]|\\\\.)*\\\"\\s*)(\\))",
+          "captures": {
+            "1": {
+              "name": "keyword.other.template.slot.directive.bst keyword.control.directive.template.bst"
+            },
+            "2": {
+              "name": "punctuation.section.group.begin.bst"
+            },
+            "3": {
+              "name": "string.quoted.double.bst"
+            },
+            "4": {
+              "name": "punctuation.section.group.end.bst"
+            }
+          }
+        }
+      ]
+    },
+    "template-slot-marker": {
+      "patterns": [
+        {
+          "name": "meta.template.slot.marker.bst",
+          "match": "((?<!\\\\)\\[)([ \\t]*)(\\$slot)([ \\t]*)(?:(\\()([ \\t]*)(\\\"(?:[^\\\"\\\\]|\\\\.)*\\\"|\\d+)([ \\t]*)(\\)))?([ \\t]*)((?<!\\\\)\\])",
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.slot.begin.bst"
+            },
+            "3": {
+              "name": "keyword.other.template.slot.fill.bst keyword.other.template.slot.directive.bst"
+            },
+            "5": {
+              "name": "punctuation.section.group.begin.bst"
+            },
+            "7": {
+              "name": "string.quoted.double.bst constant.numeric.bst"
+            },
+            "9": {
+              "name": "punctuation.section.group.end.bst"
+            },
+            "11": {
+              "name": "punctuation.definition.slot.end.bst"
+            }
+          }
+        },
+        {
+          "name": "invalid.deprecated.template.slot.marker.bst",
+          "match": "((?<!\\\\)\\[)([ \\t]*\\.{2,}[ \\t]*)((?<!\\\\)\\])",
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.slot.begin.bst"
+            },
+            "2": {
+              "name": "invalid.illegal.deprecated.template.slot.fill.bst"
+            },
+            "3": {
+              "name": "punctuation.definition.slot.end.bst"
+            }
+          }
+        }
+      ]
+    },
     "template-children-directive": {
       "patterns": [
         {
@@ -567,6 +707,12 @@
               "include": "#template-code-py"
             },
             {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
+            },
+            {
               "include": "#template-code-beanstalk"
             },
             {
@@ -582,10 +728,10 @@
               "include": "#template-markdown"
             },
             {
-              "include": "#template-body-generic"
+              "include": "#template-generic"
             },
             {
-              "include": "#template-generic"
+              "include": "#template-body-generic"
             },
             {
               "include": "#path-literals"
@@ -644,7 +790,7 @@
           "begin": "(\\$(?:note|todo))(\\s*)(?<!\\\\)(\\[)",
           "beginCaptures": {
             "1": {
-              "name": "keyword.other.template.comment.directive.bst keyword.control.directive.template.bst"
+              "name": "keyword.other.template.template-note-todo-directive.bst keyword.control.directive.template.bst"
             },
             "3": {
               "name": "punctuation.definition.comment.begin.bst"
@@ -665,12 +811,7 @@
               "include": "#escapes"
             },
             {
-              "name": "comment.block.template.directive.bst",
-              "match": "[^\\[\\]\\n]+"
-            },
-            {
-              "name": "comment.block.template.directive.bst",
-              "match": "[^\\[\\]]"
+              "include": "#markdown-fragment"
             }
           ]
         }
@@ -700,12 +841,7 @@
               "include": "#escapes"
             },
             {
-              "name": "comment.block.template.directive.bst",
-              "match": "[^\\[\\]\\n]+"
-            },
-            {
-              "name": "comment.block.template.directive.bst",
-              "match": "[^\\[\\]]"
+              "include": "#markdown-fragment"
             }
           ]
         }
@@ -718,7 +854,7 @@
           "begin": "(\\$doc)(\\s*)(?<!\\\\)(\\[)",
           "beginCaptures": {
             "1": {
-              "name": "keyword.other.template.doc.directive.bst keyword.control.directive.template.bst"
+              "name": "keyword.other.template.template-doc-directive.bst keyword.control.directive.template.bst"
             },
             "3": {
               "name": "punctuation.definition.comment.begin.bst"
@@ -772,92 +908,6 @@
               "include": "#markdown-fragment"
             }
           ]
-        }
-      ]
-    },
-    "template-head-directives": {
-      "patterns": [
-        {
-          "name": "keyword.control.directive.template.bst keyword.control.bst",
-          "match": "\\$(?:slot|insert|fresh|markdown|code|raw|note|todo|doc|children|css|html|escape_html)\\b"
-        },
-        {
-          "name": "keyword.control.directive.template.bst keyword.control.bst",
-          "match": "\\$[A-Za-z_][A-Za-z0-9_]*"
-        }
-      ]
-    },
-    "template-slot-directive": {
-      "patterns": [
-        {
-          "name": "meta.template.slot.directive.bst",
-          "match": "\\$slot\\b",
-          "captures": {
-            "0": {
-              "name": "keyword.other.template.slot.directive.bst keyword.control.directive.template.bst"
-            }
-          }
-        },
-        {
-          "name": "meta.template.slot.directive.bst",
-          "match": "(\\$insert)(\\s*\\()(\\s*\"(?:[^\"\\\\]|\\\\.)*\"\\s*)(\\))",
-          "captures": {
-            "1": {
-              "name": "keyword.other.template.slot.directive.bst keyword.control.directive.template.bst"
-            },
-            "2": {
-              "name": "punctuation.section.group.begin.bst"
-            },
-            "3": {
-              "name": "string.quoted.double.bst"
-            },
-            "4": {
-              "name": "punctuation.section.group.end.bst"
-            }
-          }
-        }
-      ]
-    },
-    "template-slot-marker": {
-      "patterns": [
-        {
-          "name": "meta.template.slot.marker.bst",
-          "match": "((?<!\\\\)\\[)([ \\t]*)(\\$slot)([ \\t]*)(?:(\\()([ \\t]*)(\"(?:[^\"\\\\]|\\\\.)*\")([ \\t]*)(\\)))?([ \\t]*)((?<!\\\\)\\])",
-          "captures": {
-            "1": {
-              "name": "punctuation.definition.slot.begin.bst"
-            },
-            "3": {
-              "name": "keyword.other.template.slot.fill.bst keyword.other.template.slot.directive.bst"
-            },
-            "5": {
-              "name": "punctuation.section.group.begin.bst"
-            },
-            "7": {
-              "name": "string.quoted.double.bst"
-            },
-            "9": {
-              "name": "punctuation.section.group.end.bst"
-            },
-            "11": {
-              "name": "punctuation.definition.slot.end.bst"
-            }
-          }
-        },
-        {
-          "name": "invalid.deprecated.template.slot.marker.bst",
-          "match": "((?<!\\\\)\\[)([ \\t]*\\.{2,}[ \\t]*)((?<!\\\\)\\])",
-          "captures": {
-            "1": {
-              "name": "punctuation.definition.slot.begin.bst"
-            },
-            "2": {
-              "name": "invalid.illegal.deprecated.template.slot.fill.bst"
-            },
-            "3": {
-              "name": "punctuation.definition.slot.end.bst"
-            }
-          }
         }
       ]
     },
@@ -1115,10 +1165,10 @@
               "include": "#template-markdown"
             },
             {
-              "include": "#embedded-code-js"
+              "include": "#template-generic"
             },
             {
-              "include": "#template-generic"
+              "include": "#embedded-code-js"
             }
           ]
         }
@@ -1173,10 +1223,10 @@
               "include": "#template-markdown"
             },
             {
-              "include": "#embedded-code-ts"
+              "include": "#template-generic"
             },
             {
-              "include": "#template-generic"
+              "include": "#embedded-code-ts"
             }
           ]
         }
@@ -1231,10 +1281,126 @@
               "include": "#template-markdown"
             },
             {
+              "include": "#template-generic"
+            },
+            {
               "include": "#embedded-code-py"
+            }
+          ]
+        }
+      ]
+    },
+    "template-body-code-rs": {
+      "patterns": [
+        {
+          "name": "meta.template.body.bst",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+            }
+          },
+          "end": "(?=(?<!\\\\)\\])",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-css"
+            },
+            {
+              "include": "#template-html"
+            },
+            {
+              "include": "#template-markdown"
             },
             {
               "include": "#template-generic"
+            },
+            {
+              "include": "#embedded-code-rs"
+            }
+          ]
+        }
+      ]
+    },
+    "template-body-code-shell": {
+      "patterns": [
+        {
+          "name": "meta.template.body.bst",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+            }
+          },
+          "end": "(?=(?<!\\\\)\\])",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#template-slot-marker"
+            },
+            {
+              "include": "#template-code-js"
+            },
+            {
+              "include": "#template-code-ts"
+            },
+            {
+              "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
+            },
+            {
+              "include": "#template-code-beanstalk"
+            },
+            {
+              "include": "#template-code-generic"
+            },
+            {
+              "include": "#template-css"
+            },
+            {
+              "include": "#template-html"
+            },
+            {
+              "include": "#template-markdown"
+            },
+            {
+              "include": "#template-generic"
+            },
+            {
+              "include": "#embedded-code-shell"
             }
           ]
         }
@@ -1289,10 +1455,10 @@
               "include": "#template-markdown"
             },
             {
-              "include": "#embedded-code-beanstalk"
+              "include": "#template-generic"
             },
             {
-              "include": "#template-generic"
+              "include": "#embedded-code-beanstalk"
             }
           ]
         }
@@ -1347,10 +1513,10 @@
               "include": "#template-markdown"
             },
             {
-              "include": "#embedded-code-generic"
+              "include": "#template-generic"
             },
             {
-              "include": "#template-generic"
+              "include": "#embedded-code-generic"
             }
           ]
         }
@@ -1374,6 +1540,139 @@
         }
       ]
     },
+    "css-fragment": {
+      "patterns": [
+        {
+          "name": "comment.block.css",
+          "begin": "/\\*",
+          "end": "\\*/|(?=(?<!\\\\)[\\[\\]])",
+          "patterns": [
+            {
+              "name": "comment.block.css",
+              "match": "[^*\\[\\]]+|."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.css",
+          "begin": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.css"
+            }
+          },
+          "end": "\"|(?=(?<!\\\\)[\\[\\]])",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.css"
+            }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.escape.css",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.css",
+          "begin": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.css"
+            }
+          },
+          "end": "'|(?=(?<!\\\\)[\\[\\]])",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.css"
+            }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.escape.css",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "support.type.property-name.css",
+          "match": "(?<![-_A-Za-z0-9])(?:--[-_A-Za-z0-9]+|[-_A-Za-z][-_A-Za-z0-9]*)(?=\\s*:)"
+        },
+        {
+          "name": "keyword.control.at-rule.css",
+          "match": "@[-_A-Za-z][-_A-Za-z0-9]*"
+        },
+        {
+          "name": "keyword.other.important.css",
+          "match": "!important\\b"
+        },
+        {
+          "name": "constant.other.color.rgb-value.hex.css",
+          "match": "#[0-9A-Fa-f]{3,8}\\b"
+        },
+        {
+          "name": "constant.numeric.css",
+          "match": "(?<![-_A-Za-z0-9])[-+]?(?:\\d+\\.\\d+|\\d+|\\.\\d+)(?:%|[A-Za-z]+)?\\b"
+        },
+        {
+          "name": "support.function.css",
+          "match": "[-_A-Za-z][-_A-Za-z0-9]*(?=\\()"
+        },
+        {
+          "name": "entity.other.attribute-name.class.css",
+          "match": "\\.[-_A-Za-z][-_A-Za-z0-9]*"
+        },
+        {
+          "name": "entity.other.attribute-name.id.css",
+          "match": "#[-_A-Za-z][-_A-Za-z0-9]*"
+        },
+        {
+          "name": "entity.other.attribute-name.pseudo-class.css",
+          "match": "::?[-_A-Za-z][-_A-Za-z0-9]*"
+        },
+        {
+          "name": "support.constant.property-value.css",
+          "match": "\\b(?:auto|inherit|initial|unset|none|solid|relative|absolute|fixed|sticky|flex|grid|block|inline|inline-block|center|cover|contain|transparent|currentColor)\\b"
+        },
+        {
+          "name": "punctuation.separator.key-value.css",
+          "match": ":"
+        },
+        {
+          "name": "punctuation.terminator.rule.css",
+          "match": ";"
+        },
+        {
+          "name": "punctuation.section.property-list.css",
+          "match": "[{}]"
+        },
+        {
+          "name": "punctuation.section.function.css",
+          "match": "[()]"
+        },
+        {
+          "name": "punctuation.separator.comma.css",
+          "match": ","
+        },
+        {
+          "name": "keyword.operator.css",
+          "match": "[>+~=|^$*]"
+        },
+        {
+          "name": "entity.name.tag.css",
+          "match": "\\b[-_A-Za-z][-_A-Za-z0-9]*\\b"
+        },
+        {
+          "name": "text.whitespace.css",
+          "match": "\\s+"
+        },
+        {
+          "name": "source.css",
+          "match": "[^\\[\\]]"
+        }
+      ]
+    },
     "embedded-css": {
       "patterns": [
         {
@@ -1383,6 +1682,9 @@
           "patterns": [
             {
               "include": "#embedded-css"
+            },
+            {
+              "include": "#css-fragment"
             }
           ]
         },
@@ -1396,7 +1698,7 @@
               "include": "#escapes"
             },
             {
-              "include": "source.css"
+              "include": "#css-fragment"
             }
           ]
         }
@@ -1424,37 +1726,209 @@
               "include": "#escapes"
             },
             {
-              "include": "#template-slot-marker"
-            },
-            {
-              "include": "#template-code-js"
-            },
-            {
-              "include": "#template-code-ts"
-            },
-            {
-              "include": "#template-code-py"
-            },
-            {
-              "include": "#template-code-beanstalk"
-            },
-            {
-              "include": "#template-code-generic"
-            },
-            {
-              "include": "#template-css"
-            },
-            {
-              "include": "#template-html"
-            },
-            {
-              "include": "#template-markdown"
-            },
-            {
-              "include": "#template-generic"
-            },
-            {
               "include": "#embedded-html-fragment"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-code-js": {
+      "patterns": [
+        {
+          "name": "meta.embedded.block.code.js.bst",
+          "begin": "(?<!\\\\)\\[",
+          "end": "(?<!\\\\)\\]",
+          "patterns": [
+            {
+              "include": "#embedded-code-js"
+            }
+          ]
+        },
+        {
+          "name": "meta.embedded.block.code.js.bst",
+          "begin": "(?=[^\\[\\]])",
+          "end": "(?=(?<!\\\\)[\\[\\]])",
+          "contentName": "meta.embedded.block.code.js.bst source.js",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "source.js"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-code-ts": {
+      "patterns": [
+        {
+          "name": "meta.embedded.block.code.ts.bst",
+          "begin": "(?<!\\\\)\\[",
+          "end": "(?<!\\\\)\\]",
+          "patterns": [
+            {
+              "include": "#embedded-code-ts"
+            }
+          ]
+        },
+        {
+          "name": "meta.embedded.block.code.ts.bst",
+          "begin": "(?=[^\\[\\]])",
+          "end": "(?=(?<!\\\\)[\\[\\]])",
+          "contentName": "meta.embedded.block.code.ts.bst source.ts",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "source.ts"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-code-py": {
+      "patterns": [
+        {
+          "name": "meta.embedded.block.code.py.bst",
+          "begin": "(?<!\\\\)\\[",
+          "end": "(?<!\\\\)\\]",
+          "patterns": [
+            {
+              "include": "#embedded-code-py"
+            }
+          ]
+        },
+        {
+          "name": "meta.embedded.block.code.py.bst",
+          "begin": "(?=[^\\[\\]])",
+          "end": "(?=(?<!\\\\)[\\[\\]])",
+          "contentName": "meta.embedded.block.code.py.bst source.python",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "source.python"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-code-rs": {
+      "patterns": [
+        {
+          "name": "meta.embedded.block.code.rs.bst",
+          "begin": "(?<!\\\\)\\[",
+          "end": "(?<!\\\\)\\]",
+          "patterns": [
+            {
+              "include": "#embedded-code-rs"
+            }
+          ]
+        },
+        {
+          "name": "meta.embedded.block.code.rs.bst",
+          "begin": "(?=[^\\[\\]])",
+          "end": "(?=(?<!\\\\)[\\[\\]])",
+          "contentName": "meta.embedded.block.code.rs.bst source.rust",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "source.rust"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-code-shell": {
+      "patterns": [
+        {
+          "name": "meta.embedded.block.code.shell.bst",
+          "begin": "(?<!\\\\)\\[",
+          "end": "(?<!\\\\)\\]",
+          "patterns": [
+            {
+              "include": "#embedded-code-shell"
+            }
+          ]
+        },
+        {
+          "name": "meta.embedded.block.code.shell.bst",
+          "begin": "(?=[^\\[\\]])",
+          "end": "(?=(?<!\\\\)[\\[\\]])",
+          "contentName": "meta.embedded.block.code.shell.bst source.shell",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "source.shell"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-code-beanstalk": {
+      "patterns": [
+        {
+          "name": "meta.embedded.block.code.bstlang.bst",
+          "begin": "(?<!\\\\)\\[",
+          "end": "(?<!\\\\)\\]",
+          "patterns": [
+            {
+              "include": "#embedded-code-beanstalk"
+            },
+            {
+              "include": "#code-beanstalk-fragment"
+            }
+          ]
+        },
+        {
+          "name": "meta.embedded.block.code.bstlang.bst",
+          "begin": "(?=[^\\[\\]])",
+          "end": "(?=(?<!\\\\)[\\[\\]])",
+          "contentName": "meta.embedded.block.code.bstlang.bst source.bst.embedded",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#code-beanstalk-fragment"
+            }
+          ]
+        }
+      ]
+    },
+    "embedded-code-generic": {
+      "patterns": [
+        {
+          "name": "meta.embedded.block.code.generic.bst",
+          "begin": "(?<!\\\\)\\[",
+          "end": "(?<!\\\\)\\]",
+          "patterns": [
+            {
+              "include": "#embedded-code-generic"
+            },
+            {
+              "include": "#code-generic-fragment"
+            }
+          ]
+        },
+        {
+          "name": "meta.embedded.block.code.generic.bst",
+          "begin": "(?=[^\\[\\]])",
+          "end": "(?=(?<!\\\\)[\\[\\]])",
+          "contentName": "meta.embedded.block.code.generic.bst source.code.generic.bst",
+          "patterns": [
+            {
+              "include": "#escapes"
+            },
+            {
+              "include": "#code-generic-fragment"
             }
           ]
         }
@@ -1493,6 +1967,12 @@
               "include": "#template-code-py"
             },
             {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
+            },
+            {
               "include": "#template-code-beanstalk"
             },
             {
@@ -1512,11 +1992,11 @@
             },
             {
               "name": "string.quoted.double.html.bst",
-              "match": "[^\"\\\\\\[]+"
+              "match": "[^\\\"\\\\\\[]+"
             },
             {
               "name": "string.quoted.double.html.bst",
-              "match": "[^\"\\\\]"
+              "match": "[^\\\"\\\\]"
             }
           ]
         }
@@ -1553,6 +2033,12 @@
             },
             {
               "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
             },
             {
               "include": "#template-code-beanstalk"
@@ -1639,6 +2125,12 @@
             },
             {
               "include": "#template-code-py"
+            },
+            {
+              "include": "#template-code-rs"
+            },
+            {
+              "include": "#template-code-shell"
             },
             {
               "include": "#template-code-beanstalk"
@@ -1909,150 +2401,16 @@
         }
       ]
     },
-    "embedded-code-js": {
-      "patterns": [
-        {
-          "name": "meta.embedded.block.code.js.bst",
-          "begin": "(?<!\\\\)\\[",
-          "end": "(?<!\\\\)\\]",
-          "patterns": [
-            {
-              "include": "#embedded-code-js"
-            }
-          ]
-        },
-        {
-          "name": "meta.embedded.block.code.js.bst",
-          "begin": "(?=[^\\[\\]])",
-          "end": "(?=(?<!\\\\)[\\[\\]])",
-          "contentName": "meta.embedded.block.code.js.bst source.js",
-          "patterns": [
-            {
-              "include": "#escapes"
-            },
-            {
-              "include": "source.js"
-            }
-          ]
-        }
-      ]
-    },
-    "embedded-code-ts": {
-      "patterns": [
-        {
-          "name": "meta.embedded.block.code.ts.bst",
-          "begin": "(?<!\\\\)\\[",
-          "end": "(?<!\\\\)\\]",
-          "patterns": [
-            {
-              "include": "#embedded-code-ts"
-            }
-          ]
-        },
-        {
-          "name": "meta.embedded.block.code.ts.bst",
-          "begin": "(?=[^\\[\\]])",
-          "end": "(?=(?<!\\\\)[\\[\\]])",
-          "contentName": "meta.embedded.block.code.ts.bst source.ts",
-          "patterns": [
-            {
-              "include": "#escapes"
-            },
-            {
-              "include": "source.ts"
-            }
-          ]
-        }
-      ]
-    },
-    "embedded-code-py": {
-      "patterns": [
-        {
-          "name": "meta.embedded.block.code.py.bst",
-          "begin": "(?<!\\\\)\\[",
-          "end": "(?<!\\\\)\\]",
-          "patterns": [
-            {
-              "include": "#embedded-code-py"
-            }
-          ]
-        },
-        {
-          "name": "meta.embedded.block.code.py.bst",
-          "begin": "(?=[^\\[\\]])",
-          "end": "(?=(?<!\\\\)[\\[\\]])",
-          "contentName": "meta.embedded.block.code.py.bst source.python",
-          "patterns": [
-            {
-              "include": "#escapes"
-            },
-            {
-              "include": "source.python"
-            }
-          ]
-        }
-      ]
-    },
-    "embedded-code-beanstalk": {
-      "patterns": [
-        {
-          "name": "meta.embedded.block.code.bstlang.bst",
-          "begin": "(?<!\\\\)\\[",
-          "end": "(?<!\\\\)\\]",
-          "patterns": [
-            {
-              "include": "#embedded-code-beanstalk"
-            }
-          ]
-        },
-        {
-          "name": "meta.embedded.block.code.bstlang.bst",
-          "begin": "(?=[^\\[\\]])",
-          "end": "(?=(?<!\\\\)[\\[\\]])",
-          "contentName": "meta.embedded.block.code.bstlang.bst source.bst.embedded",
-          "patterns": [
-            {
-              "include": "#escapes"
-            },
-            {
-              "include": "#code-beanstalk-fragment"
-            }
-          ]
-        }
-      ]
-    },
-    "embedded-code-generic": {
-      "patterns": [
-        {
-          "name": "meta.embedded.block.code.generic.bst",
-          "begin": "(?<!\\\\)\\[",
-          "end": "(?<!\\\\)\\]",
-          "patterns": [
-            {
-              "include": "#embedded-code-generic"
-            }
-          ]
-        },
-        {
-          "name": "meta.embedded.block.code.generic.bst",
-          "begin": "(?=[^\\[\\]])",
-          "end": "(?=(?<!\\\\)[\\[\\]])",
-          "contentName": "meta.embedded.block.code.generic.bst source.code.generic.bst",
-          "patterns": [
-            {
-              "include": "#escapes"
-            },
-            {
-              "include": "#code-generic-fragment"
-            }
-          ]
-        }
-      ]
-    },
     "code-beanstalk-fragment": {
       "patterns": [
         {
           "include": "#comments"
+        },
+        {
+          "include": "#path-literals"
+        },
+        {
+          "include": "#invalid-at-sign"
         },
         {
           "include": "#raw-strings"
@@ -2223,7 +2581,7 @@
       "patterns": [
         {
           "name": "constant.numeric.bst",
-          "match": "\\b\\d(?:[\\d_]*\\d)?(?:\\.\\d(?:[\\d_]*\\d)?)?\\b"
+          "match": "(?<![A-Za-z0-9_])(?:-)?\\d(?:[\\d_]*\\d)?(?:\\.\\d(?:[\\d_]*\\d)?)?(?:e[+-]?\\d(?:[\\d_]*\\d)?)?(?![A-Za-z0-9_])"
         }
       ]
     },
@@ -2235,11 +2593,11 @@
         },
         {
           "name": "keyword.control.loop.range.bst",
-          "match": "\\b(?:to|by|\\&)\\b"
+          "match": "\\b(?:to|by)\\b|&"
         },
         {
           "name": "keyword.other.bst",
-          "match": "\\b(?:import|export|as|copy|must|async|checked|block)\\b"
+          "match": "\\b(?:import|export|as|copy|must|cast|async|checked|block)\\b"
         },
         {
           "name": "keyword.control.logical.bst",
@@ -2279,11 +2637,11 @@
       "patterns": [
         {
           "name": "keyword.operator.assignment.compound.bst",
-          "match": "\\+=|-=|\\*=|//=|/=|%%=|%=|\\^=|\\#="
+          "match": "\\+=|-=|\\*=|//=|/=|%=|\\^=|#=|~="
         },
         {
           "name": "keyword.operator.symbol.bst",
-          "match": "\\=|\\+\\-|\\*|\\/|\\%|\\^|\\~|\\#|\\?|\\!|\\<|\\>|=>|>>|<<|->|\\.\\.|::|<=|>="
+          "match": "=>|->|::|<=|>=|>>|<<|\\.\\.|//|=|\\+|-|\\*|/|%|\\^|~|#|\\?|!|<|>|\\|"
         }
       ]
     },
@@ -2348,232 +2706,6 @@
         {
           "name": "variable.other.bst",
           "match": "\\b[a-z_][A-Za-z0-9_]*\\b"
-        }
-      ]
-    },
-    "template-code-rs": {
-      "patterns": [
-        {
-          "name": "meta.template.bst meta.template.code.rs.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:rs|rust)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:rs|rust)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css|html)\\b)",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.section.template.begin.bst"
-            }
-          },
-          "end": "(?<!\\\\)\\]",
-          "endCaptures": {
-            "0": {
-              "name": "punctuation.section.template.end.bst"
-            }
-          },
-          "patterns": [
-            {
-              "include": "#template-head"
-            },
-            {
-              "include": "#template-body-code-rs"
-            }
-          ]
-        }
-      ]
-    },
-    "template-body-code-rs": {
-      "patterns": [
-        {
-          "name": "meta.template.body.bst",
-          "begin": ":",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
-            }
-          },
-          "end": "(?=(?<!\\\\)\\])",
-          "patterns": [
-            {
-              "include": "#escapes"
-            },
-            {
-              "include": "#template-slot-marker"
-            },
-            {
-              "include": "#template-code-js"
-            },
-            {
-              "include": "#template-code-ts"
-            },
-            {
-              "include": "#template-code-py"
-            },
-            {
-              "include": "#template-code-rs"
-            },
-            {
-              "include": "#template-code-shell"
-            },
-            {
-              "include": "#template-code-beanstalk"
-            },
-            {
-              "include": "#template-code-generic"
-            },
-            {
-              "include": "#template-css"
-            },
-            {
-              "include": "#template-html"
-            },
-            {
-              "include": "#template-markdown"
-            },
-            {
-              "include": "#template-generic"
-            },
-            {
-              "include": "#embedded-code-rs"
-            }
-          ]
-        }
-      ]
-    },
-    "embedded-code-rs": {
-      "patterns": [
-        {
-          "name": "meta.embedded.block.code.rs.bst",
-          "begin": "(?<!\\\\)\\[",
-          "end": "(?<!\\\\)\\]",
-          "patterns": [
-            {
-              "include": "#embedded-code-rs"
-            }
-          ]
-        },
-        {
-          "name": "meta.embedded.block.code.rs.bst",
-          "begin": "(?=[^\\[\\]])",
-          "end": "(?=(?<!\\\\)[\\[\\]])",
-          "contentName": "meta.embedded.block.code.rs.bst source.rust",
-          "patterns": [
-            {
-              "include": "#escapes"
-            },
-            {
-              "include": "source.rust"
-            }
-          ]
-        }
-      ]
-    },
-    "template-code-shell": {
-      "patterns": [
-        {
-          "name": "meta.template.bst meta.template.code.shell.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]]*\\$code\\s*\\(\\s*\"(?:sh|shell|bash)\"\\s*\\))(?![^\\]]*\\$code\\s*\\(\\s*\"(?:sh|shell|bash)\"\\s*\\)[^\\]]*\\$(?:markdown|code|css|html)\\b)",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.section.template.begin.bst"
-            }
-          },
-          "end": "(?<!\\\\)\\]",
-          "endCaptures": {
-            "0": {
-              "name": "punctuation.section.template.end.bst"
-            }
-          },
-          "patterns": [
-            {
-              "include": "#template-head"
-            },
-            {
-              "include": "#template-body-code-shell"
-            }
-          ]
-        }
-      ]
-    },
-    "template-body-code-shell": {
-      "patterns": [
-        {
-          "name": "meta.template.body.bst",
-          "begin": ":",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
-            }
-          },
-          "end": "(?=(?<!\\\\)\\])",
-          "patterns": [
-            {
-              "include": "#escapes"
-            },
-            {
-              "include": "#template-slot-marker"
-            },
-            {
-              "include": "#template-code-js"
-            },
-            {
-              "include": "#template-code-ts"
-            },
-            {
-              "include": "#template-code-py"
-            },
-            {
-              "include": "#template-code-rs"
-            },
-            {
-              "include": "#template-code-shell"
-            },
-            {
-              "include": "#template-code-beanstalk"
-            },
-            {
-              "include": "#template-code-generic"
-            },
-            {
-              "include": "#template-css"
-            },
-            {
-              "include": "#template-html"
-            },
-            {
-              "include": "#template-markdown"
-            },
-            {
-              "include": "#template-generic"
-            },
-            {
-              "include": "#embedded-code-shell"
-            }
-          ]
-        }
-      ]
-    },
-    "embedded-code-shell": {
-      "patterns": [
-        {
-          "name": "meta.embedded.block.code.shell.bst",
-          "begin": "(?<!\\\\)\\[",
-          "end": "(?<!\\\\)\\]",
-          "patterns": [
-            {
-              "include": "#embedded-code-shell"
-            }
-          ]
-        },
-        {
-          "name": "meta.embedded.block.code.shell.bst",
-          "begin": "(?=[^\\[\\]])",
-          "end": "(?=(?<!\\\\)[\\[\\]])",
-          "contentName": "meta.embedded.block.code.shell.bst source.shell",
-          "patterns": [
-            {
-              "include": "#escapes"
-            },
-            {
-              "include": "source.shell"
-            }
-          ]
         }
       ]
     }
