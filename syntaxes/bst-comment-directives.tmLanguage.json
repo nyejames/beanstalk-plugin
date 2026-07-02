@@ -1,0 +1,190 @@
+{
+  "version": "0.2.2",
+  "name": "Beanstalk Template Comment Directives",
+  "scopeName": "source.bst.comment-directives",
+  "injectionSelector": "L:(source.bst, source.bd) - string - comment",
+  "patterns": [
+    {
+      "include": "#template-todo-comment"
+    },
+    {
+      "include": "#template-note-comment"
+    },
+    {
+      "include": "#template-doc-comment"
+    }
+  ],
+  "repository": {
+    "template-comment-head": {
+      "patterns": [
+        {
+          "include": "source.bst#template-head"
+        }
+      ]
+    },
+    "template-comment-body": {
+      "patterns": [
+        {
+          "name": "meta.template.body.bst",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+            }
+          },
+          "end": "(?=(?<!\\\\)\\])",
+          "contentName": "comment.line.double-dash.bst comment.block.template.comment.bst",
+          "patterns": [
+            {
+              "name": "comment.line.double-dash.bst comment.block.template.comment.bst",
+              "match": "[^\\[\\]]+"
+            },
+            {
+              "name": "comment.line.double-dash.bst comment.block.template.comment.bst",
+              "match": "[\\[\\]]"
+            }
+          ]
+        }
+      ]
+    },
+    "template-doc-body": {
+      "patterns": [
+        {
+          "name": "meta.template.body.bst",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+            }
+          },
+          "end": "(?=(?<!\\\\)\\])",
+          "patterns": [
+            {
+              "include": "source.bst#escapes"
+            },
+            {
+              "include": "source.bst#template-slot-marker"
+            },
+            {
+              "include": "source.bst#template-code-js"
+            },
+            {
+              "include": "source.bst#template-code-ts"
+            },
+            {
+              "include": "source.bst#template-code-py"
+            },
+            {
+              "include": "source.bst#template-code-rs"
+            },
+            {
+              "include": "source.bst#template-code-shell"
+            },
+            {
+              "include": "source.bst#template-code-beanstalk"
+            },
+            {
+              "include": "source.bst#template-code-generic"
+            },
+            {
+              "include": "source.bst#template-css"
+            },
+            {
+              "include": "source.bst#template-html"
+            },
+            {
+              "include": "source.bst#template-markdown"
+            },
+            {
+              "include": "source.bst#template-generic"
+            },
+            {
+              "include": "source.bst#embedded-markdown"
+            }
+          ]
+        }
+      ]
+    },
+    "template-todo-comment": {
+      "patterns": [
+        {
+          "name": "meta.template.bst meta.template.comment.todo.bst",
+          "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$todo\\b)",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "(?<!\\\\)\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-comment-head"
+            },
+            {
+              "include": "#template-comment-body"
+            }
+          ]
+        }
+      ]
+    },
+    "template-note-comment": {
+      "patterns": [
+        {
+          "name": "meta.template.bst meta.template.comment.note.bst",
+          "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$note\\b)",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "(?<!\\\\)\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-comment-head"
+            },
+            {
+              "include": "#template-comment-body"
+            }
+          ]
+        }
+      ]
+    },
+    "template-doc-comment": {
+      "patterns": [
+        {
+          "name": "meta.template.bst meta.template.doc.bst meta.template.markdown.bst",
+          "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$doc\\b)",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "(?<!\\\\)\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#template-comment-head"
+            },
+            {
+              "include": "#template-doc-body"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

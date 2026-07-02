@@ -1,0 +1,32 @@
+# Beandown title
+
+-- this is markdown body text, not a Beanstalk comment.
+
+[p:
+    This paragraph should be parsed as a nested Beanstalk template inside the implicit `$markdown` body.
+]
+
+[$doc:
+    ## Documentation comment
+
+    This should highlight like `$markdown`, including `inline code`.
+
+    [codeblock, $code("bst"):
+        import @docs {
+            pages/home {render as render_home},
+            pages/about {content as about_content},
+        }
+    ]
+]
+
+[$todo:
+    This should look like ordinary Beanstalk comment text.
+    It should still have a distinct todo template scope.
+]
+
+[$note:
+    This should also look like ordinary Beanstalk comment text.
+    It should still have a distinct note template scope.
+]
+
+Literal delimiters use string insertion: ["[literal]"]

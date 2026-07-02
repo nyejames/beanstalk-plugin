@@ -1,0 +1,58 @@
+{
+  "version": "0.2.2",
+  "name": "Beandown",
+  "scopeName": "source.bd",
+  "patterns": [
+    {
+      "include": "#beandown-markdown-body"
+    }
+  ],
+  "repository": {
+    "beandown-markdown-body": {
+      "patterns": [
+        {
+          "include": "source.bst#escapes"
+        },
+        {
+          "include": "source.bst#template-slot-marker"
+        },
+        {
+          "include": "source.bst#template-code-js"
+        },
+        {
+          "include": "source.bst#template-code-ts"
+        },
+        {
+          "include": "source.bst#template-code-py"
+        },
+        {
+          "include": "source.bst#template-code-rs"
+        },
+        {
+          "include": "source.bst#template-code-shell"
+        },
+        {
+          "include": "source.bst#template-code-beanstalk"
+        },
+        {
+          "include": "source.bst#template-code-generic"
+        },
+        {
+          "include": "source.bst#template-css"
+        },
+        {
+          "include": "source.bst#template-html"
+        },
+        {
+          "include": "source.bst#template-markdown"
+        },
+        {
+          "include": "source.bst#template-generic"
+        },
+        {
+          "include": "source.bst#embedded-markdown"
+        }
+      ]
+    }
+  }
+}

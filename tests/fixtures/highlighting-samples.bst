@@ -3,6 +3,10 @@
 import @styles/docs {navbar, title, section}
 import @html {center}
 import @core/math as math
+import @strings {
+    @nested/import {parse_number, identity},
+    thing as another_thing,
+}
 
 page_title #= "Templates"
 page_description #String = "Template syntax in Beanstalk."

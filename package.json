@@ -2,10 +2,13 @@
   "name": "beanstalk-plugin",
   "displayName": "Beanstalk",
   "description": "Language support and syntax highlighting for Beanstalk",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "files": [
     "package.json",
     "syntaxes/bst.tmLanguage.json",
+    "syntaxes/bst-import-groups.tmLanguage.json",
+    "syntaxes/bst-comment-directives.tmLanguage.json",
+    "syntaxes/bd.tmLanguage.json",
     "language-configuration.json",
     "icons/icon.png",
     "LICENSE"
@@ -17,8 +20,8 @@
     "vscode": "^1.95.0"
   },
   "scripts": {
-    "test": "node tests/grammar-regression.test.js",
-    "test:grammar": "node tests/grammar-regression.test.js"
+    "test": "node --test tests/*.test.js",
+    "test:grammar": "node --test tests/*.test.js"
   },
   "categories": [
     "Programming Languages"
@@ -34,7 +37,23 @@
           "BST"
         ],
         "extensions": [
-          "bst"
+          ".bst"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/icon.png",
+          "dark": "./icons/icon.png"
+        }
+      },
+      {
+        "id": "bd",
+        "aliases": [
+          "Beandown",
+          "bd",
+          "BD"
+        ],
+        "extensions": [
+          ".bd"
         ],
         "configuration": "./language-configuration.json",
         "icon": {
@@ -48,6 +67,38 @@
         "language": "bst",
         "scopeName": "source.bst",
         "path": "./syntaxes/bst.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.markdown.bst": "markdown",
+          "meta.embedded.block.css.bst": "css",
+          "meta.embedded.block.html.bst": "html",
+          "meta.embedded.block.code.js.bst": "javascript",
+          "meta.embedded.block.code.ts.bst": "typescript",
+          "meta.embedded.block.code.py.bst": "python",
+          "meta.embedded.block.code.bstlang.bst": "bst",
+          "meta.embedded.block.code.generic.bst": "plaintext",
+          "meta.embedded.block.code.rs.bst": "rust",
+          "meta.embedded.block.code.shell.bst": "shellscript"
+        }
+      },
+      {
+        "scopeName": "source.bst.import-groups",
+        "path": "./syntaxes/bst-import-groups.tmLanguage.json",
+        "injectTo": [
+          "source.bst"
+        ]
+      },
+      {
+        "scopeName": "source.bst.comment-directives",
+        "path": "./syntaxes/bst-comment-directives.tmLanguage.json",
+        "injectTo": [
+          "source.bst",
+          "source.bd"
+        ]
+      },
+      {
+        "language": "bd",
+        "scopeName": "source.bd",
+        "path": "./syntaxes/bd.tmLanguage.json",
         "embeddedLanguages": {
           "meta.embedded.block.markdown.bst": "markdown",
           "meta.embedded.block.css.bst": "css",
