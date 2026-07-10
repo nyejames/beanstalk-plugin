@@ -197,9 +197,10 @@ test("symbol operators include plus and longer Beanstalk tokens", () => {
   );
   assert.ok(symbol, "expected symbolic operator pattern");
   const re = new RegExp("^(?:" + symbol.match + ")$");
-  for (const op of ["+", "-", "=>", "->", "::", "//", "<=", ">=", "..", "|"]) {
+  for (const op of ["+", "-", "=>", "->", "::", "//", "<=", ">=", "..", "$"]) {
     assert.ok(re.test(op), `expected operator '${op}'`);
   }
+  assert.ok(!re.test("|"), "pipe should not be encoded as a symbol operator");
   assert.ok(!re.test("+-"), "plus should not be encoded as a '+-' operator");
 });
 
@@ -212,6 +213,16 @@ test("compound assignment operators include #= and ~=", () => {
   for (const op of ["+=", "-=", "*=", "//=", "/=", "%=", "^=", "#=", "~="]) {
     assert.ok(re.test(op), `expected compound/operator form '${op}'`);
   }
+});
+
+test("punctuation covers pipe brackets and dot accessor", () => {
+  const punct = grammar.repository.punctuation.patterns;
+  const pipePattern = punct.find((p) => p.name === "punctuation.brackets.pipe.bst");
+  const dotPattern = punct.find((p) => p.name === "punctuation.accessor.dot.bst");
+  assert.ok(pipePattern, "expected pipe bracket punctuation");
+  assert.ok(dotPattern, "expected dot accessor punctuation");
+  assert.ok(new RegExp("^(?:" + pipePattern.match + ")$").test("|"), "pipe should match");
+  assert.ok(new RegExp("^(?:" + dotPattern.match + ")$").test("."), "dot should match");
 });
 
 test("number literal pattern covers exponent notation", () => {
@@ -232,12 +243,13 @@ test("template-head-directives includes css, html, code, and escape_html", () =>
     (p) => (p.match || "").includes("slot") && (p.match || "").includes("insert")
   );
   assert.ok(directivePattern, "expected known-directive pattern");
-  for (const d of ["css", "html", "code", "escape_html"]) {
+  for (const d of ["md", "css", "html", "code", "escape_html"]) {
     assert.ok(
       directivePattern.match.includes(d),
       `expected directive '${d}' in known-directive match`
     );
   }
+  assert.ok(!directivePattern.match.includes("markdown"), "$markdown should be replaced by $md");
 });
 
 test("template-code-rs repository exists and matches rs/rust", () => {
@@ -459,7 +471,7 @@ test("fixture contains expected scenarios for manual token inspection", () => {
     "then 0",
     "count_text String = cast count",
     "value = identity(42)",
-    "[$markdown:",
+    "[$md:",
     "[$slot]",
     '[$slot("style")]',
     '[$insert("style"): color: blue;]',
@@ -529,5 +541,36 @@ test("template meta scopes exist", () => {
   for (const scope of scopes) {
     const found = findPatternsByName(scope);
     assert.ok(found.length > 0, `expected scope '${scope}' to exist`);
+  }
+});
+
+// ── MARKDOWN LINKS ──────────────────────────────────────────────────
+
+test("markdown link regex matches Beanstalk link syntax and rejects bare domains", () => {
+  const markdownFragment = grammar.repository["markdown-fragment"].patterns;
+  const linkPattern = markdownFragment.find(
+    (p) => p.name === "meta.link.inline.markdown.bst"
+  );
+  assert.ok(linkPattern, "expected inline markdown link pattern");
+  const re = regexpFromPattern(linkPattern.match);
+
+  for (const link of [
+    "@https://example.com (Example)",
+    "@//cdn.example.com/lib.js (CDN)",
+    "@/docs/getting-started (Docs)",
+    "@./local/path (Local)",
+    "@../parent/path (Parent)",
+    "@#overview (Overview)",
+    "@?q=beanstalk (Search)",
+  ]) {
+    assert.ok(re.test(link), `expected valid link to match: ${link}`);
+  }
+
+  for (const nonLink of [
+    "@example.com (Example)",
+    "@https://example.com(Example)",
+    "@https://example.com\n(Example)",
+  ]) {
+    assert.ok(!re.test(nonLink), `expected invalid link not to match: ${nonLink}`);
   }
 });

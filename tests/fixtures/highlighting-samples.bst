@@ -95,11 +95,11 @@ count_text String = cast count
 value = identity(42)
 
 -- Template with markdown
-[$markdown:
+[$md:
     # Hello
     This is *markdown*.
 
-    @example.com (Here is a link!)
+    @https://example.com (Here is a link!)
 
     Some `inline code` here.
 ]
@@ -219,7 +219,7 @@ after_css_marker = "not css"
     <p>Paragraph</p>
 ]
 
-#[section, $markdown:
+#[section, $md:
     ## Authoring a Beandown file
 
     Write markdown and nested Beanstalk templates directly in the `.bd` file:
@@ -235,7 +235,7 @@ after_css_marker = "not css"
     ]
 
     Beandown starts inside a template body, so `--`, backticks, and backslashes are normal text.
-    It also uses the same `$markdown` inline-code rules as `.bst` markdown templates.
+    It also uses the same `$md` inline-code rules as `.bst` markdown templates.
 
     Literal template delimiters use normal string insertion:
 

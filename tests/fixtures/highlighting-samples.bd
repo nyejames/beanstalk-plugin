@@ -3,13 +3,13 @@
 -- this is markdown body text, not a Beanstalk comment.
 
 [p:
-    This paragraph should be parsed as a nested Beanstalk template inside the implicit `$markdown` body.
+    This paragraph should be parsed as a nested Beanstalk template inside the implicit `$md` body.
 ]
 
 [$doc:
     ## Documentation comment
 
-    This should highlight like `$markdown`, including `inline code`.
+    This should highlight like `$md`, including `inline code`.
 
     [codeblock, $code("bst"):
         import @docs {
@@ -30,3 +30,5 @@
 ]
 
 Literal delimiters use string insertion: ["[literal]"]
+
+@https://example.com (link)

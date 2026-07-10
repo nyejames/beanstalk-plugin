@@ -462,7 +462,7 @@
       "patterns": [
         {
           "name": "meta.template.bst meta.template.markdown.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$markdown\\b)",
+          "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$md\\b)",
           "beginCaptures": {
             "0": {
               "name": "punctuation.section.template.begin.bst"
@@ -592,7 +592,7 @@
       "patterns": [
         {
           "name": "keyword.control.directive.template.bst keyword.control.bst",
-          "match": "\\$(?:slot|insert|fresh|markdown|code|raw|note|todo|doc|children|css|html|escape_html)\\b"
+          "match": "\\$(?:slot|insert|fresh|md|code|raw|note|todo|doc|children|css|html|escape_html)\\b"
         },
         {
           "name": "keyword.control.directive.template.bst keyword.control.bst",
@@ -2470,11 +2470,11 @@
         },
         {
           "name": "keyword.control.code.generic.bst",
-          "match": "\\b(?:if|else|case|return|for|while|loop|to|by|break|continue|as|copy|must|def|class|function|const|let|var|import|from|type|interface|enum)\\b"
+          "match": "\\b(?:if|else|return|for|while|break|continue|function|class|const|let|var|import|from|type|enum|case|async|await|try|catch|throw)\\b"
         },
         {
           "name": "support.type.code.generic.bst",
-          "match": "\\b(?:Int|Float|String|Bool|Char|None|True|False|true|false|none|number|string|boolean|undefined|null|void|any)\\b"
+          "match": "\\b(?:int|float|string|bool|char|number|boolean|undefined|null|void|any|true|false)\\b"
         },
         {
           "include": "#operators"
@@ -2641,7 +2641,7 @@
         },
         {
           "name": "keyword.operator.symbol.bst",
-          "match": "=>|->|::|<=|>=|>>|<<|\\.\\.|//|=|\\+|-|\\*|/|%|\\^|~|#|\\?|!|<|>|\\|"
+          "match": "=>|->|::|<=|>=|>>|<<|\\.\\.|//|=|\\+|-|\\*|/|%|\\^|~|#|\\?|!|<|>|\\$"
         }
       ]
     },
@@ -2674,6 +2674,14 @@
         {
           "name": "punctuation.brackets.square.bst",
           "match": "[\\[\\]]"
+        },
+        {
+          "name": "punctuation.brackets.pipe.bst",
+          "match": "\\|"
+        },
+        {
+          "name": "punctuation.accessor.dot.bst",
+          "match": "\\."
         }
       ]
     },
