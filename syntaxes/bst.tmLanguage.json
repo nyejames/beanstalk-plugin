@@ -2244,6 +2244,15 @@
           ]
         },
         {
+          "name": "markup.list.unnumbered.markdown",
+          "match": "^[ \\t]*([-+*])(?=[ \\t]+)",
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.list.begin.markdown"
+            }
+          }
+        },
+        {
           "name": "meta.link.inline.markdown.bst",
           "match": "(?<!\\S)(@)((?:[A-Za-z][A-Za-z0-9+.-]*:|//|/|\\.\\./|\\./|#|\\?)[^\\s()\\[\\]]*)([ \\t]+)(\\()([^()\\n]*\\S[^()\\n]*)(\\))",
           "captures": {

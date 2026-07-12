@@ -95,6 +95,39 @@ test("Beandown grammar starts in markdown-template-body context", () => {
   assert.ok(!includes.includes("source.bst#comments"), "-- is body text in .bd files");
 });
 
+test("Beandown defaults nested templates to Markdown unless another directive overrides it", () => {
+  const markdownPattern = bdGrammar.repository["beandown-template-markdown"].patterns[0];
+  const beginRe = new RegExp(markdownPattern.begin);
+
+  assert.ok(beginRe.test("[p:"), "templates without directives should use Markdown");
+  assert.ok(beginRe.test("[p,\n:"), "multiline directive-free heads should use Markdown");
+  assert.ok(beginRe.test("[$md:"), "$md should keep recursive Markdown highlighting");
+
+  for (const directive of ["$raw", "$fresh", "$html", '$code("bst")', "$css", "$escape_html"]) {
+    assert.ok(!beginRe.test(`[p, ${directive}:`), `${directive} should use its explicit formatter`);
+  }
+
+  const explicitPattern = bdGrammar.repository["beandown-template-explicit-generic"].patterns[0];
+  const explicitRe = new RegExp(explicitPattern.begin);
+  assert.ok(explicitRe.test("[p, $raw:"));
+  assert.ok(explicitRe.test("[p,\n$raw:"));
+  assert.ok(explicitRe.test("[p, $fresh:"));
+  assert.ok(explicitRe.test("[p, $escape_html:"));
+  assert.ok(explicitRe.test("[p, $children:"));
+  assert.ok(!explicitRe.test("[p, $md:"));
+  assert.ok(!explicitRe.test('[p, $code("bst"):'));
+
+  const bodyIncludes = includesFor("beandown-template-body-markdown", bdGrammar);
+  assert.ok(bodyIncludes.includes("#beandown-template-markdown"));
+  assert.ok(bodyIncludes.includes("#beandown-template-explicit-generic"));
+  assert.ok(bodyIncludes.includes("source.bst#template-generic"));
+  assert.ok(bodyIncludes.includes("source.bst#embedded-markdown"));
+
+  const genericBodyIncludes = includesFor("beandown-template-body-generic", bdGrammar);
+  assert.ok(genericBodyIncludes.includes("#beandown-template-markdown"));
+  assert.ok(genericBodyIncludes.includes("#beandown-template-explicit-generic"));
+});
+
 test("package injects template comment directive highlighting", () => {
   const injected = pkg.contributes.grammars.find(
     (entry) => entry.scopeName === "source.bst.comment-directives"
@@ -136,6 +169,8 @@ test("Beandown fixture contains direct markdown body and nested template directi
     "# Beandown title",
     "-- this is markdown body text, not a Beanstalk comment",
     "[p:",
+    "- This nested body should use Markdown list highlighting.",
+    "[raw_content, $raw:",
     "[$doc:",
     "[$todo:",
     "[$note:",

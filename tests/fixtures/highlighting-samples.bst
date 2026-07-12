@@ -99,6 +99,8 @@ value = identity(42)
     # Hello
     This is *markdown*.
 
+    - This is a Markdown bullet.
+
     @https://example.com (Here is a link!)
 
     Some `inline code` here.

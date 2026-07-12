@@ -11,6 +11,12 @@
     "beandown-markdown-body": {
       "patterns": [
         {
+          "include": "#beandown-template-markdown"
+        },
+        {
+          "include": "#beandown-template-explicit-generic"
+        },
+        {
           "include": "source.bst#escapes"
         },
         {
@@ -51,6 +57,189 @@
         },
         {
           "include": "source.bst#embedded-markdown"
+        }
+      ]
+    },
+    "beandown-template-markdown": {
+      "patterns": [
+        {
+          "name": "meta.template.bst meta.template.markdown.bst",
+          "begin": "(?<!\\\\)\\[(?=[^\\]:]*:)(?![^\\]:]*\\$(?!md\\b))",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "(?<!\\\\)\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "source.bst#template-head"
+            },
+            {
+              "include": "#beandown-template-body-markdown"
+            }
+          ]
+        }
+      ]
+    },
+    "beandown-template-body-markdown": {
+      "patterns": [
+        {
+          "name": "meta.template.body.bst",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+            }
+          },
+          "end": "(?=(?<!\\\\)\\])",
+          "patterns": [
+            {
+              "include": "source.bst#escapes"
+            },
+            {
+              "include": "source.bst#template-slot-marker"
+            },
+            {
+              "include": "source.bst#template-code-js"
+            },
+            {
+              "include": "source.bst#template-code-ts"
+            },
+            {
+              "include": "source.bst#template-code-py"
+            },
+            {
+              "include": "source.bst#template-code-rs"
+            },
+            {
+              "include": "source.bst#template-code-shell"
+            },
+            {
+              "include": "source.bst#template-code-beanstalk"
+            },
+            {
+              "include": "source.bst#template-code-generic"
+            },
+            {
+              "include": "source.bst#template-css"
+            },
+            {
+              "include": "source.bst#template-html"
+            },
+            {
+              "include": "#beandown-template-markdown"
+            },
+            {
+              "include": "#beandown-template-explicit-generic"
+            },
+            {
+              "include": "source.bst#template-markdown"
+            },
+            {
+              "include": "source.bst#template-generic"
+            },
+            {
+              "include": "source.bst#embedded-markdown"
+            }
+          ]
+        }
+      ]
+    },
+    "beandown-template-explicit-generic": {
+      "patterns": [
+        {
+          "name": "meta.template.bst",
+          "begin": "(?<!\\\\)\\[(?=[^\\]:]*:)(?=[^\\]:]*\\$)(?![^\\]:]*\\$(?:md|code|css|html|doc|note|todo)\\b)",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.bst"
+            }
+          },
+          "end": "(?<!\\\\)\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.bst"
+            }
+          },
+          "patterns": [
+            {
+              "include": "source.bst#template-head"
+            },
+            {
+              "include": "#beandown-template-body-generic"
+            }
+          ]
+        }
+      ]
+    },
+    "beandown-template-body-generic": {
+      "patterns": [
+        {
+          "name": "meta.template.body.bst",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+            }
+          },
+          "end": "(?=(?<!\\\\)\\])",
+          "patterns": [
+            {
+              "include": "source.bst#escapes"
+            },
+            {
+              "include": "source.bst#template-slot-marker"
+            },
+            {
+              "include": "source.bst#template-code-js"
+            },
+            {
+              "include": "source.bst#template-code-ts"
+            },
+            {
+              "include": "source.bst#template-code-py"
+            },
+            {
+              "include": "source.bst#template-code-rs"
+            },
+            {
+              "include": "source.bst#template-code-shell"
+            },
+            {
+              "include": "source.bst#template-code-beanstalk"
+            },
+            {
+              "include": "source.bst#template-code-generic"
+            },
+            {
+              "include": "source.bst#template-css"
+            },
+            {
+              "include": "source.bst#template-html"
+            },
+            {
+              "include": "#beandown-template-markdown"
+            },
+            {
+              "include": "#beandown-template-explicit-generic"
+            },
+            {
+              "include": "source.bst#template-markdown"
+            },
+            {
+              "include": "source.bst#template-generic"
+            },
+            {
+              "name": "string.unquoted.template.body.bst string.quoted.double.bst",
+              "match": "[^\\[\\]]+"
+            }
+          ]
         }
       ]
     }

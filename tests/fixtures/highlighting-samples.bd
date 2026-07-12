@@ -4,6 +4,18 @@
 
 [p:
     This paragraph should be parsed as a nested Beanstalk template inside the implicit `$md` body.
+
+    - This nested body should use Markdown list highlighting.
+
+    [child:
+        * This deeper template should also use Markdown.
+
+        # heading to make it obvious
+    ]
+]
+
+[raw_content, $raw:
+    - This explicit formatter should not use Markdown highlighting.
 ]
 
 [$doc:

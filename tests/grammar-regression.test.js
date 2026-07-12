@@ -472,6 +472,7 @@ test("fixture contains expected scenarios for manual token inspection", () => {
     "count_text String = cast count",
     "value = identity(42)",
     "[$md:",
+    "- This is a Markdown bullet.",
     "[$slot]",
     '[$slot("style")]',
     '[$insert("style"): color: blue;]',
@@ -545,6 +546,24 @@ test("template meta scopes exist", () => {
 });
 
 // ── MARKDOWN LINKS ──────────────────────────────────────────────────
+
+test("markdown bullet markers have dedicated list punctuation scopes", () => {
+  const markdownFragment = grammar.repository["markdown-fragment"].patterns;
+  const bulletPattern = markdownFragment.find(
+    (p) => p.name === "markup.list.unnumbered.markdown"
+  );
+  assert.ok(bulletPattern, "expected unordered Markdown list pattern");
+
+  const re = regexpFromPattern(bulletPattern.match);
+  for (const bullet of ["- item", "  * item", "+ item"]) {
+    assert.ok(re.test(bullet), `expected bullet marker to match: ${bullet}`);
+  }
+  assert.ok(!re.test("-item"), "a hyphen without following whitespace is not a bullet");
+  assert.equal(
+    bulletPattern.captures["1"].name,
+    "punctuation.definition.list.begin.markdown"
+  );
+});
 
 test("markdown link regex matches Beanstalk link syntax and rejects bare domains", () => {
   const markdownFragment = grammar.repository["markdown-fragment"].patterns;
