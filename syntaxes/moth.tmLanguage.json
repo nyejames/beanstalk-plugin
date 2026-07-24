@@ -1,7 +1,7 @@
 {
   "version": "0.2.1",
-  "name": "Beanstalk",
-  "scopeName": "source.bst",
+  "name": "Moth",
+  "scopeName": "source.moth",
   "patterns": [
     {
       "include": "#comments"
@@ -28,7 +28,7 @@
       "include": "#template-code-shell"
     },
     {
-      "include": "#template-code-beanstalk"
+      "include": "#template-code-moth"
     },
     {
       "include": "#template-code-generic"
@@ -83,7 +83,7 @@
     "comments": {
       "patterns": [
         {
-          "name": "comment.line.double-dash.bst",
+          "name": "comment.line.double-dash.moth",
           "match": "--[^\\n]*"
         }
       ]
@@ -91,7 +91,7 @@
     "invalid-at-sign": {
       "patterns": [
         {
-          "name": "invalid.illegal.path-at.bst",
+          "name": "invalid.illegal.path-at.moth",
           "match": "@(?!\\(|[A-Za-z_./\\\\])"
         }
       ]
@@ -99,20 +99,20 @@
     "path-literals": {
       "patterns": [
         {
-          "name": "meta.path.import.bst",
+          "name": "meta.path.import.moth",
           "begin": "(@)(\\()",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.definition.path.begin.bst keyword.control.import.bst"
+              "name": "punctuation.definition.path.begin.moth keyword.control.import.moth"
             },
             "2": {
-              "name": "punctuation.section.group.begin.bst"
+              "name": "punctuation.section.group.begin.moth"
             }
           },
           "end": "(\\))",
           "endCaptures": {
             "1": {
-              "name": "punctuation.definition.path.end.bst punctuation.section.group.end.bst"
+              "name": "punctuation.definition.path.end.moth punctuation.section.group.end.moth"
             }
           },
           "patterns": [
@@ -120,33 +120,33 @@
               "include": "#path-group"
             },
             {
-              "name": "punctuation.separator.path.bst",
+              "name": "punctuation.separator.path.moth",
               "match": "[\\\\/]"
             },
             {
-              "name": "constant.other.path.relative.bst",
+              "name": "constant.other.path.relative.moth",
               "match": "\\.{1,2}(?=[\\\\/\\)])"
             },
             {
-              "name": "entity.name.path.segment.bst entity.name.module.bst",
+              "name": "entity.name.path.segment.moth entity.name.module.moth",
               "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
             },
             {
-              "name": "text.whitespace.bst",
+              "name": "text.whitespace.moth",
               "match": "\\s+"
             },
             {
-              "name": "invalid.illegal.path.character.bst",
+              "name": "invalid.illegal.path.character.moth",
               "match": "[^\\sA-Za-z0-9_{}\\\\/,\\.]"
             }
           ]
         },
         {
-          "name": "meta.path.import.bst",
+          "name": "meta.path.import.moth",
           "begin": "(@)(?!\\()(?=[A-Za-z_./\\\\])",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.definition.path.begin.bst keyword.control.import.bst"
+              "name": "punctuation.definition.path.begin.moth keyword.control.import.moth"
             }
           },
           "end": "(?=$|\\s+(?!\\{)|[,;\\]\\)\\}])",
@@ -155,23 +155,23 @@
               "include": "#path-group"
             },
             {
-              "name": "punctuation.separator.path.bst",
+              "name": "punctuation.separator.path.moth",
               "match": "[\\\\/]"
             },
             {
-              "name": "constant.other.path.relative.bst",
+              "name": "constant.other.path.relative.moth",
               "match": "\\.{1,2}(?=[\\\\/\\s\\]\\)\\},;]|$)"
             },
             {
-              "name": "entity.name.path.segment.bst entity.name.module.bst",
+              "name": "entity.name.path.segment.moth entity.name.module.moth",
               "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
             },
             {
-              "name": "text.whitespace.bst",
+              "name": "text.whitespace.moth",
               "match": "\\s+"
             },
             {
-              "name": "invalid.illegal.path.character.bst",
+              "name": "invalid.illegal.path.character.moth",
               "match": "[^\\sA-Za-z0-9_{}\\\\/,\\.]"
             }
           ]
@@ -181,34 +181,34 @@
     "path-group": {
       "patterns": [
         {
-          "name": "meta.path.import.group.bst",
+          "name": "meta.path.import.group.moth",
           "begin": "\\{",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.section.group.begin.bst"
+              "name": "punctuation.section.group.begin.moth"
             }
           },
           "end": "\\}",
           "endCaptures": {
             "0": {
-              "name": "punctuation.section.group.end.bst"
+              "name": "punctuation.section.group.end.moth"
             }
           },
           "patterns": [
             {
-              "name": "entity.name.import.symbol.bst variable.other.object.property.bst",
+              "name": "entity.name.import.symbol.moth variable.other.object.property.moth",
               "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
             },
             {
-              "name": "punctuation.separator.comma.bst",
+              "name": "punctuation.separator.comma.moth",
               "match": ","
             },
             {
-              "name": "text.whitespace.bst",
+              "name": "text.whitespace.moth",
               "match": "\\s+"
             },
             {
-              "name": "invalid.illegal.path.group.character.bst",
+              "name": "invalid.illegal.path.group.character.moth",
               "match": "[^\\sA-Za-z0-9_,]"
             }
           ]
@@ -218,17 +218,17 @@
     "template-code-js": {
       "patterns": [
         {
-          "name": "meta.template.bst meta.template.code.js.bst",
+          "name": "meta.template.moth meta.template.code.js.moth",
           "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$code\\s*\\(\\s*\\\"(?:js|javascript)\\\"\\s*\\))",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.section.template.begin.bst"
+              "name": "punctuation.section.template.begin.moth"
             }
           },
           "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
-              "name": "punctuation.section.template.end.bst"
+              "name": "punctuation.section.template.end.moth"
             }
           },
           "patterns": [
@@ -245,17 +245,17 @@
     "template-code-ts": {
       "patterns": [
         {
-          "name": "meta.template.bst meta.template.code.ts.bst",
+          "name": "meta.template.moth meta.template.code.ts.moth",
           "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$code\\s*\\(\\s*\\\"(?:ts|typescript)\\\"\\s*\\))",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.section.template.begin.bst"
+              "name": "punctuation.section.template.begin.moth"
             }
           },
           "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
-              "name": "punctuation.section.template.end.bst"
+              "name": "punctuation.section.template.end.moth"
             }
           },
           "patterns": [
@@ -272,17 +272,17 @@
     "template-code-py": {
       "patterns": [
         {
-          "name": "meta.template.bst meta.template.code.py.bst",
+          "name": "meta.template.moth meta.template.code.py.moth",
           "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$code\\s*\\(\\s*\\\"(?:py|python)\\\"\\s*\\))",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.section.template.begin.bst"
+              "name": "punctuation.section.template.begin.moth"
             }
           },
           "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
-              "name": "punctuation.section.template.end.bst"
+              "name": "punctuation.section.template.end.moth"
             }
           },
           "patterns": [
@@ -299,17 +299,17 @@
     "template-code-rs": {
       "patterns": [
         {
-          "name": "meta.template.bst meta.template.code.rs.bst",
+          "name": "meta.template.moth meta.template.code.rs.moth",
           "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$code\\s*\\(\\s*\\\"(?:rs|rust)\\\"\\s*\\))",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.section.template.begin.bst"
+              "name": "punctuation.section.template.begin.moth"
             }
           },
           "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
-              "name": "punctuation.section.template.end.bst"
+              "name": "punctuation.section.template.end.moth"
             }
           },
           "patterns": [
@@ -326,17 +326,17 @@
     "template-code-shell": {
       "patterns": [
         {
-          "name": "meta.template.bst meta.template.code.shell.bst",
+          "name": "meta.template.moth meta.template.code.shell.moth",
           "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$code\\s*\\(\\s*\\\"(?:sh|shell|bash)\\\"\\s*\\))",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.section.template.begin.bst"
+              "name": "punctuation.section.template.begin.moth"
             }
           },
           "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
-              "name": "punctuation.section.template.end.bst"
+              "name": "punctuation.section.template.end.moth"
             }
           },
           "patterns": [
@@ -350,20 +350,20 @@
         }
       ]
     },
-    "template-code-beanstalk": {
+    "template-code-moth": {
       "patterns": [
         {
-          "name": "meta.template.bst meta.template.code.bstlang.bst",
-          "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$code\\s*\\(\\s*\\\"(?:bst|beanstalk)\\\"\\s*\\))",
+          "name": "meta.template.moth meta.template.code.mothlang.moth",
+          "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$code\\s*\\(\\s*\\\"(?:bst|moth)\\\"\\s*\\))",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.section.template.begin.bst"
+              "name": "punctuation.section.template.begin.moth"
             }
           },
           "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
-              "name": "punctuation.section.template.end.bst"
+              "name": "punctuation.section.template.end.moth"
             }
           },
           "patterns": [
@@ -371,7 +371,7 @@
               "include": "#template-head"
             },
             {
-              "include": "#template-body-code-beanstalk"
+              "include": "#template-body-code-moth"
             }
           ]
         }
@@ -380,17 +380,17 @@
     "template-code-generic": {
       "patterns": [
         {
-          "name": "meta.template.bst meta.template.code.generic.bst",
+          "name": "meta.template.moth meta.template.code.generic.moth",
           "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$code\\b)",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.section.template.begin.bst"
+              "name": "punctuation.section.template.begin.moth"
             }
           },
           "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
-              "name": "punctuation.section.template.end.bst"
+              "name": "punctuation.section.template.end.moth"
             }
           },
           "patterns": [
@@ -407,17 +407,17 @@
     "template-css": {
       "patterns": [
         {
-          "name": "meta.template.bst meta.template.css.bst",
+          "name": "meta.template.moth meta.template.css.moth",
           "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$css\\b)",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.section.template.begin.bst"
+              "name": "punctuation.section.template.begin.moth"
             }
           },
           "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
-              "name": "punctuation.section.template.end.bst"
+              "name": "punctuation.section.template.end.moth"
             }
           },
           "patterns": [
@@ -434,17 +434,17 @@
     "template-html": {
       "patterns": [
         {
-          "name": "meta.template.bst meta.template.html.bst",
+          "name": "meta.template.moth meta.template.html.moth",
           "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$html\\b)",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.section.template.begin.bst"
+              "name": "punctuation.section.template.begin.moth"
             }
           },
           "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
-              "name": "punctuation.section.template.end.bst"
+              "name": "punctuation.section.template.end.moth"
             }
           },
           "patterns": [
@@ -461,17 +461,17 @@
     "template-markdown": {
       "patterns": [
         {
-          "name": "meta.template.bst meta.template.markdown.bst",
+          "name": "meta.template.moth meta.template.markdown.moth",
           "begin": "(?<!\\\\)\\[(?=[^\\]\\n]*\\$md\\b)",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.section.template.begin.bst"
+              "name": "punctuation.section.template.begin.moth"
             }
           },
           "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
-              "name": "punctuation.section.template.end.bst"
+              "name": "punctuation.section.template.end.moth"
             }
           },
           "patterns": [
@@ -488,17 +488,17 @@
     "template-generic": {
       "patterns": [
         {
-          "name": "meta.template.bst",
+          "name": "meta.template.moth",
           "begin": "(?<!\\\\)\\[",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.section.template.begin.bst"
+              "name": "punctuation.section.template.begin.moth"
             }
           },
           "end": "(?<!\\\\)\\]",
           "endCaptures": {
             "0": {
-              "name": "punctuation.section.template.end.bst"
+              "name": "punctuation.section.template.end.moth"
             }
           },
           "patterns": [
@@ -515,7 +515,7 @@
     "template-head": {
       "patterns": [
         {
-          "name": "meta.template.head.bst",
+          "name": "meta.template.head.moth",
           "begin": "(?=[^:\\]])",
           "end": "(?=(?<!\\\\)\\]|:)",
           "patterns": [
@@ -577,11 +577,11 @@
               "include": "#identifiers"
             },
             {
-              "name": "text.whitespace.bst",
+              "name": "text.whitespace.moth",
               "match": "\\s+"
             },
             {
-              "name": "invalid.illegal.template-head-character.bst",
+              "name": "invalid.illegal.template-head-character.moth",
               "match": "."
             }
           ]
@@ -591,11 +591,11 @@
     "template-head-directives": {
       "patterns": [
         {
-          "name": "keyword.control.directive.template.bst keyword.control.bst",
+          "name": "keyword.control.directive.template.moth keyword.control.moth",
           "match": "\\$(?:slot|insert|fresh|md|code|raw|note|todo|doc|children|css|html|escape_html)\\b"
         },
         {
-          "name": "keyword.control.directive.template.bst keyword.control.bst",
+          "name": "keyword.control.directive.template.moth keyword.control.moth",
           "match": "\\$[A-Za-z_][A-Za-z0-9_]*"
         }
       ]
@@ -603,29 +603,29 @@
     "template-slot-directive": {
       "patterns": [
         {
-          "name": "meta.template.slot.directive.bst",
+          "name": "meta.template.slot.directive.moth",
           "match": "\\$slot\\b",
           "captures": {
             "0": {
-              "name": "keyword.other.template.slot.directive.bst keyword.control.directive.template.bst"
+              "name": "keyword.other.template.slot.directive.moth keyword.control.directive.template.moth"
             }
           }
         },
         {
-          "name": "meta.template.slot.directive.bst",
+          "name": "meta.template.slot.directive.moth",
           "match": "(\\$insert)(\\s*\\()(\\s*\\\"(?:[^\\\"\\\\]|\\\\.)*\\\"\\s*)(\\))",
           "captures": {
             "1": {
-              "name": "keyword.other.template.slot.directive.bst keyword.control.directive.template.bst"
+              "name": "keyword.other.template.slot.directive.moth keyword.control.directive.template.moth"
             },
             "2": {
-              "name": "punctuation.section.group.begin.bst"
+              "name": "punctuation.section.group.begin.moth"
             },
             "3": {
-              "name": "string.quoted.double.bst"
+              "name": "string.quoted.double.moth"
             },
             "4": {
-              "name": "punctuation.section.group.end.bst"
+              "name": "punctuation.section.group.end.moth"
             }
           }
         }
@@ -634,41 +634,41 @@
     "template-slot-marker": {
       "patterns": [
         {
-          "name": "meta.template.slot.marker.bst",
+          "name": "meta.template.slot.marker.moth",
           "match": "((?<!\\\\)\\[)([ \\t]*)(\\$slot)([ \\t]*)(?:(\\()([ \\t]*)(\\\"(?:[^\\\"\\\\]|\\\\.)*\\\"|\\d+)([ \\t]*)(\\)))?([ \\t]*)((?<!\\\\)\\])",
           "captures": {
             "1": {
-              "name": "punctuation.definition.slot.begin.bst"
+              "name": "punctuation.definition.slot.begin.moth"
             },
             "3": {
-              "name": "keyword.other.template.slot.fill.bst keyword.other.template.slot.directive.bst"
+              "name": "keyword.other.template.slot.fill.moth keyword.other.template.slot.directive.moth"
             },
             "5": {
-              "name": "punctuation.section.group.begin.bst"
+              "name": "punctuation.section.group.begin.moth"
             },
             "7": {
-              "name": "string.quoted.double.bst constant.numeric.bst"
+              "name": "string.quoted.double.moth constant.numeric.moth"
             },
             "9": {
-              "name": "punctuation.section.group.end.bst"
+              "name": "punctuation.section.group.end.moth"
             },
             "11": {
-              "name": "punctuation.definition.slot.end.bst"
+              "name": "punctuation.definition.slot.end.moth"
             }
           }
         },
         {
-          "name": "invalid.deprecated.template.slot.marker.bst",
+          "name": "invalid.deprecated.template.slot.marker.moth",
           "match": "((?<!\\\\)\\[)([ \\t]*\\.{2,}[ \\t]*)((?<!\\\\)\\])",
           "captures": {
             "1": {
-              "name": "punctuation.definition.slot.begin.bst"
+              "name": "punctuation.definition.slot.begin.moth"
             },
             "2": {
-              "name": "invalid.illegal.deprecated.template.slot.fill.bst"
+              "name": "invalid.illegal.deprecated.template.slot.fill.moth"
             },
             "3": {
-              "name": "punctuation.definition.slot.end.bst"
+              "name": "punctuation.definition.slot.end.moth"
             }
           }
         }
@@ -677,20 +677,20 @@
     "template-children-directive": {
       "patterns": [
         {
-          "name": "meta.template.children.directive.bst",
+          "name": "meta.template.children.directive.moth",
           "begin": "(\\$children)(\\s*\\()",
           "beginCaptures": {
             "1": {
-              "name": "keyword.other.template.children.directive.bst keyword.control.directive.template.bst"
+              "name": "keyword.other.template.children.directive.moth keyword.control.directive.template.moth"
             },
             "2": {
-              "name": "punctuation.section.group.begin.bst"
+              "name": "punctuation.section.group.begin.moth"
             }
           },
           "end": "(\\))",
           "endCaptures": {
             "1": {
-              "name": "punctuation.section.group.end.bst"
+              "name": "punctuation.section.group.end.moth"
             }
           },
           "patterns": [
@@ -713,7 +713,7 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-beanstalk"
+              "include": "#template-code-moth"
             },
             {
               "include": "#template-code-generic"
@@ -776,7 +776,7 @@
               "include": "#identifiers"
             },
             {
-              "name": "text.whitespace.bst",
+              "name": "text.whitespace.moth",
               "match": "\\s+"
             }
           ]
@@ -786,23 +786,23 @@
     "template-note-todo-directive": {
       "patterns": [
         {
-          "name": "meta.template.comment.directive.bst",
+          "name": "meta.template.comment.directive.moth",
           "begin": "(\\$(?:note|todo))(\\s*)(?<!\\\\)(\\[)",
           "beginCaptures": {
             "1": {
-              "name": "keyword.other.template.template-note-todo-directive.bst keyword.control.directive.template.bst"
+              "name": "keyword.other.template.template-note-todo-directive.moth keyword.control.directive.template.moth"
             },
             "3": {
-              "name": "punctuation.definition.comment.begin.bst"
+              "name": "punctuation.definition.comment.begin.moth"
             }
           },
           "end": "(?<!\\\\)(\\])",
           "endCaptures": {
             "1": {
-              "name": "punctuation.definition.comment.end.bst"
+              "name": "punctuation.definition.comment.end.moth"
             }
           },
-          "contentName": "comment.block.template.directive.bst",
+          "contentName": "comment.block.template.directive.moth",
           "patterns": [
             {
               "include": "#template-note-todo-nested-brackets"
@@ -820,17 +820,17 @@
     "template-note-todo-nested-brackets": {
       "patterns": [
         {
-          "name": "comment.block.template.directive.bst",
+          "name": "comment.block.template.directive.moth",
           "begin": "(?<!\\\\)(\\[)",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.definition.comment.begin.bst"
+              "name": "punctuation.definition.comment.begin.moth"
             }
           },
           "end": "(?<!\\\\)(\\])",
           "endCaptures": {
             "1": {
-              "name": "punctuation.definition.comment.end.bst"
+              "name": "punctuation.definition.comment.end.moth"
             }
           },
           "patterns": [
@@ -850,23 +850,23 @@
     "template-doc-directive": {
       "patterns": [
         {
-          "name": "meta.template.doc.directive.bst",
+          "name": "meta.template.doc.directive.moth",
           "begin": "(\\$doc)(\\s*)(?<!\\\\)(\\[)",
           "beginCaptures": {
             "1": {
-              "name": "keyword.other.template.template-doc-directive.bst keyword.control.directive.template.bst"
+              "name": "keyword.other.template.template-doc-directive.moth keyword.control.directive.template.moth"
             },
             "3": {
-              "name": "punctuation.definition.comment.begin.bst"
+              "name": "punctuation.definition.comment.begin.moth"
             }
           },
           "end": "(?<!\\\\)(\\])",
           "endCaptures": {
             "1": {
-              "name": "punctuation.definition.comment.end.bst"
+              "name": "punctuation.definition.comment.end.moth"
             }
           },
-          "contentName": "comment.block.documentation.template.bst",
+          "contentName": "comment.block.documentation.template.moth",
           "patterns": [
             {
               "include": "#template-doc-nested-brackets"
@@ -884,17 +884,17 @@
     "template-doc-nested-brackets": {
       "patterns": [
         {
-          "name": "comment.block.documentation.template.bst",
+          "name": "comment.block.documentation.template.moth",
           "begin": "(?<!\\\\)(\\[)",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.definition.comment.begin.bst"
+              "name": "punctuation.definition.comment.begin.moth"
             }
           },
           "end": "(?<!\\\\)(\\])",
           "endCaptures": {
             "1": {
-              "name": "punctuation.definition.comment.end.bst"
+              "name": "punctuation.definition.comment.end.moth"
             }
           },
           "patterns": [
@@ -914,7 +914,7 @@
     "escapes": {
       "patterns": [
         {
-          "name": "constant.character.escape.bst",
+          "name": "constant.character.escape.moth",
           "match": "\\\\(?:[A-Za-z]|[\\[\\]])"
         }
       ]
@@ -922,11 +922,11 @@
     "template-body-generic": {
       "patterns": [
         {
-          "name": "meta.template.body.bst",
+          "name": "meta.template.body.moth",
           "begin": ":",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+              "name": "punctuation.separator.template.head-body.moth keyword.control.scope.delimiter.moth"
             }
           },
           "end": "(?=(?<!\\\\)\\])",
@@ -953,7 +953,7 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-beanstalk"
+              "include": "#template-code-moth"
             },
             {
               "include": "#template-code-generic"
@@ -971,7 +971,7 @@
               "include": "#template-generic"
             },
             {
-              "name": "string.unquoted.template.body.bst string.quoted.double.bst",
+              "name": "string.unquoted.template.body.moth string.quoted.double.moth",
               "match": "[^\\[\\]]+"
             }
           ]
@@ -981,11 +981,11 @@
     "template-body-markdown": {
       "patterns": [
         {
-          "name": "meta.template.body.bst",
+          "name": "meta.template.body.moth",
           "begin": ":",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+              "name": "punctuation.separator.template.head-body.moth keyword.control.scope.delimiter.moth"
             }
           },
           "end": "(?=(?<!\\\\)\\])",
@@ -1012,7 +1012,7 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-beanstalk"
+              "include": "#template-code-moth"
             },
             {
               "include": "#template-code-generic"
@@ -1039,11 +1039,11 @@
     "template-body-css": {
       "patterns": [
         {
-          "name": "meta.template.body.bst",
+          "name": "meta.template.body.moth",
           "begin": ":",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+              "name": "punctuation.separator.template.head-body.moth keyword.control.scope.delimiter.moth"
             }
           },
           "end": "(?=(?<!\\\\)\\])",
@@ -1061,11 +1061,11 @@
     "template-body-html": {
       "patterns": [
         {
-          "name": "meta.template.body.bst",
+          "name": "meta.template.body.moth",
           "begin": ":",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+              "name": "punctuation.separator.template.head-body.moth keyword.control.scope.delimiter.moth"
             }
           },
           "end": "(?=(?<!\\\\)\\])",
@@ -1092,7 +1092,7 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-beanstalk"
+              "include": "#template-code-moth"
             },
             {
               "include": "#template-code-generic"
@@ -1119,11 +1119,11 @@
     "template-body-code-js": {
       "patterns": [
         {
-          "name": "meta.template.body.bst",
+          "name": "meta.template.body.moth",
           "begin": ":",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+              "name": "punctuation.separator.template.head-body.moth keyword.control.scope.delimiter.moth"
             }
           },
           "end": "(?=(?<!\\\\)\\])",
@@ -1150,7 +1150,7 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-beanstalk"
+              "include": "#template-code-moth"
             },
             {
               "include": "#template-code-generic"
@@ -1177,11 +1177,11 @@
     "template-body-code-ts": {
       "patterns": [
         {
-          "name": "meta.template.body.bst",
+          "name": "meta.template.body.moth",
           "begin": ":",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+              "name": "punctuation.separator.template.head-body.moth keyword.control.scope.delimiter.moth"
             }
           },
           "end": "(?=(?<!\\\\)\\])",
@@ -1208,7 +1208,7 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-beanstalk"
+              "include": "#template-code-moth"
             },
             {
               "include": "#template-code-generic"
@@ -1235,11 +1235,11 @@
     "template-body-code-py": {
       "patterns": [
         {
-          "name": "meta.template.body.bst",
+          "name": "meta.template.body.moth",
           "begin": ":",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+              "name": "punctuation.separator.template.head-body.moth keyword.control.scope.delimiter.moth"
             }
           },
           "end": "(?=(?<!\\\\)\\])",
@@ -1266,7 +1266,7 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-beanstalk"
+              "include": "#template-code-moth"
             },
             {
               "include": "#template-code-generic"
@@ -1293,11 +1293,11 @@
     "template-body-code-rs": {
       "patterns": [
         {
-          "name": "meta.template.body.bst",
+          "name": "meta.template.body.moth",
           "begin": ":",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+              "name": "punctuation.separator.template.head-body.moth keyword.control.scope.delimiter.moth"
             }
           },
           "end": "(?=(?<!\\\\)\\])",
@@ -1324,7 +1324,7 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-beanstalk"
+              "include": "#template-code-moth"
             },
             {
               "include": "#template-code-generic"
@@ -1351,11 +1351,11 @@
     "template-body-code-shell": {
       "patterns": [
         {
-          "name": "meta.template.body.bst",
+          "name": "meta.template.body.moth",
           "begin": ":",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+              "name": "punctuation.separator.template.head-body.moth keyword.control.scope.delimiter.moth"
             }
           },
           "end": "(?=(?<!\\\\)\\])",
@@ -1382,7 +1382,7 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-beanstalk"
+              "include": "#template-code-moth"
             },
             {
               "include": "#template-code-generic"
@@ -1406,14 +1406,14 @@
         }
       ]
     },
-    "template-body-code-beanstalk": {
+    "template-body-code-moth": {
       "patterns": [
         {
-          "name": "meta.template.body.bst",
+          "name": "meta.template.body.moth",
           "begin": ":",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+              "name": "punctuation.separator.template.head-body.moth keyword.control.scope.delimiter.moth"
             }
           },
           "end": "(?=(?<!\\\\)\\])",
@@ -1440,7 +1440,7 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-beanstalk"
+              "include": "#template-code-moth"
             },
             {
               "include": "#template-code-generic"
@@ -1458,7 +1458,7 @@
               "include": "#template-generic"
             },
             {
-              "include": "#embedded-code-beanstalk"
+              "include": "#embedded-code-moth"
             }
           ]
         }
@@ -1467,11 +1467,11 @@
     "template-body-code-generic": {
       "patterns": [
         {
-          "name": "meta.template.body.bst",
+          "name": "meta.template.body.moth",
           "begin": ":",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.separator.template.head-body.bst keyword.control.scope.delimiter.bst"
+              "name": "punctuation.separator.template.head-body.moth keyword.control.scope.delimiter.moth"
             }
           },
           "end": "(?=(?<!\\\\)\\])",
@@ -1498,7 +1498,7 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-beanstalk"
+              "include": "#template-code-moth"
             },
             {
               "include": "#template-code-generic"
@@ -1525,10 +1525,10 @@
     "embedded-markdown": {
       "patterns": [
         {
-          "name": "meta.embedded.block.markdown.bst",
+          "name": "meta.embedded.block.markdown.moth",
           "begin": "(?=[^\\[\\]])",
           "end": "(?=(?<!\\\\)[\\[\\]])",
-          "contentName": "meta.embedded.block.markdown.bst text.html.markdown",
+          "contentName": "meta.embedded.block.markdown.moth text.html.markdown",
           "patterns": [
             {
               "include": "#escapes"
@@ -1676,7 +1676,7 @@
     "embedded-css": {
       "patterns": [
         {
-          "name": "meta.embedded.block.css.bst",
+          "name": "meta.embedded.block.css.moth",
           "begin": "(?<!\\\\)\\[",
           "end": "(?<!\\\\)\\]",
           "patterns": [
@@ -1689,10 +1689,10 @@
           ]
         },
         {
-          "name": "meta.embedded.block.css.bst",
+          "name": "meta.embedded.block.css.moth",
           "begin": "(?=[^\\[\\]])",
           "end": "(?=(?<!\\\\)[\\[\\]])",
-          "contentName": "meta.embedded.block.css.bst source.css",
+          "contentName": "meta.embedded.block.css.moth source.css",
           "patterns": [
             {
               "include": "#escapes"
@@ -1707,7 +1707,7 @@
     "embedded-html": {
       "patterns": [
         {
-          "name": "meta.embedded.block.html.bst",
+          "name": "meta.embedded.block.html.moth",
           "begin": "(?<!\\\\)\\[",
           "end": "(?<!\\\\)\\]",
           "patterns": [
@@ -1717,10 +1717,10 @@
           ]
         },
         {
-          "name": "meta.embedded.block.html.bst",
+          "name": "meta.embedded.block.html.moth",
           "begin": "(?=[^\\[\\]])",
           "end": "(?=(?<!\\\\)[\\[\\]])",
-          "contentName": "meta.embedded.block.html.bst text.html.basic",
+          "contentName": "meta.embedded.block.html.moth text.html.basic",
           "patterns": [
             {
               "include": "#escapes"
@@ -1735,7 +1735,7 @@
     "embedded-code-js": {
       "patterns": [
         {
-          "name": "meta.embedded.block.code.js.bst",
+          "name": "meta.embedded.block.code.js.moth",
           "begin": "(?<!\\\\)\\[",
           "end": "(?<!\\\\)\\]",
           "patterns": [
@@ -1745,10 +1745,10 @@
           ]
         },
         {
-          "name": "meta.embedded.block.code.js.bst",
+          "name": "meta.embedded.block.code.js.moth",
           "begin": "(?=[^\\[\\]])",
           "end": "(?=(?<!\\\\)[\\[\\]])",
-          "contentName": "meta.embedded.block.code.js.bst source.js",
+          "contentName": "meta.embedded.block.code.js.moth source.js",
           "patterns": [
             {
               "include": "#escapes"
@@ -1763,7 +1763,7 @@
     "embedded-code-ts": {
       "patterns": [
         {
-          "name": "meta.embedded.block.code.ts.bst",
+          "name": "meta.embedded.block.code.ts.moth",
           "begin": "(?<!\\\\)\\[",
           "end": "(?<!\\\\)\\]",
           "patterns": [
@@ -1773,10 +1773,10 @@
           ]
         },
         {
-          "name": "meta.embedded.block.code.ts.bst",
+          "name": "meta.embedded.block.code.ts.moth",
           "begin": "(?=[^\\[\\]])",
           "end": "(?=(?<!\\\\)[\\[\\]])",
-          "contentName": "meta.embedded.block.code.ts.bst source.ts",
+          "contentName": "meta.embedded.block.code.ts.moth source.ts",
           "patterns": [
             {
               "include": "#escapes"
@@ -1791,7 +1791,7 @@
     "embedded-code-py": {
       "patterns": [
         {
-          "name": "meta.embedded.block.code.py.bst",
+          "name": "meta.embedded.block.code.py.moth",
           "begin": "(?<!\\\\)\\[",
           "end": "(?<!\\\\)\\]",
           "patterns": [
@@ -1801,10 +1801,10 @@
           ]
         },
         {
-          "name": "meta.embedded.block.code.py.bst",
+          "name": "meta.embedded.block.code.py.moth",
           "begin": "(?=[^\\[\\]])",
           "end": "(?=(?<!\\\\)[\\[\\]])",
-          "contentName": "meta.embedded.block.code.py.bst source.python",
+          "contentName": "meta.embedded.block.code.py.moth source.python",
           "patterns": [
             {
               "include": "#escapes"
@@ -1819,7 +1819,7 @@
     "embedded-code-rs": {
       "patterns": [
         {
-          "name": "meta.embedded.block.code.rs.bst",
+          "name": "meta.embedded.block.code.rs.moth",
           "begin": "(?<!\\\\)\\[",
           "end": "(?<!\\\\)\\]",
           "patterns": [
@@ -1829,10 +1829,10 @@
           ]
         },
         {
-          "name": "meta.embedded.block.code.rs.bst",
+          "name": "meta.embedded.block.code.rs.moth",
           "begin": "(?=[^\\[\\]])",
           "end": "(?=(?<!\\\\)[\\[\\]])",
-          "contentName": "meta.embedded.block.code.rs.bst source.rust",
+          "contentName": "meta.embedded.block.code.rs.moth source.rust",
           "patterns": [
             {
               "include": "#escapes"
@@ -1847,7 +1847,7 @@
     "embedded-code-shell": {
       "patterns": [
         {
-          "name": "meta.embedded.block.code.shell.bst",
+          "name": "meta.embedded.block.code.shell.moth",
           "begin": "(?<!\\\\)\\[",
           "end": "(?<!\\\\)\\]",
           "patterns": [
@@ -1857,10 +1857,10 @@
           ]
         },
         {
-          "name": "meta.embedded.block.code.shell.bst",
+          "name": "meta.embedded.block.code.shell.moth",
           "begin": "(?=[^\\[\\]])",
           "end": "(?=(?<!\\\\)[\\[\\]])",
-          "contentName": "meta.embedded.block.code.shell.bst source.shell",
+          "contentName": "meta.embedded.block.code.shell.moth source.shell",
           "patterns": [
             {
               "include": "#escapes"
@@ -1872,32 +1872,32 @@
         }
       ]
     },
-    "embedded-code-beanstalk": {
+    "embedded-code-moth": {
       "patterns": [
         {
-          "name": "meta.embedded.block.code.bstlang.bst",
+          "name": "meta.embedded.block.code.mothlang.moth",
           "begin": "(?<!\\\\)\\[",
           "end": "(?<!\\\\)\\]",
           "patterns": [
             {
-              "include": "#embedded-code-beanstalk"
+              "include": "#embedded-code-moth"
             },
             {
-              "include": "#code-beanstalk-fragment"
+              "include": "#code-moth-fragment"
             }
           ]
         },
         {
-          "name": "meta.embedded.block.code.bstlang.bst",
+          "name": "meta.embedded.block.code.mothlang.moth",
           "begin": "(?=[^\\[\\]])",
           "end": "(?=(?<!\\\\)[\\[\\]])",
-          "contentName": "meta.embedded.block.code.bstlang.bst source.bst.embedded",
+          "contentName": "meta.embedded.block.code.mothlang.moth source.moth.embedded",
           "patterns": [
             {
               "include": "#escapes"
             },
             {
-              "include": "#code-beanstalk-fragment"
+              "include": "#code-moth-fragment"
             }
           ]
         }
@@ -1906,7 +1906,7 @@
     "embedded-code-generic": {
       "patterns": [
         {
-          "name": "meta.embedded.block.code.generic.bst",
+          "name": "meta.embedded.block.code.generic.moth",
           "begin": "(?<!\\\\)\\[",
           "end": "(?<!\\\\)\\]",
           "patterns": [
@@ -1919,10 +1919,10 @@
           ]
         },
         {
-          "name": "meta.embedded.block.code.generic.bst",
+          "name": "meta.embedded.block.code.generic.moth",
           "begin": "(?=[^\\[\\]])",
           "end": "(?=(?<!\\\\)[\\[\\]])",
-          "contentName": "meta.embedded.block.code.generic.bst source.code.generic.bst",
+          "contentName": "meta.embedded.block.code.generic.moth source.code.generic.moth",
           "patterns": [
             {
               "include": "#escapes"
@@ -1937,17 +1937,17 @@
     "embedded-html-string-double": {
       "patterns": [
         {
-          "name": "meta.attribute.value.html.bst",
+          "name": "meta.attribute.value.html.moth",
           "begin": "\"",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.definition.string.begin.bst string.quoted.double.html.bst"
+              "name": "punctuation.definition.string.begin.moth string.quoted.double.html.moth"
             }
           },
           "end": "\"",
           "endCaptures": {
             "0": {
-              "name": "punctuation.definition.string.end.bst string.quoted.double.html.bst"
+              "name": "punctuation.definition.string.end.moth string.quoted.double.html.moth"
             }
           },
           "patterns": [
@@ -1973,7 +1973,7 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-beanstalk"
+              "include": "#template-code-moth"
             },
             {
               "include": "#template-code-generic"
@@ -1991,11 +1991,11 @@
               "include": "#template-generic"
             },
             {
-              "name": "string.quoted.double.html.bst",
+              "name": "string.quoted.double.html.moth",
               "match": "[^\\\"\\\\\\[]+"
             },
             {
-              "name": "string.quoted.double.html.bst",
+              "name": "string.quoted.double.html.moth",
               "match": "[^\\\"\\\\]"
             }
           ]
@@ -2005,17 +2005,17 @@
     "embedded-html-string-single": {
       "patterns": [
         {
-          "name": "meta.attribute.value.html.bst",
+          "name": "meta.attribute.value.html.moth",
           "begin": "'",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.definition.string.begin.bst string.quoted.single.html.bst"
+              "name": "punctuation.definition.string.begin.moth string.quoted.single.html.moth"
             }
           },
           "end": "'",
           "endCaptures": {
             "0": {
-              "name": "punctuation.definition.string.end.bst string.quoted.single.html.bst"
+              "name": "punctuation.definition.string.end.moth string.quoted.single.html.moth"
             }
           },
           "patterns": [
@@ -2041,7 +2041,7 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-beanstalk"
+              "include": "#template-code-moth"
             },
             {
               "include": "#template-code-generic"
@@ -2059,11 +2059,11 @@
               "include": "#template-generic"
             },
             {
-              "name": "string.quoted.single.html.bst",
+              "name": "string.quoted.single.html.moth",
               "match": "[^'\\\\\\[]+"
             },
             {
-              "name": "string.quoted.single.html.bst",
+              "name": "string.quoted.single.html.moth",
               "match": "[^'\\\\]"
             }
           ]
@@ -2073,7 +2073,7 @@
     "embedded-html-fragment": {
       "patterns": [
         {
-          "name": "comment.block.html.bst",
+          "name": "comment.block.html.moth",
           "begin": "<!--",
           "end": "-->",
           "patterns": [
@@ -2081,17 +2081,17 @@
               "include": "#escapes"
             },
             {
-              "name": "comment.block.html.bst",
+              "name": "comment.block.html.moth",
               "match": "[^-]+"
             },
             {
-              "name": "comment.block.html.bst",
+              "name": "comment.block.html.moth",
               "match": "."
             }
           ]
         },
         {
-          "name": "meta.tag.html.bst",
+          "name": "meta.tag.html.moth",
           "begin": "(</?)(?=[A-Za-z])",
           "beginCaptures": {
             "1": {
@@ -2133,7 +2133,7 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-beanstalk"
+              "include": "#template-code-moth"
             },
             {
               "include": "#template-code-generic"
@@ -2163,11 +2163,11 @@
               "match": "="
             },
             {
-              "name": "text.whitespace.bst",
+              "name": "text.whitespace.moth",
               "match": "\\s+"
             },
             {
-              "name": "invalid.illegal.html-tag-character.bst",
+              "name": "invalid.illegal.html-tag-character.moth",
               "match": "."
             }
           ]
@@ -2177,11 +2177,11 @@
           "match": "&(?:[A-Za-z][A-Za-z0-9]+|#\\d+|#x[0-9A-Fa-f]+);"
         },
         {
-          "name": "text.html.bst",
+          "name": "text.html.moth",
           "match": "[^<&\\[\\]]+"
         },
         {
-          "name": "text.html.bst",
+          "name": "text.html.moth",
           "match": "[^\\[\\]]"
         }
       ]
@@ -2220,7 +2220,7 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-beanstalk"
+              "include": "#template-code-moth"
             },
             {
               "include": "#template-code-generic"
@@ -2253,7 +2253,7 @@
           }
         },
         {
-          "name": "meta.link.inline.markdown.bst",
+          "name": "meta.link.inline.markdown.moth",
           "match": "(?<!\\S)(@)((?:[A-Za-z][A-Za-z0-9+.-]*:|//|/|\\.\\./|\\./|#|\\?)[^\\s()\\[\\]]*)([ \\t]+)(\\()([^()\\n]*\\S[^()\\n]*)(\\))",
           "captures": {
             "1": {
@@ -2263,7 +2263,7 @@
               "name": "markup.underline.link.markdown"
             },
             "3": {
-              "name": "text.whitespace.bst"
+              "name": "text.whitespace.moth"
             },
             "4": {
               "name": "punctuation.definition.metadata.begin.markdown"
@@ -2313,7 +2313,7 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-beanstalk"
+              "include": "#template-code-moth"
             },
             {
               "include": "#template-code-generic"
@@ -2373,7 +2373,7 @@
               "include": "#template-code-shell"
             },
             {
-              "include": "#template-code-beanstalk"
+              "include": "#template-code-moth"
             },
             {
               "include": "#template-code-generic"
@@ -2410,7 +2410,7 @@
         }
       ]
     },
-    "code-beanstalk-fragment": {
+    "code-moth-fragment": {
       "patterns": [
         {
           "include": "#comments"
@@ -2455,7 +2455,7 @@
           "include": "#identifiers"
         },
         {
-          "name": "text.whitespace.bst",
+          "name": "text.whitespace.moth",
           "match": "\\s+"
         }
       ]
@@ -2478,11 +2478,11 @@
           "include": "#numbers"
         },
         {
-          "name": "keyword.control.code.generic.bst",
+          "name": "keyword.control.code.generic.moth",
           "match": "\\b(?:if|else|return|for|while|break|continue|function|class|const|let|var|import|from|type|enum|case|async|await|try|catch|throw)\\b"
         },
         {
-          "name": "support.type.code.generic.bst",
+          "name": "support.type.code.generic.moth",
           "match": "\\b(?:int|float|string|bool|char|number|boolean|undefined|null|void|any|true|false)\\b"
         },
         {
@@ -2501,7 +2501,7 @@
           "include": "#identifiers"
         },
         {
-          "name": "text.whitespace.bst",
+          "name": "text.whitespace.moth",
           "match": "\\s+"
         }
       ]
@@ -2509,17 +2509,17 @@
     "raw-strings": {
       "patterns": [
         {
-          "name": "string.quoted.raw.bst",
+          "name": "string.quoted.raw.moth",
           "begin": "`",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.definition.string.begin.bst"
+              "name": "punctuation.definition.string.begin.moth"
             }
           },
           "end": "`",
           "endCaptures": {
             "0": {
-              "name": "punctuation.definition.string.end.bst"
+              "name": "punctuation.definition.string.end.moth"
             }
           },
           "patterns": [
@@ -2533,17 +2533,17 @@
     "strings": {
       "patterns": [
         {
-          "name": "string.quoted.double.bst",
+          "name": "string.quoted.double.moth",
           "begin": "\"",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.definition.string.begin.bst"
+              "name": "punctuation.definition.string.begin.moth"
             }
           },
           "end": "\"",
           "endCaptures": {
             "0": {
-              "name": "punctuation.definition.string.end.bst"
+              "name": "punctuation.definition.string.end.moth"
             }
           },
           "patterns": [
@@ -2551,7 +2551,7 @@
               "include": "#escapes"
             },
             {
-              "name": "constant.character.escape.bst",
+              "name": "constant.character.escape.moth",
               "match": "\\\\."
             }
           ]
@@ -2561,17 +2561,17 @@
     "chars": {
       "patterns": [
         {
-          "name": "string.quoted.single.char.bst",
+          "name": "string.quoted.single.char.moth",
           "begin": "'",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.definition.char.begin.bst"
+              "name": "punctuation.definition.char.begin.moth"
             }
           },
           "end": "'",
           "endCaptures": {
             "0": {
-              "name": "punctuation.definition.char.end.bst"
+              "name": "punctuation.definition.char.end.moth"
             }
           },
           "patterns": [
@@ -2579,7 +2579,7 @@
               "include": "#escapes"
             },
             {
-              "name": "constant.character.escape.bst",
+              "name": "constant.character.escape.moth",
               "match": "\\\\."
             }
           ]
@@ -2589,7 +2589,7 @@
     "numbers": {
       "patterns": [
         {
-          "name": "constant.numeric.bst",
+          "name": "constant.numeric.moth",
           "match": "(?<![A-Za-z0-9_])(?:-)?\\d(?:[\\d_]*\\d)?(?:\\.\\d(?:[\\d_]*\\d)?)?(?:e[+-]?\\d(?:[\\d_]*\\d)?)?(?![A-Za-z0-9_])"
         }
       ]
@@ -2597,23 +2597,23 @@
     "keywords": {
       "patterns": [
         {
-          "name": "keyword.control.flow.bst",
+          "name": "keyword.control.flow.moth",
           "match": "\\b(?:if|else|return|loop|break|continue|catch|then)\\b"
         },
         {
-          "name": "keyword.control.loop.range.bst",
+          "name": "keyword.control.loop.range.moth",
           "match": "\\b(?:to|by)\\b|&"
         },
         {
-          "name": "keyword.other.bst",
+          "name": "keyword.other.moth",
           "match": "\\b(?:import|export|as|copy|must|cast|async|checked|block)\\b"
         },
         {
-          "name": "keyword.control.logical.bst",
+          "name": "keyword.control.logical.moth",
           "match": "\\b(?:is|not|and|or)\\b"
         },
         {
-          "name": "variable.language.this.bst",
+          "name": "variable.language.this.moth",
           "match": "\\bthis\\b"
         }
       ]
@@ -2621,23 +2621,23 @@
     "types": {
       "patterns": [
         {
-          "name": "support.type.primitive.bst",
+          "name": "support.type.primitive.moth",
           "match": "\\b(?:Int|Float|String|Bool|Char)\\b"
         },
         {
-          "name": "constant.language.boolean.bst",
+          "name": "constant.language.boolean.moth",
           "match": "\\b(?:true|false)\\b"
         },
         {
-          "name": "constant.language.none.bst",
+          "name": "constant.language.none.moth",
           "match": "\\b(?:none)\\b"
         },
         {
-          "name": "variable.language.trait-this.bst",
+          "name": "variable.language.trait-this.moth",
           "match": "\\b(?:This)\\b"
         },
         {
-          "name": "variable.language.generics.bst",
+          "name": "variable.language.generics.moth",
           "match": "\\b(?:type|of)\\b"
         }
       ]
@@ -2645,11 +2645,11 @@
     "operators": {
       "patterns": [
         {
-          "name": "keyword.operator.assignment.compound.bst",
+          "name": "keyword.operator.assignment.compound.moth",
           "match": "\\+=|-=|\\*=|//=|/=|%=|\\^=|#=|~="
         },
         {
-          "name": "keyword.operator.symbol.bst",
+          "name": "keyword.operator.symbol.moth",
           "match": "=>|->|::|<=|>=|>>|<<|\\.\\.|//|=|\\+|-|\\*|/|%|\\^|~|#|\\?|!|<|>|\\$"
         }
       ]
@@ -2657,39 +2657,39 @@
     "punctuation": {
       "patterns": [
         {
-          "name": "punctuation.separator.double-colon.bst keyword.control.scope.delimiter.bst",
+          "name": "punctuation.separator.double-colon.moth keyword.control.scope.delimiter.moth",
           "match": "::"
         },
         {
-          "name": "punctuation.separator.colon.bst keyword.control.scope.delimiter.bst",
+          "name": "punctuation.separator.colon.moth keyword.control.scope.delimiter.moth",
           "match": ":"
         },
         {
-          "name": "punctuation.separator.comma.bst",
+          "name": "punctuation.separator.comma.moth",
           "match": ","
         },
         {
-          "name": "punctuation.terminator.statement.bst keyword.control.scope.delimiter.bst",
+          "name": "punctuation.terminator.statement.moth keyword.control.scope.delimiter.moth",
           "match": ";"
         },
         {
-          "name": "punctuation.brackets.curly.bst",
+          "name": "punctuation.brackets.curly.moth",
           "match": "[{}]"
         },
         {
-          "name": "punctuation.brackets.round.bst",
+          "name": "punctuation.brackets.round.moth",
           "match": "[()]"
         },
         {
-          "name": "punctuation.brackets.square.bst",
+          "name": "punctuation.brackets.square.moth",
           "match": "[\\[\\]]"
         },
         {
-          "name": "punctuation.brackets.pipe.bst",
+          "name": "punctuation.brackets.pipe.moth",
           "match": "\\|"
         },
         {
-          "name": "punctuation.accessor.dot.bst",
+          "name": "punctuation.accessor.dot.moth",
           "match": "\\."
         }
       ]
@@ -2697,15 +2697,15 @@
     "constants": {
       "patterns": [
         {
-          "name": "support.function.builtin.bst",
+          "name": "support.function.builtin.moth",
           "match": "\\b(?:io|assert)\\b"
         },
         {
-          "name": "support.type.builtin.bst",
+          "name": "support.type.builtin.moth",
           "match": "\\b(?:Error|IO)\\b"
         },
         {
-          "name": "constant.other.caps.bst",
+          "name": "constant.other.caps.moth",
           "match": "\\b[A-Z]{2}[A-Z0-9_]*\\b"
         }
       ]
@@ -2713,7 +2713,7 @@
     "type-identifiers": {
       "patterns": [
         {
-          "name": "entity.name.type.bst",
+          "name": "entity.name.type.moth",
           "match": "\\b[A-Z][A-Za-z0-9_]*\\b"
         }
       ]
@@ -2721,7 +2721,7 @@
     "identifiers": {
       "patterns": [
         {
-          "name": "variable.other.bst",
+          "name": "variable.other.moth",
           "match": "\\b[a-z_][A-Za-z0-9_]*\\b"
         }
       ]

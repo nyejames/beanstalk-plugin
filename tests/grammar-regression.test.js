@@ -6,7 +6,7 @@ const test = require("node:test");
 const rootDir = path.resolve(__dirname, "..");
 const grammarPath = path.join(rootDir, "syntaxes", "bst.tmLanguage.json");
 const packagePath = path.join(rootDir, "package.json");
-const fixturePath = path.join(__dirname, "fixtures", "highlighting-samples.bst");
+const fixturePath = path.join(__dirname, "fixtures", "highlighting-samples.moth");
 
 const grammar = JSON.parse(fs.readFileSync(grammarPath, "utf8"));
 const pkg = JSON.parse(fs.readFileSync(packagePath, "utf8"));
@@ -54,32 +54,32 @@ function regexpFromPattern(pattern) {
 
 test("assert is a builtin function, not a keyword.other", () => {
   const builtinPattern = grammar.repository.constants.patterns.find(
-    (p) => p.name === "support.function.builtin.bst"
+    (p) => p.name === "support.function.builtin.moth"
   );
-  assert.ok(builtinPattern, "expected support.function.builtin.bst pattern");
+  assert.ok(builtinPattern, "expected support.function.builtin.moth pattern");
   assert.ok(/\bassert\b/.test(builtinPattern.match), "expected assert in builtin match");
 
   const keywordOther = grammar.repository.keywords.patterns.find(
-    (p) => p.name === "keyword.other.bst"
+    (p) => p.name === "keyword.other.moth"
   );
-  assert.ok(keywordOther, "expected keyword.other.bst pattern");
-  assert.ok(!/\bassert\b/.test(keywordOther.match), "assert must not be in keyword.other.bst");
+  assert.ok(keywordOther, "expected keyword.other.moth pattern");
+  assert.ok(!/\bassert\b/.test(keywordOther.match), "assert must not be in keyword.other.moth");
 });
 
 test("removed keywords case and yield are absent", () => {
   const flowPattern = grammar.repository.keywords.patterns.find(
-    (p) => p.name === "keyword.control.flow.bst"
+    (p) => p.name === "keyword.control.flow.moth"
   );
-  assert.ok(flowPattern, "expected keyword.control.flow.bst");
+  assert.ok(flowPattern, "expected keyword.control.flow.moth");
   assert.ok(!/\bcase\b/.test(flowPattern.match), "case should be removed");
   assert.ok(!/\byield\b/.test(flowPattern.match), "yield should be removed");
 });
 
 test("future reserved keywords async, checked, block remain", () => {
   const kwOther = grammar.repository.keywords.patterns.find(
-    (p) => p.name === "keyword.other.bst"
+    (p) => p.name === "keyword.other.moth"
   );
-  assert.ok(kwOther, "expected keyword.other.bst");
+  assert.ok(kwOther, "expected keyword.other.moth");
   assert.ok(/\basync\b/.test(kwOther.match), "async should remain (future reserved)");
   assert.ok(/\bchecked\b/.test(kwOther.match), "checked should remain (future reserved)");
   assert.ok(/\bblock\b/.test(kwOther.match), "block should remain (future reserved)");
@@ -87,17 +87,17 @@ test("future reserved keywords async, checked, block remain", () => {
 
 test("cast is highlighted as a current conversion keyword", () => {
   const kwOther = grammar.repository.keywords.patterns.find(
-    (p) => p.name === "keyword.other.bst"
+    (p) => p.name === "keyword.other.moth"
   );
-  assert.ok(kwOther, "expected keyword.other.bst");
+  assert.ok(kwOther, "expected keyword.other.moth");
   assert.ok(/\bcast\b/.test(kwOther.match), "cast should be highlighted");
 });
 
-test("this is reserved via variable.language.this.bst", () => {
+test("this is reserved via variable.language.this.moth", () => {
   const thisPattern = grammar.repository.keywords.patterns.find(
-    (p) => p.name === "variable.language.this.bst"
+    (p) => p.name === "variable.language.this.moth"
   );
-  assert.ok(thisPattern, "expected variable.language.this.bst");
+  assert.ok(thisPattern, "expected variable.language.this.moth");
   const thisRegex = new RegExp("^" + thisPattern.match + "$", "u");
   assert.ok(thisRegex.test("this"), "regex should match 'this'");
   assert.ok(!thisRegex.test("thistle"), "regex should not match 'thistle'");
@@ -123,7 +123,7 @@ test("required current keywords are present", () => {
 
 test("inclusive range ampersand is highlighted outside word-boundary matching", () => {
   const rangePattern = grammar.repository.keywords.patterns.find(
-    (p) => p.name === "keyword.control.loop.range.bst"
+    (p) => p.name === "keyword.control.loop.range.moth"
   );
   assert.ok(rangePattern, "expected range keyword pattern");
   const re = regexpFromPattern(rangePattern.match);
@@ -136,7 +136,7 @@ test("inclusive range ampersand is highlighted outside word-boundary matching", 
 
 test("outdated types None and Fn are removed from primitive types", () => {
   const primPattern = grammar.repository.types.patterns.find(
-    (p) => p.name === "support.type.primitive.bst"
+    (p) => p.name === "support.type.primitive.moth"
   );
   assert.ok(primPattern);
   assert.ok(!/\bNone\b/.test(primPattern.match), "None should be removed from primitive types");
@@ -145,7 +145,7 @@ test("outdated types None and Fn are removed from primitive types", () => {
 
 test("current primitive types are present", () => {
   const primPattern = grammar.repository.types.patterns.find(
-    (p) => p.name === "support.type.primitive.bst"
+    (p) => p.name === "support.type.primitive.moth"
   );
   for (const t of ["Int", "Float", "String", "Bool", "Char"]) {
     assert.ok(new RegExp("\\b" + t + "\\b").test(primPattern.match), `expected type '${t}'`);
@@ -154,7 +154,7 @@ test("current primitive types are present", () => {
 
 test("True and False are removed from boolean literals", () => {
   const boolPattern = grammar.repository.types.patterns.find(
-    (p) => p.name === "constant.language.boolean.bst"
+    (p) => p.name === "constant.language.boolean.moth"
   );
   assert.ok(boolPattern);
   assert.ok(!/\bTrue\b/.test(boolPattern.match), "True should be removed");
@@ -165,7 +165,7 @@ test("True and False are removed from boolean literals", () => {
 
 test("IO is a builtin type alongside Error", () => {
   const builtinType = grammar.repository.constants.patterns.find(
-    (p) => p.name === "support.type.builtin.bst"
+    (p) => p.name === "support.type.builtin.moth"
   );
   assert.ok(builtinType);
   assert.ok(/\bError\b/.test(builtinType.match), "Error should be in builtin types");
@@ -174,7 +174,7 @@ test("IO is a builtin type alongside Error", () => {
 
 test("type and of are highlighted as generics", () => {
   const genericsPattern = grammar.repository.types.patterns.find(
-    (p) => p.name === "variable.language.generics.bst"
+    (p) => p.name === "variable.language.generics.moth"
   );
   assert.ok(genericsPattern);
   assert.ok(/\btype\b/.test(genericsPattern.match));
@@ -183,7 +183,7 @@ test("type and of are highlighted as generics", () => {
 
 test("This is highlighted as trait-this", () => {
   const thisTraitPattern = grammar.repository.types.patterns.find(
-    (p) => p.name === "variable.language.trait-this.bst"
+    (p) => p.name === "variable.language.trait-this.moth"
   );
   assert.ok(thisTraitPattern);
   assert.ok(/\bThis\b/.test(thisTraitPattern.match));
@@ -191,9 +191,9 @@ test("This is highlighted as trait-this", () => {
 
 // ── OPERATORS AND NUMBERS ────────────────────────────────────────────
 
-test("symbol operators include plus and longer Beanstalk tokens", () => {
+test("symbol operators include plus and longer Moth tokens", () => {
   const symbol = grammar.repository.operators.patterns.find(
-    (p) => p.name === "keyword.operator.symbol.bst"
+    (p) => p.name === "keyword.operator.symbol.moth"
   );
   assert.ok(symbol, "expected symbolic operator pattern");
   const re = new RegExp("^(?:" + symbol.match + ")$");
@@ -206,7 +206,7 @@ test("symbol operators include plus and longer Beanstalk tokens", () => {
 
 test("compound assignment operators include #= and ~=", () => {
   const compound = grammar.repository.operators.patterns.find(
-    (p) => p.name === "keyword.operator.assignment.compound.bst"
+    (p) => p.name === "keyword.operator.assignment.compound.moth"
   );
   assert.ok(compound, "expected compound assignment pattern");
   const re = new RegExp("^(?:" + compound.match + ")$");
@@ -217,8 +217,8 @@ test("compound assignment operators include #= and ~=", () => {
 
 test("punctuation covers pipe brackets and dot accessor", () => {
   const punct = grammar.repository.punctuation.patterns;
-  const pipePattern = punct.find((p) => p.name === "punctuation.brackets.pipe.bst");
-  const dotPattern = punct.find((p) => p.name === "punctuation.accessor.dot.bst");
+  const pipePattern = punct.find((p) => p.name === "punctuation.brackets.pipe.moth");
+  const dotPattern = punct.find((p) => p.name === "punctuation.accessor.dot.moth");
   assert.ok(pipePattern, "expected pipe bracket punctuation");
   assert.ok(dotPattern, "expected dot accessor punctuation");
   assert.ok(new RegExp("^(?:" + pipePattern.match + ")$").test("|"), "pipe should match");
@@ -227,7 +227,7 @@ test("punctuation covers pipe brackets and dot accessor", () => {
 
 test("number literal pattern covers exponent notation", () => {
   const numeric = grammar.repository.numbers.patterns.find(
-    (p) => p.name === "constant.numeric.bst"
+    (p) => p.name === "constant.numeric.moth"
   );
   assert.ok(numeric, "expected numeric pattern");
   const re = regexpFromPattern(numeric.match);
@@ -258,7 +258,7 @@ test("template-code-rs repository exists and matches rs/rust", () => {
   assert.ok(repoExists("embedded-code-rs"), "expected embedded-code-rs repository");
 
   const rsPattern = grammar.repository["template-code-rs"].patterns[0];
-  assert.ok(rsPattern.name.includes("meta.template.code.rs.bst"));
+  assert.ok(rsPattern.name.includes("meta.template.code.rs.moth"));
 
   const beginRe = new RegExp(rsPattern.begin);
   assert.ok(beginRe.test('[$code("rs"):'), 'should match $code("rs")');
@@ -281,7 +281,7 @@ test("template-code-shell repository exists and matches sh/shell/bash", () => {
   assert.ok(repoExists("embedded-code-shell"), "expected embedded-code-shell repository");
 
   const shellPattern = grammar.repository["template-code-shell"].patterns[0];
-  assert.ok(shellPattern.name.includes("meta.template.code.shell.bst"));
+  assert.ok(shellPattern.name.includes("meta.template.code.shell.moth"));
 
   const beginRe = new RegExp(shellPattern.begin);
   assert.ok(beginRe.test('[$code("sh"):'), 'should match $code("sh")');
@@ -299,22 +299,22 @@ test("embedded-code-shell delegates to source.shell", () => {
   assert.ok(langPattern.patterns.some((p) => p.include === "source.shell"));
 });
 
-test("code-beanstalk fragments highlight imports and @html paths inside $code('bst')", () => {
-  const includes = grammar.repository["code-beanstalk-fragment"].patterns
+test("code-moth fragments highlight imports and @html paths inside $code('bst')", () => {
+  const includes = grammar.repository["code-moth-fragment"].patterns
     .filter((p) => p.include)
     .map((p) => p.include);
   assert.ok(includes.includes("#path-literals"), "expected @path highlighting in embedded bst code");
   assert.ok(includes.includes("#invalid-at-sign"), "expected invalid @ fallback in embedded bst code");
 });
 
-test("embedded Beanstalk code bracket blocks keep fragment highlighting active", () => {
-  const nestedBlock = grammar.repository["embedded-code-beanstalk"].patterns.find(
+test("embedded Moth code bracket blocks keep fragment highlighting active", () => {
+  const nestedBlock = grammar.repository["embedded-code-moth"].patterns.find(
     (p) => p.begin === "(?<!\\\\)\\["
   );
   assert.ok(nestedBlock, "expected recursive bracket block");
   const includes = (nestedBlock.patterns || []).map((p) => p.include);
-  assert.ok(includes.includes("#embedded-code-beanstalk"), "expected nested bracket recursion");
-  assert.ok(includes.includes("#code-beanstalk-fragment"), "expected Beanstalk code highlighting inside nested brackets");
+  assert.ok(includes.includes("#embedded-code-moth"), "expected nested bracket recursion");
+  assert.ok(includes.includes("#code-moth-fragment"), "expected Moth code highlighting inside nested brackets");
 });
 
 test("CSS formatter body uses bounded CSS fragment rules", () => {
@@ -347,7 +347,7 @@ test("bounded CSS fragment covers declaration snippets without external CSS stat
 test("new code includes are wired into template body patterns", () => {
   const bodyRepos = [
     "template-body-code-js", "template-body-code-ts", "template-body-code-py",
-    "template-body-code-beanstalk", "template-body-code-generic",
+    "template-body-code-moth", "template-body-code-generic",
     "template-body-generic", "template-body-html", "template-body-markdown",
   ];
 
@@ -368,11 +368,11 @@ test("root patterns include new code blocks in correct order", () => {
   const pyIdx = rootIncludes.indexOf("#template-code-py");
   const rsIdx = rootIncludes.indexOf("#template-code-rs");
   const shellIdx = rootIncludes.indexOf("#template-code-shell");
-  const bstIdx = rootIncludes.indexOf("#template-code-beanstalk");
+  const bstIdx = rootIncludes.indexOf("#template-code-moth");
 
   assert.ok(pyIdx < rsIdx, "#template-code-rs should come after #template-code-py");
   assert.ok(rsIdx < shellIdx, "#template-code-shell should come after #template-code-rs");
-  assert.ok(shellIdx < bstIdx, "#template-code-shell should come before #template-code-beanstalk");
+  assert.ok(shellIdx < bstIdx, "#template-code-shell should come before #template-code-moth");
 });
 
 // ── PACKAGE.JSON EMBEDDED LANGUAGES ─────────────────────────────────
@@ -381,16 +381,16 @@ test("package.json includes embedded language mappings", () => {
   const grammarContribution = pkg.contributes.grammars.find((g) => g.language === "bst");
   const embedded = grammarContribution.embeddedLanguages || {};
 
-  assert.equal(embedded["meta.embedded.block.markdown.bst"], "markdown");
-  assert.equal(embedded["meta.embedded.block.css.bst"], "css");
-  assert.equal(embedded["meta.embedded.block.html.bst"], "html");
-  assert.equal(embedded["meta.embedded.block.code.js.bst"], "javascript");
-  assert.equal(embedded["meta.embedded.block.code.ts.bst"], "typescript");
-  assert.equal(embedded["meta.embedded.block.code.py.bst"], "python");
-  assert.equal(embedded["meta.embedded.block.code.bstlang.bst"], "bst");
-  assert.equal(embedded["meta.embedded.block.code.generic.bst"], "plaintext");
-  assert.equal(embedded["meta.embedded.block.code.rs.bst"], "rust");
-  assert.equal(embedded["meta.embedded.block.code.shell.bst"], "shellscript");
+  assert.equal(embedded["meta.embedded.block.markdown.moth"], "markdown");
+  assert.equal(embedded["meta.embedded.block.css.moth"], "css");
+  assert.equal(embedded["meta.embedded.block.html.moth"], "html");
+  assert.equal(embedded["meta.embedded.block.code.js.moth"], "javascript");
+  assert.equal(embedded["meta.embedded.block.code.ts.moth"], "typescript");
+  assert.equal(embedded["meta.embedded.block.code.py.moth"], "python");
+  assert.equal(embedded["meta.embedded.block.code.mothlang.moth"], "bst");
+  assert.equal(embedded["meta.embedded.block.code.generic.moth"], "plaintext");
+  assert.equal(embedded["meta.embedded.block.code.rs.moth"], "rust");
+  assert.equal(embedded["meta.embedded.block.code.shell.moth"], "shellscript");
 });
 
 // ── REPOSITORY INTEGRITY ────────────────────────────────────────────
@@ -400,17 +400,17 @@ test("all expected repository families are present", () => {
     "comments", "path-literals", "path-group", "invalid-at-sign",
     "template-code-js", "template-code-ts", "template-code-py",
     "template-code-rs", "template-code-shell",
-    "template-code-beanstalk", "template-code-generic",
+    "template-code-moth", "template-code-generic",
     "template-css", "template-html", "template-markdown", "template-generic",
     "template-head", "template-head-directives",
     "template-body-code-js", "template-body-code-ts", "template-body-code-py",
     "template-body-code-rs", "template-body-code-shell",
-    "template-body-code-beanstalk", "template-body-code-generic",
+    "template-body-code-moth", "template-body-code-generic",
     "template-body-css", "template-body-html", "template-body-markdown",
     "template-body-generic",
     "embedded-code-js", "embedded-code-ts", "embedded-code-py",
     "embedded-code-rs", "embedded-code-shell",
-    "embedded-code-beanstalk", "embedded-code-generic",
+    "embedded-code-moth", "embedded-code-generic",
     "embedded-markdown", "embedded-css", "css-fragment", "embedded-html",
     "raw-strings", "strings", "chars", "numbers",
     "keywords", "types", "operators", "punctuation", "constants",
@@ -419,7 +419,7 @@ test("all expected repository families are present", () => {
     "template-children-directive", "template-doc-directive",
     "template-note-todo-directive", "template-doc-nested-brackets",
     "template-note-todo-nested-brackets",
-    "markdown-fragment", "code-beanstalk-fragment", "code-generic-fragment",
+    "markdown-fragment", "code-moth-fragment", "code-generic-fragment",
     "embedded-html-fragment", "embedded-html-string-double", "embedded-html-string-single",
   ];
 
@@ -440,7 +440,7 @@ test("fixture contains expected scenarios for manual token inspection", () => {
     'import @html {center}',
     'import @core/math as math',
     'page_title #= "Templates"',
-    'page_description #String = "Template syntax in Beanstalk."',
+    'page_description #String = "Template syntax in Moth."',
     'count ~= 0',
     'ratio Float = 1.5',
     'text_slice = "text"',
@@ -497,25 +497,25 @@ test("fixture contains expected scenarios for manual token inspection", () => {
 
 test("key scopes exist for regex-based highlighting", () => {
   const scopes = [
-    "comment.line.double-dash.bst",
-    "keyword.control.flow.bst",
-    "keyword.control.loop.range.bst",
-    "keyword.other.bst",
-    "keyword.control.logical.bst",
-    "variable.language.this.bst",
-    "support.type.primitive.bst",
-    "constant.language.boolean.bst",
-    "constant.language.none.bst",
-    "variable.language.trait-this.bst",
-    "variable.language.generics.bst",
-    "support.function.builtin.bst",
-    "support.type.builtin.bst",
-    "string.quoted.double.bst",
-    "string.quoted.raw.bst",
-    "string.quoted.single.char.bst",
-    "constant.numeric.bst",
-    "entity.name.type.bst",
-    "variable.other.bst",
+    "comment.line.double-dash.moth",
+    "keyword.control.flow.moth",
+    "keyword.control.loop.range.moth",
+    "keyword.other.moth",
+    "keyword.control.logical.moth",
+    "variable.language.this.moth",
+    "support.type.primitive.moth",
+    "constant.language.boolean.moth",
+    "constant.language.none.moth",
+    "variable.language.trait-this.moth",
+    "variable.language.generics.moth",
+    "support.function.builtin.moth",
+    "support.type.builtin.moth",
+    "string.quoted.double.moth",
+    "string.quoted.raw.moth",
+    "string.quoted.single.char.moth",
+    "constant.numeric.moth",
+    "entity.name.type.moth",
+    "variable.other.moth",
   ];
 
   for (const scope of scopes) {
@@ -526,17 +526,17 @@ test("key scopes exist for regex-based highlighting", () => {
 
 test("template meta scopes exist", () => {
   const scopes = [
-    "meta.template.bst",
-    "meta.template.markdown.bst",
-    "meta.template.css.bst",
-    "meta.template.html.bst",
-    "meta.template.code.js.bst",
-    "meta.template.code.ts.bst",
-    "meta.template.code.py.bst",
-    "meta.template.code.rs.bst",
-    "meta.template.code.shell.bst",
-    "meta.template.code.bstlang.bst",
-    "meta.template.code.generic.bst",
+    "meta.template.moth",
+    "meta.template.markdown.moth",
+    "meta.template.css.moth",
+    "meta.template.html.moth",
+    "meta.template.code.js.moth",
+    "meta.template.code.ts.moth",
+    "meta.template.code.py.moth",
+    "meta.template.code.rs.moth",
+    "meta.template.code.shell.moth",
+    "meta.template.code.mothlang.moth",
+    "meta.template.code.generic.moth",
   ];
 
   for (const scope of scopes) {
@@ -565,10 +565,10 @@ test("markdown bullet markers have dedicated list punctuation scopes", () => {
   );
 });
 
-test("markdown link regex matches Beanstalk link syntax and rejects bare domains", () => {
+test("markdown link regex matches Moth link syntax and rejects bare domains", () => {
   const markdownFragment = grammar.repository["markdown-fragment"].patterns;
   const linkPattern = markdownFragment.find(
-    (p) => p.name === "meta.link.inline.markdown.bst"
+    (p) => p.name === "meta.link.inline.markdown.moth"
   );
   assert.ok(linkPattern, "expected inline markdown link pattern");
   const re = regexpFromPattern(linkPattern.match);
@@ -580,7 +580,7 @@ test("markdown link regex matches Beanstalk link syntax and rejects bare domains
     "@./local/path (Local)",
     "@../parent/path (Parent)",
     "@#overview (Overview)",
-    "@?q=beanstalk (Search)",
+    "@?q=moth (Search)",
   ]) {
     assert.ok(re.test(link), `expected valid link to match: ${link}`);
   }

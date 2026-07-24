@@ -1,8 +1,8 @@
 {
   "version": "0.2.2",
-  "name": "Beanstalk Import Group Highlighting",
-  "scopeName": "source.bst.import-groups",
-  "injectionSelector": "L:source.bst - meta.template.body.bst - string - comment",
+  "name": "Moth Import Group Highlighting",
+  "scopeName": "source.moth.import-groups",
+  "injectionSelector": "L:source.moth - meta.template.body.moth - string - comment",
   "patterns": [
     {
       "include": "#path-literals"
@@ -12,20 +12,20 @@
     "path-literals": {
       "patterns": [
         {
-          "name": "meta.path.import.bst",
+          "name": "meta.path.import.moth",
           "begin": "(@)(\\()",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.definition.path.begin.bst keyword.control.import.bst"
+              "name": "punctuation.definition.path.begin.moth keyword.control.import.moth"
             },
             "2": {
-              "name": "punctuation.section.group.begin.bst"
+              "name": "punctuation.section.group.begin.moth"
             }
           },
           "end": "(\\))",
           "endCaptures": {
             "1": {
-              "name": "punctuation.definition.path.end.bst punctuation.section.group.end.bst"
+              "name": "punctuation.definition.path.end.moth punctuation.section.group.end.moth"
             }
           },
           "patterns": [
@@ -33,33 +33,33 @@
               "include": "#path-group"
             },
             {
-              "name": "punctuation.separator.path.bst",
+              "name": "punctuation.separator.path.moth",
               "match": "[\\\\/]"
             },
             {
-              "name": "constant.other.path.relative.bst",
+              "name": "constant.other.path.relative.moth",
               "match": "\\.{1,2}(?=[\\\\/\\)])"
             },
             {
-              "name": "entity.name.path.segment.bst entity.name.module.bst",
+              "name": "entity.name.path.segment.moth entity.name.module.moth",
               "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
             },
             {
-              "name": "text.whitespace.bst",
+              "name": "text.whitespace.moth",
               "match": "\\s+"
             },
             {
-              "name": "invalid.illegal.path.character.bst",
+              "name": "invalid.illegal.path.character.moth",
               "match": "[^\\sA-Za-z0-9_{}\\\\/,\\.]"
             }
           ]
         },
         {
-          "name": "meta.path.import.bst",
+          "name": "meta.path.import.moth",
           "begin": "(@)(?!\\()(?=[A-Za-z_./\\\\])",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.definition.path.begin.bst keyword.control.import.bst"
+              "name": "punctuation.definition.path.begin.moth keyword.control.import.moth"
             }
           },
           "end": "(?=$|\\s+(?!\\{)|[,;\\]\\)\\}])",
@@ -68,23 +68,23 @@
               "include": "#path-group"
             },
             {
-              "name": "punctuation.separator.path.bst",
+              "name": "punctuation.separator.path.moth",
               "match": "[\\\\/]"
             },
             {
-              "name": "constant.other.path.relative.bst",
+              "name": "constant.other.path.relative.moth",
               "match": "\\.{1,2}(?=[\\\\/\\s\\]\\)\\},;]|$)"
             },
             {
-              "name": "entity.name.path.segment.bst entity.name.module.bst",
+              "name": "entity.name.path.segment.moth entity.name.module.moth",
               "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
             },
             {
-              "name": "text.whitespace.bst",
+              "name": "text.whitespace.moth",
               "match": "\\s+"
             },
             {
-              "name": "invalid.illegal.path.character.bst",
+              "name": "invalid.illegal.path.character.moth",
               "match": "[^\\sA-Za-z0-9_{}\\\\/,\\.]"
             }
           ]
@@ -94,17 +94,17 @@
     "path-group": {
       "patterns": [
         {
-          "name": "meta.path.import.group.bst",
+          "name": "meta.path.import.group.moth",
           "begin": "\\{",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.section.group.begin.bst"
+              "name": "punctuation.section.group.begin.moth"
             }
           },
           "end": "\\}",
           "endCaptures": {
             "0": {
-              "name": "punctuation.section.group.end.bst"
+              "name": "punctuation.section.group.end.moth"
             }
           },
           "patterns": [
@@ -112,31 +112,31 @@
               "include": "#path-group"
             },
             {
-              "name": "keyword.other.alias.bst keyword.other.bst",
+              "name": "keyword.other.alias.moth keyword.other.moth",
               "match": "\\bas\\b"
             },
             {
-              "name": "punctuation.separator.path.bst",
+              "name": "punctuation.separator.path.moth",
               "match": "[\\\\/]"
             },
             {
-              "name": "constant.other.path.relative.bst",
+              "name": "constant.other.path.relative.moth",
               "match": "\\.{1,2}(?=[\\\\/\\s\\]\\)\\},;]|$)"
             },
             {
-              "name": "entity.name.import.symbol.bst variable.other.object.property.bst",
+              "name": "entity.name.import.symbol.moth variable.other.object.property.moth",
               "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
             },
             {
-              "name": "punctuation.separator.comma.bst",
+              "name": "punctuation.separator.comma.moth",
               "match": ","
             },
             {
-              "name": "text.whitespace.bst",
+              "name": "text.whitespace.moth",
               "match": "\\s+"
             },
             {
-              "name": "invalid.illegal.path.group.character.bst",
+              "name": "invalid.illegal.path.group.character.moth",
               "match": "[^\\sA-Za-z0-9_{}\\\\/,\\.]"
             }
           ]

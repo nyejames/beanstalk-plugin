@@ -9,7 +9,7 @@ import @strings {
 }
 
 page_title #= "Templates"
-page_description #String = "Template syntax in Beanstalk."
+page_description #String = "Template syntax in Moth."
 page_head #= theme_head
 
 #[p: This paragraph is styled by the HTML builder's @html constants. ]
@@ -107,7 +107,7 @@ value = identity(42)
 ]
 
 -- Template with code blocks
-[codeblock, $code("bst"):
+[codeblock, $code("moth"):
     io("Hello, World!")
 
     import @html {p}
@@ -222,11 +222,11 @@ after_css_marker = "not css"
 ]
 
 #[section, $md:
-    ## Authoring a Beandown file
+    ## Authoring a Moth Template file
 
-    Write markdown and nested Beanstalk templates directly in the `.bd` file:
+    Write markdown and nested Moth templates directly in the `.bd` file:
 
-    [codeblock, $code("bst"):
+    [codeblock, $code("moth"):
         # docs/intro.bd
 
         # Getting started
@@ -236,12 +236,12 @@ after_css_marker = "not css"
         ]
     ]
 
-    Beandown starts inside a template body, so `--`, backticks, and backslashes are normal text.
-    It also uses the same `$md` inline-code rules as `.bst` markdown templates.
+    Moth Templates start inside a template body, so `--`, backticks, and backslashes are normal text.
+    It also uses the same `$md` inline-code rules as `.moth` markdown templates.
 
     Literal template delimiters use normal string insertion:
 
-    [codeblock, $code("bst"):
+    [codeblock, $code("moth"):
         ["["]
         ["]"]
         ["[literal]"]

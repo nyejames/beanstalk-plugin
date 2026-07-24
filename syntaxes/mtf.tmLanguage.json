@@ -1,0 +1,247 @@
+{
+  "version": "0.2.2",
+  "name": "Moth Template Files",
+  "scopeName": "source.mtf",
+  "patterns": [
+    {
+      "include": "#mtf-markdown-body"
+    }
+  ],
+  "repository": {
+    "mtf-markdown-body": {
+      "patterns": [
+        {
+          "include": "#mtf-template-markdown"
+        },
+        {
+          "include": "#mtf-template-explicit-generic"
+        },
+        {
+          "include": "source.moth#escapes"
+        },
+        {
+          "include": "source.moth#template-slot-marker"
+        },
+        {
+          "include": "source.moth#template-code-js"
+        },
+        {
+          "include": "source.moth#template-code-ts"
+        },
+        {
+          "include": "source.moth#template-code-py"
+        },
+        {
+          "include": "source.moth#template-code-rs"
+        },
+        {
+          "include": "source.moth#template-code-shell"
+        },
+        {
+          "include": "source.moth#template-code-moth"
+        },
+        {
+          "include": "source.moth#template-code-generic"
+        },
+        {
+          "include": "source.moth#template-css"
+        },
+        {
+          "include": "source.moth#template-html"
+        },
+        {
+          "include": "source.moth#template-markdown"
+        },
+        {
+          "include": "source.moth#template-generic"
+        },
+        {
+          "include": "source.moth#embedded-markdown"
+        }
+      ]
+    },
+    "mtf-template-markdown": {
+      "patterns": [
+        {
+          "name": "meta.template.moth meta.template.markdown.moth",
+          "begin": "(?<!\\\\)\\[(?=[^\\]:]*:)(?![^\\]:]*\\$(?!md\\b))",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.moth"
+            }
+          },
+          "end": "(?<!\\\\)\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.moth"
+            }
+          },
+          "patterns": [
+            {
+              "include": "source.moth#template-head"
+            },
+            {
+              "include": "#mtf-template-body-markdown"
+            }
+          ]
+        }
+      ]
+    },
+    "mtf-template-body-markdown": {
+      "patterns": [
+        {
+          "name": "meta.template.body.moth",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.moth keyword.control.scope.delimiter.moth"
+            }
+          },
+          "end": "(?=(?<!\\\\)\\])",
+          "patterns": [
+            {
+              "include": "source.moth#escapes"
+            },
+            {
+              "include": "source.moth#template-slot-marker"
+            },
+            {
+              "include": "source.moth#template-code-js"
+            },
+            {
+              "include": "source.moth#template-code-ts"
+            },
+            {
+              "include": "source.moth#template-code-py"
+            },
+            {
+              "include": "source.moth#template-code-rs"
+            },
+            {
+              "include": "source.moth#template-code-shell"
+            },
+            {
+              "include": "source.moth#template-code-moth"
+            },
+            {
+              "include": "source.moth#template-code-generic"
+            },
+            {
+              "include": "source.moth#template-css"
+            },
+            {
+              "include": "source.moth#template-html"
+            },
+            {
+              "include": "#mtf-template-markdown"
+            },
+            {
+              "include": "#mtf-template-explicit-generic"
+            },
+            {
+              "include": "source.moth#template-markdown"
+            },
+            {
+              "include": "source.moth#template-generic"
+            },
+            {
+              "include": "source.moth#embedded-markdown"
+            }
+          ]
+        }
+      ]
+    },
+    "mtf-template-explicit-generic": {
+      "patterns": [
+        {
+          "name": "meta.template.moth",
+          "begin": "(?<!\\\\)\\[(?=[^\\]:]*:)(?=[^\\]:]*\\$)(?![^\\]:]*\\$(?:md|code|css|html|doc|note|todo)\\b)",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.template.begin.moth"
+            }
+          },
+          "end": "(?<!\\\\)\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.template.end.moth"
+            }
+          },
+          "patterns": [
+            {
+              "include": "source.moth#template-head"
+            },
+            {
+              "include": "#mtf-template-body-generic"
+            }
+          ]
+        }
+      ]
+    },
+    "mtf-template-body-generic": {
+      "patterns": [
+        {
+          "name": "meta.template.body.moth",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.template.head-body.moth keyword.control.scope.delimiter.moth"
+            }
+          },
+          "end": "(?=(?<!\\\\)\\])",
+          "patterns": [
+            {
+              "include": "source.moth#escapes"
+            },
+            {
+              "include": "source.moth#template-slot-marker"
+            },
+            {
+              "include": "source.moth#template-code-js"
+            },
+            {
+              "include": "source.moth#template-code-ts"
+            },
+            {
+              "include": "source.moth#template-code-py"
+            },
+            {
+              "include": "source.moth#template-code-rs"
+            },
+            {
+              "include": "source.moth#template-code-shell"
+            },
+            {
+              "include": "source.moth#template-code-moth"
+            },
+            {
+              "include": "source.moth#template-code-generic"
+            },
+            {
+              "include": "source.moth#template-css"
+            },
+            {
+              "include": "source.moth#template-html"
+            },
+            {
+              "include": "#mtf-template-markdown"
+            },
+            {
+              "include": "#mtf-template-explicit-generic"
+            },
+            {
+              "include": "source.moth#template-markdown"
+            },
+            {
+              "include": "source.moth#template-generic"
+            },
+            {
+              "name": "string.unquoted.template.body.moth string.quoted.double.moth",
+              "match": "[^\\[\\]]+"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

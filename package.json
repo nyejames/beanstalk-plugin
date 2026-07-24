@@ -1,8 +1,8 @@
 {
-  "name": "beanstalk-plugin",
-  "displayName": "Beanstalk",
-  "description": "Language support and syntax highlighting for Beanstalk",
-  "version": "0.2.5",
+  "name": "moth-highligher",
+  "displayName": "Moth",
+  "description": "Syntax highlighting for Moth",
+  "version": "0.2.6",
   "files": [
     "package.json",
     "syntaxes/bst.tmLanguage.json",
@@ -10,12 +10,14 @@
     "syntaxes/bst-comment-directives.tmLanguage.json",
     "syntaxes/bd.tmLanguage.json",
     "language-configuration.json",
-    "icons/icon.png",
+    "icons/moth.png",
+    "icons/moth.png",
+    "icons/moth-template.png",
     "LICENSE"
   ],
   "publisher": "Nye",
   "license": "Apache-2.0",
-  "icon": "icons/icon.png",
+  "icon": "icons/moth.png",
   "engines": {
     "vscode": "^1.95.0"
   },
@@ -29,93 +31,89 @@
   "contributes": {
     "languages": [
       {
-        "id": "bst",
+        "id": "moth",
         "aliases": [
-          "Beanstalk",
-          "bst",
-          "beanstalk",
-          "BST"
+          "moth"
         ],
         "extensions": [
-          ".bst"
+          ".moth"
         ],
         "configuration": "./language-configuration.json",
         "icon": {
-          "light": "./icons/icon.png",
-          "dark": "./icons/icon.png"
+          "light": "./icons/moth.png",
+          "dark": "./icons/moth.png"
         }
       },
       {
-        "id": "bd",
+        "id": "mothtemplatefile",
         "aliases": [
-          "Beandown",
-          "bd",
-          "BD"
+          "mothtemplate",
+          "mtf"
         ],
         "extensions": [
-          ".bd"
+          ".mtf"
         ],
         "configuration": "./language-configuration.json",
         "icon": {
-          "light": "./icons/icon.png",
-          "dark": "./icons/icon.png"
+          "light": "./icons/moth-template.png",
+          "dark": "./icons/moth-template.png"
         }
       }
     ],
     "grammars": [
       {
-        "language": "bst",
-        "scopeName": "source.bst",
-        "path": "./syntaxes/bst.tmLanguage.json",
+        "language": "moth",
+        "scopeName": "source.moth",
+        "path": "./syntaxes/moth.tmLanguage.json",
         "embeddedLanguages": {
-          "meta.embedded.block.markdown.bst": "markdown",
-          "meta.embedded.block.css.bst": "css",
-          "meta.embedded.block.html.bst": "html",
-          "meta.embedded.block.code.js.bst": "javascript",
-          "meta.embedded.block.code.ts.bst": "typescript",
-          "meta.embedded.block.code.py.bst": "python",
-          "meta.embedded.block.code.bstlang.bst": "bst",
-          "meta.embedded.block.code.generic.bst": "plaintext",
-          "meta.embedded.block.code.rs.bst": "rust",
-          "meta.embedded.block.code.shell.bst": "shellscript"
+          "meta.embedded.block.markdown.moth": "markdown",
+          "meta.embedded.block.css.moth": "css",
+          "meta.embedded.block.html.moth": "html",
+          "meta.embedded.block.code.js.moth": "javascript",
+          "meta.embedded.block.code.ts.moth": "typescript",
+          "meta.embedded.block.code.py.moth": "python",
+          "meta.embedded.block.code.mothlang.moth": "bst",
+          "meta.embedded.block.code.generic.moth": "plaintext",
+          "meta.embedded.block.code.rs.moth": "rust",
+          "meta.embedded.block.code.shell.moth": "shellscript"
         }
       },
       {
-        "scopeName": "source.bst.import-groups",
-        "path": "./syntaxes/bst-import-groups.tmLanguage.json",
+        "scopeName": "source.moth.import-groups",
+        "path": "./syntaxes/moth-import-groups.tmLanguage.json",
         "injectTo": [
-          "source.bst"
+          "source.moth"
         ]
       },
       {
-        "scopeName": "source.bst.comment-directives",
-        "path": "./syntaxes/bst-comment-directives.tmLanguage.json",
+        "scopeName": "source.moth.comment-directives",
+        "path": "./syntaxes/moth-comment-directives.tmLanguage.json",
         "injectTo": [
-          "source.bst",
-          "source.bd"
+          "source.moth",
+          "source.mtf"
         ]
       },
       {
-        "language": "bd",
-        "scopeName": "source.bd",
-        "path": "./syntaxes/bd.tmLanguage.json",
+        "language": "mtf",
+        "scopeName": "source.mtf",
+        "path": "./syntaxes/mtf.tmLanguage.json",
         "embeddedLanguages": {
-          "meta.embedded.block.markdown.bst": "markdown",
-          "meta.embedded.block.css.bst": "css",
-          "meta.embedded.block.html.bst": "html",
-          "meta.embedded.block.code.js.bst": "javascript",
-          "meta.embedded.block.code.ts.bst": "typescript",
-          "meta.embedded.block.code.py.bst": "python",
-          "meta.embedded.block.code.bstlang.bst": "bst",
-          "meta.embedded.block.code.generic.bst": "plaintext",
-          "meta.embedded.block.code.rs.bst": "rust",
-          "meta.embedded.block.code.shell.bst": "shellscript"
+          "meta.embedded.block.markdown.moth": "markdown",
+          "meta.embedded.block.css.moth": "css",
+          "meta.embedded.block.html.moth": "html",
+          "meta.embedded.block.code.js.moth": "javascript",
+          "meta.embedded.block.code.ts.moth": "typescript",
+          "meta.embedded.block.code.py.moth": "python",
+          "meta.embedded.block.code.mothlang.moth": "bst",
+          "meta.embedded.block.code.generic.moth": "plaintext",
+          "meta.embedded.block.code.rs.moth": "rust",
+          "meta.embedded.block.code.shell.moth": "shellscript"
         }
       }
     ]
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/H3licopter/beanstalk-plugin"
+    "url": "https://github.com/H3licopter/moth-plugin"
   }
 }

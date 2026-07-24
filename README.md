@@ -1,6 +1,6 @@
-# Beanstalk VS Code Extension
+# Moth VS Code Syntax Highlighting
 
-Language support and syntax highlighting for Beanstalk (`.bst`) files.
+Language support and syntax highlighting for Moth (`.moth`) files.
 
 ## Known Limits
 

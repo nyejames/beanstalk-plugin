@@ -1,9 +1,9 @@
-# Beandown title
+# Moth Template title
 
--- this is markdown body text, not a Beanstalk comment.
+-- this is markdown body text, not a Moth comment.
 
 [p:
-    This paragraph should be parsed as a nested Beanstalk template inside the implicit `$md` body.
+    This paragraph should be parsed as a nested Moth template inside the implicit `$md` body.
 
     - This nested body should use Markdown list highlighting.
 
@@ -23,7 +23,7 @@
 
     This should highlight like `$md`, including `inline code`.
 
-    [codeblock, $code("bst"):
+    [codeblock, $code("moth"):
         import @docs {
             pages/home {render as render_home},
             pages/about {content as about_content},
@@ -32,12 +32,12 @@
 ]
 
 [$todo:
-    This should look like ordinary Beanstalk comment text.
+    This should look like ordinary Moth comment text.
     It should still have a distinct todo template scope.
 ]
 
 [$note:
-    This should also look like ordinary Beanstalk comment text.
+    This should also look like ordinary Moth comment text.
     It should still have a distinct note template scope.
 ]
 
